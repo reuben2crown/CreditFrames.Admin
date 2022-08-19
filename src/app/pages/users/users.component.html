@@ -1,0 +1,96 @@
+<nz-page-header class="site-page-header" nzTitle="Admin Users"
+  nzSubtitle="This is where you can manage your staffs">
+  <nz-page-header-extra>
+    <button nz-button nzType="primary" (click)="openForm()">Add New User</button>
+    <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+      <i nz-icon nzType="download"></i>
+      Download
+      <i nz-icon nzType="down"></i>
+    </button>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item>
+          <a (click)="download('csv')" ngbDropdownItem>CSV</a>
+        </li>
+        <li nz-menu-item>
+          <a (click)="download('excel')" ngbDropdownItem>Excel</a>
+        </li>
+        <li nz-menu-item>
+          <a (click)="download('json')" ngbDropdownItem>JSON</a>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+  </nz-page-header-extra>
+  
+  <nz-page-header-content>
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="10">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Enter your search keyword">
+              <nz-input-group nzPrefixIcon="user">
+                <input [(ngModel)]="pageQuery.searchKeyword" nz-input class="ant-input"
+                  placeholder="Search by name or reference number" [ngModelOptions]="{standalone: true}" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Select your search date">
+              <nz-range-picker [nzRanges]="dateRange" ngModel [ngModelOptions]="{standalone: true}" (ngModelChange)="onDateChange($event)"></nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        
+        <div nz-col [nzSpan]="6">
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
+            </nz-form-control> &nbsp;
+            <nz-form-control>
+              <button nz-button type="button" (click)="clear()">Clear</button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </nz-page-header-content>
+
+</nz-page-header>
+
+<div class="send-request">
+  <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" (click)="sendRequest()">
+    Action...
+  </button>
+  <span>Selected {{ setOfCheckedId.size }} items</span>
+</div>
+
+<nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="dataList" [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount" [nzPageSize]="pageQuery?.pageSize" [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber" (nzQueryParams)="pageChanged($event)">
+  <thead>
+    <tr>
+      <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+      <th nowrap>Name</th>
+      <th nowrap>Email</th>
+      <th nowrap>Phone Number</th>
+      <th>Active</th>
+      <th nowrap>Date</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of dataList">
+      <td [nzChecked]="setOfCheckedId.has(data.id)" [nzDisabled]="data.disabled" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+      <td>{{ data.firstName ? data.firstName + ' ' + data.lastName : 'N/A' }}</td>
+      <td>{{ data.email }}</td>
+      <td>{{ data.phoneNumber }}</td>
+      <td>{{ data.isActive ? 'Yes' : 'No' }}</td>
+      <td>{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
+      <td>
+        <button nz-button nzType="primary" (click)="openForm(data)" nzTooltipTitle="Edit" [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> Update </button> &nbsp; 
+        <button nz-button nzDanger nzType="primary" nz-popconfirm nzPopconfirmTitle="Are you sure you want to delete {{data?.firstName}}?" (nzOnConfirm)="delete(data)"
+         nzTooltipTitle="Delete" [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip [nzLoading]="loading"> Delete </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

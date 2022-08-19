@@ -1,0 +1,38 @@
+<div class="modal-body">
+  <div class="container remove-cta">
+    <div class="d-flex justify-content-center ">
+      <div class="trash-circle">
+        <i class="icon">
+          <svg height="40" viewBox="0 0 512 512.92258" width="40" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m433.347656 512.921875h-352.898437c-27.71875-.003906-53.460938-14.355469-68.039063-37.9375-14.574218-23.578125-15.902344-53.023437-3.511718-77.820313l176.433593-352.914062c13.542969-27.117188 41.253907-44.25 71.566407-44.25s58.023437 17.132812 71.566406 44.25l176.433594 352.914062c12.390624 24.796876 11.0625 54.242188-3.511719 77.820313-14.574219 23.582031-40.320313 37.933594-68.039063 37.9375zm0 0"
+              fill="#FD6489" />
+            <g fill="#fff">
+              <path
+                d="m256.898438 128.203125c8.835937 0 16 7.164063 16 16v192c0 8.835937-7.164063 16-16 16-8.835938 0-16-7.164063-16-16v-192c0-8.835937 7.164062-16 16-16zm0 0" />
+              <path d="m240.898438 384.203125h32v32h-32zm0 0" />
+            </g>
+          </svg>
+        </i>
+      </div>
+    </div>
+    <div class="row">
+      <div class="container">
+        <div class="content-remove">
+          <label>{{title || 'Are you sure?'}}</label>
+          <p>{{message || 'You may not be able to reverse this action after this confirmation'}}</p>
+        </div>
+        <div class="footer">
+          <div class="row text-center center">
+            <div class="col-6">
+              <button class="cancel" type="submit" data-dismiss="modal" (click)="modal.close(false)">Dismiss</button>
+            </div>
+            <div class="col-6">
+              <button class="accept" type="submit" (click)="modal.close(true)">{{buttonText || 'Yes Please!'}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

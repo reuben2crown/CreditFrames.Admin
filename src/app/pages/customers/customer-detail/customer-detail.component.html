@@ -1,0 +1,114 @@
+<ng-container>
+    <nz-tabset (nzSelectedIndexChange)="tabChanged($event)">
+        <nz-tab [nzTitle]="tabTpl1">
+            <ng-template #tabTpl1>
+                <i nz-icon nzType="user-add"></i>
+                Personal Details
+            </ng-template>
+
+            <p class="title" style=" margin-bottom: 24px;">User Info: <strong>{{data?.phoneNumber}}</strong></p>
+            <nz-descriptions [nzColumn]="2" nzTitle="Personal">
+                <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">{{data?.firstName ? data?.firstName + ' ' +
+                    data?.lastName : 'N/A'}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">{{data.phoneNumber}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Email" [nzSpan]="1">{{data?.email ? data?.email : 'N/A'}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Gender" [nzSpan]="1">{{data?.gender ? data?.gender : 'N/A'}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Birthday / Age" [nzSpan]="1">{{data?.dateOfBirth ? (data?.dateOfBirth |
+                    date: 'd-MMM-yyyy') : 'N/A'}} &nbsp; ({{data?.age || 0}} years)</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Consultation Balance" [nzSpan]="1">{{data?.consultationBalance}}
+                </nz-descriptions-item>
+            </nz-descriptions>
+            <nz-divider></nz-divider>
+            <!-- <nz-descriptions [nzColumn]="2" nzTitle="Consultation Details">
+                <nz-descriptions-item nzTitle="Date" [nzSpan]="1">{{data.createdDate | date: 'd-MMM-yyyy h:mm a'}}
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Doctor" [nzSpan]="1">{{data.agent}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Free Consultation" [nzSpan]="1">{{data.isFree ? 'Yes' : 'No'}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Ticket URL" [nzSpan]="2">
+                    <a href="{{data?.ticketUrl}}" target="_blank">{{data?.ticketUrl}}</a>
+                </nz-descriptions-item>
+            </nz-descriptions> -->
+        </nz-tab>
+
+        <nz-tab [nzTitle]="tabTpl2">
+            <ng-template #tabTpl2>
+                <i nz-icon nzType="credit-card"></i>
+                Payment History
+            </ng-template>
+
+            <nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="paymentList"
+                [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount"
+                [nzPageSize]="pageQuery?.pageSize" [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber"
+                (nzQueryParams)="pageChanged($event)" [nzScroll]="{ x: '1100px' }">
+                <thead>
+                    <tr>
+                        <th nowrap>S/N</th>
+                        <th>Date</th>
+                        <th>Plan</th>
+                        <th nowrap>Amount</th>
+                        <th nowrap>Reference</th>
+                        <th>Gateway</th>
+                        <th>Status</th>
+                        <!-- <th>...</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of paymentList; let i = index;" [ngClass]="{'red': !data.isCompleted}">
+                        <td>{{i + 1}}</td>
+                        <td nowrap>{{ (data.paymentDate || data.createdDate) | date: 'd-MMM-yyyy h:mm a' }}</td>
+                        <td>{{ data.paymentPlanTitle || 'N/A' }}</td>
+                        <td>{{ data.amount | currency: (data.currency || '&#8358;') }}</td>
+                        <td>{{ data.referenceNumber }}</td>
+                        <td>{{ data.paymentGateway }} - {{ data.paymentType }}</td>
+                        <td>
+                            <nz-tag [nzColor]="data.isCompleted ? '#87d068' : '#f50'">{{ data.isCompleted ? 'Paid' : 'Unpaid' }}</nz-tag>
+                        </td>
+                        <!-- <td>
+                            <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details" [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> <i nz-icon nzType="eye"></i> </button>
+                        </td> -->
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-tab>
+        <nz-tab [nzTitle]="tabTpl3">
+            <ng-template #tabTpl3>
+                <i nz-icon nzType="medicine-box"></i>
+                Consultations
+            </ng-template>
+
+            <nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="consultationList"
+                [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount"
+                [nzPageSize]="pageQuery?.pageSize" [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber"
+                (nzQueryParams)="pageChanged($event)">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th nowrap>Date</th>
+                        <!-- <th>Phone Number</th> -->
+                        <th>Doctor</th>
+                        <th>Free</th>
+                        <th>...</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of consultationList; let i = index;">
+                        <td>{{i + 1}}</td>
+                        <td nowrap>{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
+                        <!-- <td>{{ data.phoneNumber }}</td> -->
+                        <td>{{ data.agent }}</td>
+                        <td>
+                            <nz-tag [nzColor]="data.isFree ? 'red' : 'green'">{{ data.isFree ? 'Free' : 'Paid' }}</nz-tag>
+                        </td>
+                        <td>
+                            <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details"
+                                [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> <i nz-icon nzType="eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </nz-tab>
+    </nz-tabset>
+</ng-container>

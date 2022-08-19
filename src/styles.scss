@@ -1,1 +1,76 @@
 /* You can add global styles to this file, and also import other style files */
+
+.pointer {
+    cursor: pointer;
+}
+
+.site-page-header {
+    border: 1px solid #ebedf0;
+    margin-bottom: 20px;
+}
+
+.clearfix {
+    clear: both;
+    width: 100%;
+}
+
+.send-request {
+    margin-bottom: 16px;
+}
+
+.send-request span {
+    margin-left: 8px;
+}
+
+.ant-page-header-content {
+    padding-top: 20px;
+}
+
+tr.red {
+    color: #cf1322;
+    background: #fff1f0;
+    border-color: #ffa39e;
+}
+
+.captchaCode {
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.ant-divider-horizontal {
+    display: flex;
+    clear: both;
+    width: 100%;
+    min-width: 100%;
+    margin: 24px 0;
+}
+.ant-divider {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0,0,0,.85);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5715;
+    list-style: none;
+    font-feature-settings: "tnum","tnum";
+    border-top: 1px solid rgba(0,0,0,.06);
+}
+
+.ant-btn.success, .ant-btn.success:hover, .ant-btn.success:focus {
+    color: #52c41a;
+    background: #fff;
+    border-color: #52c41a;
+}
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

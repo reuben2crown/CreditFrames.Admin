@@ -1,0 +1,84 @@
+<form nz-form [formGroup]="requestForm" (ngSubmit)="onFormSubmit()">
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label>First Name</nz-form-label>
+        <nz-form-control nzErrorTip="Firstname is required!">
+          <nz-input-group nzPrefixIcon="user">
+            <input nz-input formControlName="firstName" placeholder="please enter user first name" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label>Last Name</nz-form-label>
+        <nz-form-control nzErrorTip="Lastname is required!">
+          <nz-input-group nzPrefixIcon="user">
+            <input nz-input formControlName="lastName" placeholder="please enter user last name" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="8">
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label>Email Address</nz-form-label>
+        <nz-form-control nzErrorTip="Please enter a valid email address!">
+          <nz-input-group nzPrefixIcon="mail">
+            <input type="email" nz-input formControlName="email" placeholder="Email Address" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label>Phone Number </nz-form-label>
+        <nz-form-control nzErrorTip="Please enter phone number!">
+          <nz-input-group nzPrefixIcon="phone">
+            <input nz-input formControlName="phoneNumber" placeholder="Phone Number (Optional)" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <nz-divider nzText="{{showPassword ? 'Hide' : 'Click here to'}} Change Password" class="pointer" nzOrientation="left" *ngIf="id" (click)="togglePassword()">
+  </nz-divider>
+
+  <div *ngIf="showPassword">
+    <div class="note" *ngIf="id">
+      <nz-alert nzType="warning" nzMessage="Note: This action will only change the user password. It will not update the use information." nzShowIcon></nz-alert>
+    </div>
+    <div nz-row [nzGutter]="8">
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label>Password</nz-form-label>
+          <nz-form-control nzErrorTip="Please enter a password!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="password" placeholder="Enter Password" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label>Password</nz-form-label>
+          <nz-form-control nzErrorTip="Please confirm your password!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="confirmPassword" placeholder="Confirm Password" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </div>
+  <nz-form-item>
+    <nz-form-control [nzOffset]="6" [nzSpan]="12">
+      <button nz-button nzType="primary" [nzLoading]="">{{id && showPassword ? 'Change Password' : 'Submit'}}</button>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>

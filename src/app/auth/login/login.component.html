@@ -1,0 +1,104 @@
+<nz-page-header class="site-page-header" nzTitle="Admin Login">
+    <nz-page-header-extra>
+        <img src="assets/img/logo.png" alt="CreditFrames247" />
+    </nz-page-header-extra>
+</nz-page-header>
+
+<form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()" *ngIf="!showRecoveryForm">
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please enter a valid email address!">
+            <nz-input-group nzPrefixIcon="user">
+                <input type="email" nz-input formControlName="username" placeholder="Email Address" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please enter your Password!">
+            <nz-input-group nzPrefixIcon="lock">
+                <input type="password" nz-input formControlName="password" placeholder="Password" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item [ngClass]="{'no-margin': captchaCode}">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="captcha" nzRequired nzTooltipTitle="Please click 'Get captcha'"
+            [nzTooltipIcon]="captchaTooltipIcon">
+            Captcha
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input the captcha you got!"
+            nzExtra="We must make sure that your are a human.">
+            <div nz-row [nzGutter]="8">
+                <div nz-col [nzSpan]="12">
+                    <input nz-input formControlName="captcha" id="captcha" />
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <button nz-button (click)="getCaptcha($event)">Get captcha</button>
+                </div>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item *ngIf="captchaCode">
+        <div class="captchaCode" nzTooltipTitle="Enter this Captcha" nz-tooltip>
+            {{captchaCode}}
+        </div>
+    </nz-form-item>
+
+    <div nz-row class="login-form-margin">
+        <div nz-col [nzSpan]="12">
+            <label nz-checkbox formControlName="rememberMe">
+                <span>Remember me</span>
+            </label>
+        </div>
+        <div nz-col [nzSpan]="12">
+            <a class="login-form-forgot" (click)="toggleRecovery()">Forgot password</a>
+        </div>
+    </div>
+    <button type="submit" nz-button class="login-form-button login-form-margin" [nzType]="'primary'"
+        [nzLoading]="submitted">Log in</button>
+    <!-- Or
+    <a>register now!</a> -->
+</form>
+
+<form nz-form [formGroup]="recoveryForm" class="login-form" (ngSubmit)="submitForgotPassword()" *ngIf="showRecoveryForm">
+    <nz-form-item>
+        <h5>Forgot Password? Enter your email address below</h5>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please enter a valid email address!">
+            <nz-input-group nzPrefixIcon="user">
+                <input type="email" nz-input formControlName="email" placeholder="Email Address" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item [ngClass]="{'no-margin': captchaCode}">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="captcha" nzRequired nzTooltipTitle="Please click 'Get captcha'"
+            [nzTooltipIcon]="captchaTooltipIcon">
+            Captcha
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input the captcha you got!"
+            nzExtra="We must make sure that your are a human.">
+            <div nz-row [nzGutter]="8">
+                <div nz-col [nzSpan]="12">
+                    <input nz-input formControlName="captcha" id="captcha" />
+                </div>
+                <div nz-col [nzSpan]="12">
+                    <button nz-button (click)="getCaptcha($event)">Get captcha</button>
+                </div>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item *ngIf="captchaCode">
+        <div class="captchaCode" nzTooltipTitle="Enter this Captcha" nz-tooltip>
+            {{captchaCode}}
+        </div>
+    </nz-form-item>
+    
+    <button type="button" (click)="toggleRecovery()" nz-button class="login-form-margin">Go back to
+        Login</button> &nbsp;
+    <button type="submit" nz-button class="login-form-margin" [nzType]="'primary'" [nzLoading]="submitted">Recover
+        Password</button>
+</form>

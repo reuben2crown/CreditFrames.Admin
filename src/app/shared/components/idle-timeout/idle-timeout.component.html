@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h4 id="dialog-child-name" class="modal-title pull-left">{{title}}</h4>
+</div>
+<div class="modal-body">
+    <p>
+        {{idleState}}
+    </p>
+</div>
+
+<div class="modal-footer">
+    <div class="row mrgbtm">
+        <div class="col-md-6">
+            <button type="button" (click)="logout()" class="btn btn-danger">Logout</button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" (click)="stay()" class="btn btn-success">Continue</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<nz-page-header class="site-page-header" nzTitle="Setting" nzSubtitle="Application Configurations">
+    <nz-page-header-content>
+        <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
+            <div nz-row [nzGutter]="24" class="row">
+                <div nz-col [nzSpan]="16">
+                    <nz-form-item>
+                        <nz-form-control>
+                            <nz-input-group nzPrefixIcon="search">
+                                <input [(ngModel)]="searchKeyword" nz-input class="ant-input"
+                                    placeholder="Search by Key" [ngModelOptions]="{standalone: true}" />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-control>
+                            <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button> &nbsp;
+                            <button nz-button type="button" (click)="clear()">Clear</button>
+                        </nz-form-control> &nbsp;
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </nz-page-header-content>
+
+</nz-page-header>
+
+<nz-table #editRowTable nzBordered [nzData]="dataList" [nzLoading]="loading">
+    <thead>
+        <tr>
+            <th>S/N</th>
+            <th>Key</th>
+            <th>Value</th>
+            <th title="Last Editor">Editor</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of editRowTable.data; let i = index;">
+            <td>{{i + 1}}</td>
+            <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
+                <td nowrap>{{ data.key }}</td>
+                <td>{{ data.value }}</td>
+                <td>{{ data.editorName }}</td>
+                <td nowrap>{{ data.updatedDate || data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
+                <td><a (click)="startEdit(data.id)" [ngClass]="{'disabled': !data.isEditable}">Edit</a></td>
+            </ng-container>
+            <ng-template #editTemplate>
+                <td nowrap>{{ data.key }}</td>
+                <td colspan="3">
+                    <input *ngIf="data.inputType != 'checkbox'" type="{{data.inputType}}" nz-input [(ngModel)]="editCache[data.id].data.value" min="1" />
+                    <nz-switch *ngIf="data.inputType == 'checkbox'" [ngModel]="togglevalue(data.id)" (ngModelChange)="toggle($event, data.id)" nzCheckedChildren="True" nzUnCheckedChildren="False"></nz-switch>
+                    <!-- {{editCache[data.id].data.value}} -->
+                </td>
+                <td>
+                    <a nz-popconfirm nzPopconfirmTitle="Sure to update this setting?" (nzOnConfirm)="saveEdit(data.id)" class="save">Save</a>
+                    <a (click)="cancelEdit(data.id)">Cancel</a>
+                </td>
+            </ng-template>
+        </tr>
+    </tbody>
+</nz-table>

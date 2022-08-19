@@ -1,0 +1,159 @@
+<nz-page-header class="site-page-header" nzTitle="Consultations"
+  nzSubtitle="History of the user's consultation with doctors">
+  <nz-page-header-extra>
+    <!-- <button nz-button>Operation</button> -->
+    <button nz-button (click)="openTopup()" class="success"><i nz-icon nzType="plus"></i> Topup Consultation</button> &nbsp; 
+    <button nz-button nz-dropdown [nzDropdownMenu]="bonusMenu" nzTrigger="click"><i nz-icon nzType="plus-circle"></i> Add Bonus Consultation</button>
+    <nz-dropdown-menu #bonusMenu="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <nz-select [(ngModel)]="bonusType" nzPlaceHolder="Select Bonus Type">
+            <!-- <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option> -->
+            <nz-option *ngFor="let option of bonusTypeKeys" [nzLabel]="BonusTypeEnum[option]" [nzValue]="option"></nz-option>
+          </nz-select>
+          <input type="number" nz-input placeholder="How many customer?" min="1" [(ngModel)]="bonusLimit" />
+          <!-- <nz-input-number [(ngModel)]="bonusLimit" [nzMin]="1" [nzMax]="10" [nzStep]="1"></nz-input-number> -->
+          <button nz-button nzSize="small" nzType="primary" class="search-button" nz-popconfirm nzPopconfirmTitle="Are you sure you want to proceed?" (nzOnConfirm)="addBonus()" [nzLoading]="loading">Send Bonus</button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+  </nz-page-header-extra>
+  <nz-page-header-content>
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="10">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Enter your search keyword">
+              <nz-input-group nzPrefixIcon="user">
+                <input [(ngModel)]="pageQuery.searchKeyword" nz-input class="ant-input"
+                  placeholder="Search by name or reference number" [ngModelOptions]="{standalone: true}" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Select your search date">
+              <nz-range-picker [nzRanges]="dateRange" ngModel [ngModelOptions]="{standalone: true}"
+                (ngModelChange)="onDateChange($event)"></nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
+            </nz-form-control> &nbsp;
+            <nz-form-control>
+              <button nz-button type="button" (click)="clear()">Clear</button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </nz-page-header-content>
+
+  <nz-page-header-content>
+    
+  <button nz-button nz-dropdown [nzDropdownMenu]="menu0">
+    <i nz-icon nzType="download"></i>
+    Export Summary
+    <i nz-icon nzType="down"></i>
+  </button>
+  <nz-dropdown-menu #menu0="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item>
+        <a (click)="download('csv', 'summary')" ngbDropdownItem>CSV</a>
+      </li>
+      <li nz-menu-item>
+        <a (click)="download('excel', 'summary')" ngbDropdownItem>Excel</a>
+      </li>
+      <li nz-menu-item>
+        <a (click)="download('json', 'summary')" ngbDropdownItem>JSON</a>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+
+   &nbsp; 
+  <button nz-button nzDanger nz-dropdown [nzDropdownMenu]="menu1">
+    <i nz-icon nzType="download"></i>
+    Download Balance
+    <i nz-icon nzType="down"></i>
+  </button>
+  <nz-dropdown-menu #menu1="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item>
+        <a (click)="download('csv', 'balance')" ngbDropdownItem>CSV</a>
+      </li>
+      <li nz-menu-item>
+        <a (click)="download('excel', 'balance')" ngbDropdownItem>Excel</a>
+      </li>
+      <li nz-menu-item>
+        <a (click)="download('json', 'balance')" ngbDropdownItem>JSON</a>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+
+  &nbsp; 
+
+  <button nz-button nz-dropdown [nzDropdownMenu]="menu2" nzType="primary">
+    <i nz-icon nzType="download"></i>
+    Download All
+    <i nz-icon nzType="down"></i>
+  </button>
+  <nz-dropdown-menu #menu2="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item>
+        <a (click)="download('csv')" ngbDropdownItem>CSV</a>
+      </li>
+      <li nz-menu-item>
+        <a (click)="download('excel')" ngbDropdownItem>Excel</a>
+      </li>
+      <li nz-menu-item>
+        <a (click)="download('json')" ngbDropdownItem>JSON</a>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+
+  </nz-page-header-content>
+</nz-page-header>
+
+<div class="send-request">
+  <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading"
+    (click)="sendRequest()">
+    Action...
+  </button>
+  <span>Selected {{ setOfCheckedId.size }} items</span>
+</div>
+
+<nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="dataList" [nzLoading]="loading"
+  nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount" [nzPageSize]="pageQuery?.pageSize"
+  [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber" (nzQueryParams)="pageChanged($event)">
+  <thead>
+    <tr>
+      <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+      <th>Date</th>
+      <th nowrap>Customer Name</th>
+      <th nowrap>Phone Number</th>
+      <th>Doctor</th>
+      <th>Free</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of dataList">
+      <td [nzChecked]="setOfCheckedId.has(data.id)" [nzDisabled]="data.disabled"
+        (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+      <td>{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
+      <td>{{ data.user?.firstName ? data.user?.firstName + ' ' + data.user?.lastName : 'N/A' }}</td>
+      <td>{{ data.phoneNumber }}</td>
+      <td>{{ data.agent }}</td>
+      <td>{{ data.isFree ? 'Yes' : 'No' }}</td>
+      <td>
+        <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details"
+          [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> <i nz-icon nzType="eye"></i> </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

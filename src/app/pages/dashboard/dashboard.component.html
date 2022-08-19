@@ -1,0 +1,101 @@
+
+<nz-page-header class="site-page-header" nzTitle="Dashboard" nzSubtitle="Welcome !">
+</nz-page-header>
+
+<div style="background: #ECECEC; padding: 30px;">
+  <nz-row [nzGutter]="16">
+    <nz-col [nzSpan]="6">
+      <nz-card class="pointer" [routerLink]="['/customers']">
+        <nz-statistic
+          [nzValue]="((model?.totalUsers || 0) | number)!"
+          [nzTitle]="'Total Users'"
+          [nzPrefix]="prefixTplOne"
+        ></nz-statistic>
+        <ng-template #prefixTplOne><i nz-icon nzType="user"></i></ng-template>
+      </nz-card>
+    </nz-col>
+
+    <nz-col [nzSpan]="6">
+      <nz-card class="pointer" [routerLink]="['/consultations']">
+        <nz-statistic
+          [nzValue]="((model?.totalConsultations || 0) | number)!"
+          [nzTitle]="'Total Consultations'"
+          [nzPrefix]="prefixTplTwo"
+          [nzValueStyle]="{ color: '#1890FF' }"
+        ></nz-statistic>
+        <ng-template #prefixTplTwo><i nz-icon nzType="medicine-box"></i></ng-template>
+      </nz-card>
+    </nz-col>
+
+    <nz-col [nzSpan]="6">
+      <nz-card class="pointer" [routerLink]="['/payments', {status: 'success'}]">
+        <nz-statistic
+          [nzValue]="((model?.successfulPayments?.amount || 0) | currency: '&#8358;')!"
+          [nzTitle]="'Successful Payments'"
+          [nzPrefix]="prefixTplThree"
+          [nzValueStyle]="{ color: '#3F8600' }"
+        ></nz-statistic>
+        <ng-template #prefixTplThree><i nz-icon nzType="arrow-up"></i></ng-template>
+      </nz-card>
+    </nz-col>
+
+    <nz-col [nzSpan]="6">
+      <nz-card class="pointer" [routerLink]="['/payments', {status: 'failed'}]">
+        <nz-statistic
+          [nzValue]="((model?.failedPayments?.amount || 0) | currency: '&#8358;')!"
+          [nzTitle]="'Failed Payments'"
+          [nzPrefix]="prefixTplFour"
+          [nzValueStyle]="{ color: '#CF1322' }"
+        ></nz-statistic>
+        <ng-template #prefixTplFour><i nz-icon nzType="arrow-down"></i></ng-template>
+      </nz-card>
+    </nz-col>
+  </nz-row>
+</div>
+
+<p> &nbsp; </p>
+
+<div nz-row [nzGutter]="16">
+  <div nz-col [nzXs]="24" nzMd="16">
+    <nz-card [nzTitle]="salesTitle">
+      <ng-template #salesTitle>
+        Sales Statistics
+      </ng-template>
+      <div id="g2-chart"></div>
+    </nz-card>
+  </div>
+  <div nz-col [nzXs]="24" nzMd="8">
+
+    <nz-card>
+      <nz-statistic
+        [nzValue]="((model?.revenue?.today?.amount || 0) | currency: '&#8358;')!"
+        [nzTitle]="'Today'"
+        [nzValueStyle]="{ color: '#3F8600' }"
+      ></nz-statistic>
+    </nz-card>
+    
+    <nz-card>
+      <nz-statistic
+      [nzValue]="((model?.revenue?.thisWeek?.amount || 0) | currency: '&#8358;')!"
+        [nzTitle]="'This Week'"
+      ></nz-statistic>
+    </nz-card>
+    
+    <nz-card>
+      <nz-statistic
+      [nzValue]="((model?.revenue?.thisMonth?.amount || 0) | currency: '&#8358;')!"
+        [nzTitle]="'This Month'"
+      ></nz-statistic>
+    </nz-card>
+    
+    <nz-card>
+      <nz-statistic
+      [nzValue]="((model?.abandonedPayments?.total || 0) | number)!"
+        [nzTitle]="'Abandoned Payments'"
+        [nzPrefix]="prefixTpl09"
+        [nzValueStyle]="{ color: '#CF1322' }"
+      ></nz-statistic>
+      <ng-template #prefixTpl09><i nz-icon nzType="stop"></i></ng-template>
+    </nz-card>
+  </div>
+</div>
