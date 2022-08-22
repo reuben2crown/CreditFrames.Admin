@@ -13,7 +13,7 @@ export class ResourceService {
   public baseUrl: string;
   public endpoint: string;
   public appConfig: AppConfig;
-  public microservice: 'Onboarding' | 'UserSecurity' | 'Trips';
+  // public microservice: 'Onboarding' | 'UserSecurity' | 'Trips';
 
   constructor(private httpClient: HttpClient, private injector: Injector) {
     if (!this.baseUrl) {
@@ -22,7 +22,7 @@ export class ResourceService {
     }
   }
 
-  public post<T>(item: T): Observable<T> {
+  public post<T>(item: any): Observable<T> {
     const data = JSON.stringify(item);
     return this.httpClient.post<T>(`${this.baseUrl}/${this.endpoint}`, data);
   }
@@ -170,6 +170,7 @@ export class AppConfigService {
       .toPromise()
       .then((data: AppConfig) => {
         this.appConfig = data;
+        return this.appConfig;
       });
   }
 }

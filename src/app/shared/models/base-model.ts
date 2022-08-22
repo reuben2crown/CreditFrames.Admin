@@ -7,6 +7,6 @@ export class BaseModel {
 export class PersonModel extends BaseModel {
   public firstName: string;
   public lastName: string;
-  public email: string;
+  public emailAddress: string;
   public phoneNumber: string;
 }

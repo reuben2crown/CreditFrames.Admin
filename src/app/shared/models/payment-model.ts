@@ -15,7 +15,7 @@ export class PaymentModel extends BaseModel {
     public paymentDate: Date | string;    
     public expiryDate: Date | string;
     public paymentCardId: string;
-    public email: string;
+    public emailAddress: string;
     public paymentChannel: string;
     public responseMessage: string;
     public status: string;

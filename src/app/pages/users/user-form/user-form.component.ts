@@ -58,7 +58,7 @@ export class UserFormComponent implements OnInit {
       lastName: new FormControl(null, Validators.required),
       firstName: new FormControl(null, Validators.required),
       phoneNumber: new FormControl(null),
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      emailAddress: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
       confirmPassword: new FormControl(null, [Validators.required, this.passwordConfirming]),
     });

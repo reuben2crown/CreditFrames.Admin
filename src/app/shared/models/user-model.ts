@@ -3,7 +3,7 @@ import { AccountTypeEnum, ChannelEnum } from './enums';
 
 export class UserModel extends BaseModel {
   public phoneNumber: string;
-  public email: string;
+  public emailAddress: string;
   public lastName: string;
   public firstName: string;
   public gender: string;
@@ -20,6 +20,7 @@ export class UserModel extends BaseModel {
   public updatedBy?: number | string | null;
   public currentPaymentPlan: string;
   public planExpiryDate: string;
+  public deviceId?: string;
 }
 
 export class BlockUserModel {
@@ -32,7 +33,7 @@ export class UserFormModel {
   public id: number;
   public firstName: string;
   public lastName: string;
-  public email: string;
+  public emailAddress: string;
   public phoneNumber: string;
   public password?: string;
   public channel: ChannelEnum;
@@ -46,9 +47,11 @@ export class AdminFormModel extends UserFormModel {
 
 export class AuthTokenModel {
   public userId: number;
+  public roleId: number;
   public firstName: string;
   public lastName: string;
-  public email: string;
+  public roleName: string;
+  public emailAddress: string;
   public phoneNumber: string;
   public accountType: AccountTypeEnum;
   public lastLoginDate: Date;

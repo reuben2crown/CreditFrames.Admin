@@ -34,17 +34,10 @@ export class AppResourceInterceptor implements HttpInterceptor {
       }
     }
 
-    // SET APPID
-    if (!req.headers.has("X-Channel-AppID") && this.appId) {
-      req = req.clone({
-        headers: req.headers.set("X-Channel-AppID", `${this.appId}`)
-      });
-    }
-
     // SET API KEY
-    if (!req.headers.has("X-Channel-ApiKey") && this.apiKey) {
+    if (!req.headers.has('X-Auth-Key') && this.apiKey) {
       req = req.clone({
-        headers: req.headers.set("X-Channel-ApiKey", `${this.apiKey}`)
+        headers: req.headers.set('X-Auth-Key', `${this.apiKey}`),
       });
     }
     return next.handle(req);

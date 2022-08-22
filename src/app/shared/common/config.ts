@@ -13,7 +13,7 @@ export class AppConfig {
 @Injectable()
 export class ContactConfig {
   public address: string;
-  public email: string;
+  public emailAddress: string;
   public phoneNumber: string;
   public website: string;
 }

@@ -25,7 +25,7 @@
         <br />
         <nz-descriptions nzSize="small" [nzColumn]="2">
             <nz-descriptions-item nzTitle="Phone No" [nzSpan]="1">{{data?.phoneNumber}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Email" [nzSpan]="1"><a>{{data?.email || 'N/A'}}</a></nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Email" [nzSpan]="1"><a>{{data?.emailAddress || 'N/A'}}</a></nz-descriptions-item>
 
             <nz-descriptions-item nzTitle="Provider" [nzSpan]="1">{{data?.paymentGateway}}</nz-descriptions-item>
             <nz-descriptions-item nzTitle="Payment Channel" [nzSpan]="1">{{data?.paymentChannel}}</nz-descriptions-item>

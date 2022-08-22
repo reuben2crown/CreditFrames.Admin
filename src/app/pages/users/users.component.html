@@ -73,8 +73,9 @@
       <th nowrap>Name</th>
       <th nowrap>Email</th>
       <th nowrap>Phone Number</th>
+      <th>Account Type</th>
       <th>Active</th>
-      <th nowrap>Date</th>
+      <th nowrap>Reg. Date</th>
       <th>...</th>
     </tr>
   </thead>
@@ -82,8 +83,9 @@
     <tr *ngFor="let data of dataList">
       <td [nzChecked]="setOfCheckedId.has(data.id)" [nzDisabled]="data.disabled" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
       <td>{{ data.firstName ? data.firstName + ' ' + data.lastName : 'N/A' }}</td>
-      <td>{{ data.email }}</td>
+      <td>{{ data.emailAddress }}</td>
       <td>{{ data.phoneNumber }}</td>
+      <td>{{ data.accountType }}</td>
       <td>{{ data.isActive ? 'Yes' : 'No' }}</td>
       <td>{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
       <td>

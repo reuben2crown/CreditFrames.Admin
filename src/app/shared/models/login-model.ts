@@ -1,14 +1,23 @@
 import { ChannelEnum } from './enums';
 
 export class LoginModel {
-  public username: string;
+  public emailAddress: string;
   public password: string;
-  public channel: ChannelEnum;
+  public loginChannel: ChannelEnum;
   public ipAddress: string;
+  public deviceId?: string;
+}
+
+export class ValidateTokenModel {
+  public username: string;
+  public tokenCode: string; // Generated Token Code
+  public deviceId?:string;
+  public loginChannel: any;
+  public accessToken: string;
 }
 
 export class ForgotPasswordModel {
-  public email: string;
+  public emailAddress: string;
 }
 
 export class ChangePasswordModel {
@@ -36,14 +45,16 @@ export class ResendVerificationModel {
 }
 
 export class ReissueTokenModel {
-  public token: string;
+  // public token: string;
   public refreshToken: string;
+  public deviceId?: string;
 }
 
 export class LoginResponseModel {
-  public status: boolean;
-  public message: string;
   public accessToken: string;
   public refreshToken: string;
+  public require2FA: string; // User must use 2FA
+  public expiresIn: number;
+  public isNewDevice: boolean;
 }
 

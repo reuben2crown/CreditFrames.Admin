@@ -39,15 +39,15 @@ export class LoginComponent implements OnInit {
 
   createForm(): void {
     this.loginForm = this.fb.group({
-      username: [null, [Validators.required, Validators.email]],
+      emailAddress: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
       captcha: [null],
       rememberMe: [false],
-      channel: [ChannelEnum.Admin],
+      loginChannel: [ChannelEnum.Admin],
     });
 
     this.recoveryForm = this.fb.group({
-      email: [null, [Validators.required, Validators.email]],
+      emailAddress: [null, [Validators.required, Validators.email]],
       captcha: [null]
     });
   }
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
         if (response) {
           this.commonService.hideLoading();
           if (response.status) {
-            this.authData.saveLogin(response);
+            this.authData.saveLogin(response.data);
             const user = this.authData.getUserData();
             this.loginForm.patchValue({captcha: null}, {onlySelf: true});
             this.captchaCode = null;
@@ -105,7 +105,7 @@ export class LoginComponent implements OnInit {
       );
     } else {
       this.commonService.showToastWarning(
-        'Please enter your username and password to continue'
+        'Please enter your email address and password to continue'
       );
     }
   }

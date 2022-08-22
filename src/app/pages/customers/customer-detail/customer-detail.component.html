@@ -11,7 +11,7 @@
                 <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">{{data?.firstName ? data?.firstName + ' ' +
                     data?.lastName : 'N/A'}}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">{{data.phoneNumber}}</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Email" [nzSpan]="1">{{data?.email ? data?.email : 'N/A'}}
+                <nz-descriptions-item nzTitle="Email" [nzSpan]="1">{{data?.emailAddress || 'N/A'}}
                 </nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Gender" [nzSpan]="1">{{data?.gender ? data?.gender : 'N/A'}}
                 </nz-descriptions-item>
