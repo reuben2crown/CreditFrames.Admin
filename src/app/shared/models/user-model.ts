@@ -20,7 +20,10 @@ export class UserModel extends BaseModel {
   public updatedBy?: number | string | null;
   public currentPaymentPlan: string;
   public planExpiryDate: string;
-  public deviceId?: string;
+  public lastLogin: Date;
+  public enable2FA: boolean;
+  public isBlocked: boolean;
+  public isLockedOut: boolean;
 }
 
 export class BlockUserModel {

@@ -1,10 +1,15 @@
-export class DashboardModel {
+import { LoanModel } from "./loan-model";
+import { SearchHistoryModel } from "./search-history-model";
+
+export class AdminDashboardModel {
+    public totalLoans: number;
     public totalUsers: number;
-    public totalConsultations: number;
-    public successfulPayments: PaymentStatModel;
-    public failedPayments: PaymentStatModel;
-    public abandonedPayments: PaymentStatModel;
+    public activeUsers: number;
+    public activeSearch: number;
     public revenue: Revenue;
+    public recentSearch: SearchHistoryModel[] = [];
+    public recentLoans: LoanModel[] = [];
+    // public abandonedPayments: PaymentStatModel;
 }
 
 export class Revenue {

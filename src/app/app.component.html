@@ -7,7 +7,8 @@
             [nzTrigger]="null">
     <div class="sidebar-logo" title="CreditFrames Admin Console">
       <a [routerLink]="['/']">
-        <img src="favicon.ico" alt="logo">
+        <img src="favicon.ico" alt="logo" class="icon" *ngIf="isCollapsed">
+        <img src="assets/img/logo.png" alt="logo" *ngIf="!isCollapsed">
         <h1>CreditFrames Admin Console</h1>
       </a>
     </div>

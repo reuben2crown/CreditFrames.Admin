@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as G2 from '@antv/g2';
-import { ChartModel, CommonService, DashboardModel, DashboardService } from 'src/app/shared';
+import { ChartModel, CommonService, AdminDashboardModel, DashboardService } from 'src/app/shared';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +9,7 @@ import { ChartModel, CommonService, DashboardModel, DashboardService } from 'src
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
-  model: DashboardModel;
+  model: AdminDashboardModel;
   loading: boolean;
 
   constructor(private cdr: ChangeDetectorRef, private dashboardService: DashboardService, private commonService: CommonService) {

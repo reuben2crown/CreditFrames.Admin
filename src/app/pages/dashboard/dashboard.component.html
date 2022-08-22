@@ -18,8 +18,8 @@
     <nz-col [nzSpan]="6">
       <nz-card class="pointer" [routerLink]="['/consultations']">
         <nz-statistic
-          [nzValue]="((model?.totalConsultations || 0) | number)!"
-          [nzTitle]="'Total Consultations'"
+          [nzValue]="((model?.activeUsers || 0) | number)!"
+          [nzTitle]="'Active Users'"
           [nzPrefix]="prefixTplTwo"
           [nzValueStyle]="{ color: '#1890FF' }"
         ></nz-statistic>
@@ -30,8 +30,8 @@
     <nz-col [nzSpan]="6">
       <nz-card class="pointer" [routerLink]="['/payments', {status: 'success'}]">
         <nz-statistic
-          [nzValue]="((model?.successfulPayments?.amount || 0) | currency: '&#8358;')!"
-          [nzTitle]="'Successful Payments'"
+          [nzValue]="((model?.totalLoans || 0) | currency: '&#8358;')!"
+          [nzTitle]="'Total Loans'"
           [nzPrefix]="prefixTplThree"
           [nzValueStyle]="{ color: '#3F8600' }"
         ></nz-statistic>
@@ -42,7 +42,7 @@
     <nz-col [nzSpan]="6">
       <nz-card class="pointer" [routerLink]="['/payments', {status: 'failed'}]">
         <nz-statistic
-          [nzValue]="((model?.failedPayments?.amount || 0) | currency: '&#8358;')!"
+          [nzValue]="((model?.activeSearch || 0) | currency: '&#8358;')!"
           [nzTitle]="'Failed Payments'"
           [nzPrefix]="prefixTplFour"
           [nzValueStyle]="{ color: '#CF1322' }"
@@ -88,7 +88,7 @@
       ></nz-statistic>
     </nz-card>
     
-    <nz-card>
+    <!-- <nz-card>
       <nz-statistic
       [nzValue]="((model?.abandonedPayments?.total || 0) | number)!"
         [nzTitle]="'Abandoned Payments'"
@@ -96,6 +96,6 @@
         [nzValueStyle]="{ color: '#CF1322' }"
       ></nz-statistic>
       <ng-template #prefixTpl09><i nz-icon nzType="stop"></i></ng-template>
-    </nz-card>
+    </nz-card> -->
   </div>
 </div>

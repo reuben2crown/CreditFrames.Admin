@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ResourceService } from './resource.service';
 import { Observable } from 'rxjs';
-import { DashboardModel } from '../models/dashboard-model';
+import { AdminDashboardModel } from '../models/dashboard-model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,9 @@ export class DashboardService {
     
   }
 
-  public getDashboard = (): Observable<DashboardModel> => {
-    this.setActionUrl(`/GetDashboard`);
-    return this.resource.get<DashboardModel>();
+  public getDashboard = (): Observable<AdminDashboardModel> => {
+    this.setActionUrl(`/AdminDashboard`);
+    return this.resource.get<AdminDashboardModel>();
   }
 
   private setActionUrl(path = '') {

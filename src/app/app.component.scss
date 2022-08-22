@@ -40,9 +40,13 @@
 
 .sidebar-logo img {
   display: inline-block;
-  height: 32px;
-  width: 32px;
   vertical-align: middle;
+  width: 150px;
+}
+
+.sidebar-logo img.icon {
+  height: 32px;
+  width: 32px !important;
 }
 
 .sidebar-logo h1 {
