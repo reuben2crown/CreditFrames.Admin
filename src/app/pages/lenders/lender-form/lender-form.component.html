@@ -1,0 +1,51 @@
+<form nz-form [formGroup]="requestForm" (ngSubmit)="submitForm()">
+<div nz-row>
+    <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="lenderName">Lender Name</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="This field is required">
+            <input nz-input formControlName="lenderName" id="lenderName" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid E-mail!">
+            <input nz-input formControlName="email" id="email" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label
+            [nzSm]="6"
+            [nzXs]="24"
+            nzFor="nickname"
+            nzRequired
+            nzTooltipTitle="What do you want other to call you"
+          >
+            <span>Nickname</span>
+          </nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your nickname!">
+            <input nz-input id="nickname" formControlName="nickname" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="website" nzRequired>Website</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input website!">
+            <input nz-input id="website" formControlName="website" placeholder="website" />
+          </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzSpan="12">
+        
+    </div>
+</div>
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <nz-form-item nz-row class="register-area">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary">Register</button>
+          </nz-form-control>
+        </nz-form-item>
+    </div>
+</div>
+
+  </form>

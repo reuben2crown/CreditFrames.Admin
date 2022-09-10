@@ -1,4 +1,5 @@
 import { BaseModel } from "./base-model";
+import { LoanFeatureItemModel } from "./loan-feature-model";
 
 export class LenderModel extends BaseModel {
     lenderName: string;
@@ -21,7 +22,7 @@ export class LenderModel extends BaseModel {
     twitterUrl: string;
     linkedinUrl: string;
     loanTypes: LenderLoanType[] = [];
-    features: LenderFeatureModel[] = [];
+    features: LoanFeatureItemModel[] = [];
 }
 
 export class LenderLoanType {
@@ -40,11 +41,4 @@ export class LenderLoanType {
     security: string;
     createdBy: string;
     updatedBy: string;
-}
-
-export class LenderFeatureModel {
-    id: number;
-    featureId: number;
-    featureName: string;
-    isSelected: boolean;
 }
