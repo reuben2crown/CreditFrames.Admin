@@ -21,6 +21,10 @@ const routes: Routes = [
   { path: 'customers', loadChildren: () => import('./pages/customers/customers.module').then(m => m.CustomersModule), canActivate: [AuthGuard] },
   { path: 'settings', loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsModule), canActivate: [AuthGuard] },
   { path: 'profile-setting', loadChildren: () => import('./pages/profile-setting/profile-setting.module').then(m => m.ProfileSettingModule), canActivate: [AuthGuard] },
+  { path: 'loan', loadChildren: () => import('./pages/loans/loans.module').then(m => m.LoansModule), canActivate: [AuthGuard] },
+  { path: 'loan-types', loadChildren: () => import('./pages/loan-types/loan-types.module').then(m => m.LoanTypesModule), canActivate: [AuthGuard] },
+  { path: 'loan-features', loadChildren: () => import('./pages/loan-features/loan-features.module').then(m => m.LoanFeaturesModule), canActivate: [AuthGuard] },
+  { path: 'lenders', loadChildren: () => import('./pages/lenders/lenders.module').then(m => m.LendersModule), canActivate: [AuthGuard] },
   { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
 

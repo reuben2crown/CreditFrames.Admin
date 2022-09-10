@@ -6,6 +6,7 @@ import { PaymentPlanComponent } from './payment-plan.component';
 import { PaymentPlanFormComponent } from './payment-plan-form/payment-plan-form.component';
 import { PageProviderModule } from 'src/app/modules/page-provider.module';
 
+
 @NgModule({
   declarations: [PaymentPlanComponent, PaymentPlanFormComponent],
   imports: [

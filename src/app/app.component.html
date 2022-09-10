@@ -19,6 +19,34 @@
           <span>Dashboard</span>
         </a>
       </li>
+      <li nz-submenu nzOpen nzTitle="Lenders Management" nzIcon="money-collect">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/lenders">
+              <i nz-icon nzType="fund"></i>
+              <span>Manage Lenders</span>
+            </a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/loan-types">
+              <i nz-icon nzType="dollar"></i>
+              <span>Loan Types</span>
+            </a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/loan-features">
+              <i nz-icon nzType="check-square"></i>
+              <span>Loan Features</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <a routerLink="/loan">
+          <i nz-icon nzType="credit-card"></i>
+          <span>Manage Loans</span>
+        </a>
+      </li>
       <li nz-submenu nzOpen nzTitle="Payment Management" nzIcon="wallet">
         <ul>
           <li nz-menu-item nzMatchRouter>
@@ -72,56 +100,58 @@
     </ul>
   </nz-sider>
   <nz-layout>
-    <nz-header *ngIf="isAuthenticated">
-      <div class="app-header">
-        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-            <i class="trigger"
-               nz-icon
-               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            ></i>
-        </span>
-
-        <span class="header-user">
-          <div class="d-flex align-items-center pointer" nz-dropdown nzPlacement="bottomRight" [nzDropdownMenu]="userMenu">
-            <nz-avatar nzIcon="user"></nz-avatar> &nbsp; 
-            <span>
-              {{ user?.firstName }} {{ user?.lastName }}
-            </span> &nbsp; 
-            <i nz-icon nzType="down"></i>
-          </div>
-          <nz-dropdown-menu #userMenu="nzDropdownMenu">
-            <div nz-menu class="width-sm">
-              <!-- <div nz-menu-item routerLink="/profile-settings">
-                <i nz-icon nzType="setting" class="mr-sm"></i>
-                Profile Setting
-              </div>
-              <div nz-menu-item routerLink="/exception/trigger">
-                <i nz-icon nzType="lock" class="mr-sm"></i>
-                Change Password
-              </div> -->
-              <li nz-menu-divider></li>
-              <div nz-menu-item (click)="logout()">
-                <i nz-icon nzType="logout" class="mr-sm"></i>
-                Logout
-              </div>
+    <ng-container *ngIf="isAuthenticated">
+      <nz-header>
+        <div class="app-header">
+          <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+              <i class="trigger"
+                 nz-icon
+                 [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+              ></i>
+          </span>
+  
+          <span class="header-user">
+            <div class="d-flex align-items-center pointer" nz-dropdown nzPlacement="bottomRight" [nzDropdownMenu]="userMenu">
+              <nz-avatar nzIcon="user"></nz-avatar> &nbsp; 
+              <span>
+                {{ user?.firstName }} {{ user?.lastName }}
+              </span> &nbsp; 
+              <i nz-icon nzType="down"></i>
             </div>
-          </nz-dropdown-menu>
-        </span>
-      </div>
-    </nz-header>
-    <nz-content *ngIf="isAuthenticated">
-      <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'title'">
-        <nz-breadcrumb-item>
-          <i nz-icon nzType="home"></i>
-        </nz-breadcrumb-item>
-        <nz-breadcrumb-item>
-          <a [routerLink]="['/']">Dashboard</a>
-        </nz-breadcrumb-item>
-      </nz-breadcrumb>
-      <div class="inner-content">
-        <router-outlet></router-outlet>
-      </div>
-    </nz-content>
+            <nz-dropdown-menu #userMenu="nzDropdownMenu">
+              <div nz-menu class="width-sm">
+                <!-- <div nz-menu-item routerLink="/profile-settings">
+                  <i nz-icon nzType="setting" class="mr-sm"></i>
+                  Profile Setting
+                </div>
+                <div nz-menu-item routerLink="/exception/trigger">
+                  <i nz-icon nzType="lock" class="mr-sm"></i>
+                  Change Password
+                </div> -->
+                <li nz-menu-divider></li>
+                <div nz-menu-item (click)="logout()">
+                  <i nz-icon nzType="logout" class="mr-sm"></i>
+                  Logout
+                </div>
+              </div>
+            </nz-dropdown-menu>
+          </span>
+        </div>
+      </nz-header>
+      <nz-content>
+        <nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'title'">
+          <nz-breadcrumb-item>
+            <i nz-icon nzType="home"></i>
+          </nz-breadcrumb-item>
+          <nz-breadcrumb-item>
+            <a [routerLink]="['/']">Dashboard</a>
+          </nz-breadcrumb-item>
+        </nz-breadcrumb>
+        <div class="inner-content">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+    </ng-container>
     
     <!-- Login Layout-->
     <nz-content *ngIf="!isAuthenticated">
