@@ -1,40 +1,37 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ModuleKind } from 'typescript';
 import { ResourceService } from './resource.service';
-import { LoanModel } from '../models/loan-model';
-import { DataResponseModel, ResponseModel } from '../models/response-model';
 import { Observable } from 'rxjs';
 import { PagedList } from '../models/pagination';
 import { QueryParams } from '../models/query-params';
-
+import { LoanModel } from '../models/loan-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoanService {
+  private endpoint = 'Loans';
 
-  constructor(private http: HttpClient) { }
-  url: string = 'https://apitest.creditframeys.com/api/Loans';
+  constructor(public resource: ResourceService) {
+  }
 
-  getAll() {
-    return this.http.get<LoanModel[]>(this.url);
-    }
+  public getAll = (): Observable<LoanModel[]> => {
+    this.setActionUrl();
+    return this.resource.getAll<LoanModel[]>();
+  }
 
-    getById(id: string) {
-        var result = this.http.get<LoanModel>(`${this.url}/${id}`);
-        return result;
-    }
+  public getPaged(query: QueryParams): Observable<PagedList<LoanModel>> {
+    this.setActionUrl();
+    return this.resource.getPagedList<LoanModel>(query);
+  }
 
-    create(model: LoanModel) {
-        return this.http.post<LoanModel[]>(this.url, ModuleKind);
-    }
+  public getById = (id: number): Observable<LoanModel> => {
+    this.setActionUrl();
+    return this.resource.get<LoanModel>(id);
+  }
 
-    edit(id: string, model: LoanModel) {
-        return this.http.put<LoanModel>(`${this.url}/${id}`, model);
-    }
-
-    delete(id: string) {
-        return this.http.delete<LoanModel>(`${this.url}/${id}`);
-    }
+  private setActionUrl(path = ''): void {
+    // this.resource.microservice = 'Onboarding';
+    this.resource.setBaseUrl();
+    this.resource.endpoint = this.endpoint + path;
+  }
 }

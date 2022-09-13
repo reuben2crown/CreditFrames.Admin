@@ -1,31 +1,45 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
-import { AuthService, AuthTokenModel, AuthUserData, ChannelEnum, CommonService, DataResponseModel, PaymentPlanFormModel, PaymentPlanModel, PaymentPlanService } from 'src/app/shared';
+import { DataResponseModel, CommonService, AuthService, AuthUserData, AuthTokenModel } from 'src/app/shared';
+import { CountryFormModel, CountryModel } from 'src/app/shared/models/country-model';
+import { CountryService } from 'src/app/shared/services/country.service';
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
+
 
 @Component({
-  selector: 'app-payment-plan-form',
-  templateUrl: './payment-plan-form.component.html',
-  styleUrls: ['./payment-plan-form.component.scss']
+  selector: 'app-country-form',
+  templateUrl: './country-form.component.html',
+  styleUrls: ['./country-form.component.scss']
 })
-export class PaymentPlanFormComponent implements OnInit {
+export class CountryFormComponent implements OnInit {
   @Input() id: number;
   requestForm: FormGroup;
   user: AuthTokenModel;
   showPassword: boolean;
   loading: boolean;
+  fileList: NzUploadFile[] = [
+    {
+      uid: '-1',
+      name: 'NGNF-flag.png',
+      status: 'done',
+      url: 'https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/NG.svg'
+    }
+  ];
+
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate?: TemplateRef<{
-    $implicit: { value: DataResponseModel<PaymentPlanModel> };
-    drawerRef: NzDrawerRef<DataResponseModel<PaymentPlanModel>>;
+    $implicit: { value: DataResponseModel<CountryModel> };
+    drawerRef: NzDrawerRef<DataResponseModel<CountryModel>>;
   }>;
 
-  @Input() data: PaymentPlanModel;
+  @Input() data: CountryModel;
+
 
   constructor(private drawerRef: NzDrawerRef<any>,
     public router: Router,
     private commonService: CommonService,
-    private paymentPlanService: PaymentPlanService,
+    private countryService: CountryService,
     private authService: AuthService,
     private authData: AuthUserData) { }
 
@@ -46,7 +60,7 @@ export class PaymentPlanFormComponent implements OnInit {
   getData() {
     this.commonService.showLoading();
     this.loading = true;
-    this.paymentPlanService.getById(this.id).subscribe(response => {
+    this.countryService.getById(this.id).subscribe(response => {
       this.requestForm.patchValue(response, { onlySelf: true });
       this.loading = false;
       this.commonService.hideLoading();
@@ -59,13 +73,11 @@ export class PaymentPlanFormComponent implements OnInit {
   createForm(): void {
     this.requestForm = new FormGroup({
       id: new FormControl(0),
-      title: new FormControl(null, Validators.required),
-      noOfConsultation: new FormControl(1, [Validators.required, Validators.min(1)]),
-      durationInMonth: new FormControl(1, [Validators.required, Validators.min(1)]),
-      amount: new FormControl(0, [
-        Validators.required,
-        Validators.pattern('[0-9][0-9]*([.][0-9][0-9]?)?'),
-      ]),
+      // name: new FormControl(null, Validators.required),
+      // code: new FormControl(null, Validators.required),
+      // currencyCode: new FormControl(null, [Validators.required, Validators.min(3)]),
+      // flagUrl: new FormControl([Validators.required]),
+      // unicode: new FormControl(null, [Validators.required]),
       isActive: new FormControl(true)
     });
   }
@@ -74,7 +86,7 @@ export class PaymentPlanFormComponent implements OnInit {
     if (this.requestForm.valid) {
       this.loading = true;
       this.commonService.showLoading();
-      let formData = this.requestForm.value as PaymentPlanFormModel;
+      let formData = this.requestForm.value as CountryFormModel;
 
       //create or edit plan
       if (this.id) {
@@ -84,7 +96,7 @@ export class PaymentPlanFormComponent implements OnInit {
         formData.createdBy = `${this.user.firstName} ${this.user.lastName}`;
       }
 
-      let service = (this.id) ? this.paymentPlanService.update(this.id, formData) : this.paymentPlanService.post(formData);
+      let service = (this.id) ? this.countryService.update(this.id, formData) : this.countryService.post(formData);
 
       service.subscribe(response => {
         this.loading = false;
@@ -106,4 +118,23 @@ export class PaymentPlanFormComponent implements OnInit {
     }
   }
 
+  handleChange(info: NzUploadChangeParam): void {
+    let fileList = [...info.fileList];
+
+    // 1. Limit the number of uploaded files
+    // Only to show two recent uploaded files, and old ones will be replaced by the new
+    fileList = fileList.slice(-1);
+
+    // 2. Read from response and show file link
+    fileList = fileList.map(file => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
+    });
+
+    this.fileList = fileList;
+  }
 }
+

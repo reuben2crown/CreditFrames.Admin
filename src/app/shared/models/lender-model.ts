@@ -24,7 +24,6 @@ export class LenderModel extends BaseModel {
     loanTypes: LenderLoanType[] = [];
     features: LoanFeatureItemModel[] = [];
 }
-
 export class LenderLoanType {
     id: number;
     createdDate: Date;

@@ -1,0 +1,56 @@
+<form nz-form [formGroup]="requestForm" (ngSubmit)="onFormSubmit()">
+
+    <!-- <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="name is required!">
+            <input nz-input formControlName="name" placeholder="please enter country name" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>code</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please enter code!">
+            <input nz-input formControlName="code" placeholder="Enter code">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Flag Image</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please Upload Flag!">
+            <nz-upload
+                [nzFileList]="fileList" (nzChange)="handleChange($event)">
+                <button nz-button>
+                    <span nz-icon nzType="upload"></span>
+                    Upload
+                </button>
+            </nz-upload>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Currency Code</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please enter Currency Code!">
+            <input nz-input formControlName="currencyCode" placeholder="Enter Currency Code">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Unicode</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please enter unicode!">
+            <input nz-input formControlName="unicode" placeholder="Enter unicode">
+        </nz-form-control>
+    </nz-form-item> -->
+
+    <nz-form-item>
+        <label nz-checkbox formControlName="isActive">
+            <span>Is Active</span>
+        </label>
+    </nz-form-item>
+
+    <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary" [nzLoading]="loading">Submit</button>
+        </nz-form-control>
+    </nz-form-item>
+
+</form>

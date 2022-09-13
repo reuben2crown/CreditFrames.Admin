@@ -1,0 +1,70 @@
+<nz-page-header class="site-page-header" nzTitle="User Search Histories">
+</nz-page-header>
+
+<button nz-button nz-dropdown [nzDropdownMenu]="menu">
+  <i nz-icon nzType="download"></i>
+  Download
+  <i nz-icon nzType="down"></i>
+</button>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item>
+      <a (click)="download('csv')" ngbDropdownItem>CSV</a>
+    </li>
+    <li nz-menu-item>
+      <a (click)="download('excel')" ngbDropdownItem>Excel</a>
+    </li>
+    <li nz-menu-item>
+      <a (click)="download('json')" ngbDropdownItem>JSON</a>
+    </li>
+  </ul>
+</nz-dropdown-menu>
+
+<nz-page-header-content>
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzPrefixIcon="user">
+              <input [(ngModel)]="pageQuery.searchKeyword" nz-input class="ant-input" placeholder="Search by name"
+                [ngModelOptions]="{standalone: true}" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
+          </nz-form-control> &nbsp;
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+</nz-page-header-content>
+
+<nz-table #borderedTable nzBordered #rowSelectionTable [nzData]="dataList" [nzLoading]="loading">
+  <thead>
+    <tr>
+      <th>S/N</th>
+      <th>Name</th>
+      <th>Loan Type</th>
+      <th>Country</th>
+      <th>Amount</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of dataList; let i = index;">
+      <td>{{i + 1}}</td>
+      <td nowrap>{{ data.user?.email || 'Anonymous' }}</td>
+      <td>{{ data.loanType?.name }}</td>
+      <td>{{ data.country }}</td>
+      <td>{{ data.loanAmount }}</td>
+    </tr>
+    <tr *ngIf="!dataList?.length">
+      <td colspan="6">No record was found</td>
+    </tr>
+  </tbody>
+</nz-table>

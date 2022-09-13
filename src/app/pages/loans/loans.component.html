@@ -1,1 +1,48 @@
-<p>loans works!</p>
+<nz-page-header-content>
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzPrefixIcon="user">
+                <input [(ngModel)]="pageQuery.searchKeyword" nz-input class="ant-input"
+                  placeholder="Search by name" [ngModelOptions]="{standalone: true}" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="6">
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
+            </nz-form-control> &nbsp;
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </nz-page-header-content>
+
+<nz-table #borderedTable nzBordered #rowSelectionTable [nzData]="dataList" [nzLoading]="loading">
+  <thead>
+    <tr>
+      <th>S/N</th>
+      <th>Customer Name</th>
+      <th>Loan Amount</th>
+      <th>Lender</th>
+      <th>Loan Type</th>
+      <th>Loan Status</th>
+      <th>...</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of dataList; let i = index;">
+      <td>{{i + 1}}</td>
+      <td nowrap>{{ data.accountName }}</td>
+      <td>{{ data.loanAmount }}</td>
+      <td>{{ data.lender }}</td>
+      <td>{{ data.loanType }}</td>
+      <td>{{ data.loanStatus }}</td>
+      <td nowrap>{{ data.loanAmount }}</td>
+    </tr>
+  </tbody>
+</nz-table>

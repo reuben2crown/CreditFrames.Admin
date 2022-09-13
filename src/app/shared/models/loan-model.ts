@@ -8,23 +8,23 @@ export class LoanModel extends BaseModel {
   public userId: number;
   public user: UserFormModel;
   public loanTypeId: number;
-  public loanType: LoanTypeModel;
-  public lenderId: number;
+  public loanType: LoanTypeModel;//
+  public lenderId: number; 
   public lender: LenderModel;
-  public loanAmount: number;
+  public loanAmount: number;//
   public loanPurpose: string;
   public loanTenor: number;
   public interestRate: number;
   public moratoriumPeriod: number;
   public paybackOption: string;
-  public bankName: string;
+  public bankName: string;//
   public accountNumber: string;
-  public accountName: string;
+  public accountName: string;//
   public taxID: string;
   public bvn: string;
   public bvnIsValid: boolean;
   public bvnValidationError: string;
-  public currencyCode: string;
+  public currencyCode: string;n
   public referenceNumber: string;
   public isEligible: boolean;
   public retryCount: number;
@@ -32,7 +32,7 @@ export class LoanModel extends BaseModel {
   public requestChannel: string;
   public submittedBy: string;
   public brokerCode: string;
-  public loanStatus: string;
+  public loanStatus: string;//
   public loanProcessor: string;
   public overdueBalance: number;
 }

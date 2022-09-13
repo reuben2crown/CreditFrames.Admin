@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { LoansRoutingModule } from './loans-routing.module';
 import { LoansComponent } from './loans.component';
+import { PageProviderModule } from 'src/app/modules/page-provider.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { LoansComponent } from './loans.component';
   ],
   imports: [
     CommonModule,
-    LoansRoutingModule
+    LoansRoutingModule,
+    PageProviderModule
   ]
 })
 export class LoansModule { }
