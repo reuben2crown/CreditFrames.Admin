@@ -15,7 +15,6 @@ export class LoanFeatureFormComponent implements OnInit {
   @Input() id: number;
   requestForm: FormGroup;
   user: AuthTokenModel;
-  showPassword: boolean;
   loading: boolean;
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate?: TemplateRef<{
     $implicit: { value: DataResponseModel<LoanFeatureModel> };
@@ -28,15 +27,12 @@ export class LoanFeatureFormComponent implements OnInit {
     public router: Router,
     private commonService: CommonService,
     private loanFeatureService: LoanFeatureService,
-    private authService: AuthService,
     private authData: AuthUserData) { }
 
   ngOnInit(): void {
     this.createForm();
     if (this.id) {
       this.getData();
-    } else {
-      this.showPassword = true;
     }
     this.user = this.authData.getUserData();
   }
@@ -60,9 +56,9 @@ export class LoanFeatureFormComponent implements OnInit {
 
   createForm(): void {
     this.requestForm = new FormGroup({
-      id: new FormControl(0),
-      name: new FormControl(null, Validators.required),
-      isActive: new FormControl(true)
+      id: new FormControl(this.data?.id || 0),
+      name: new FormControl(this.data?.name, Validators.required),
+      isActive: new FormControl(this.data?.isActive || true)
     });
   }
 
@@ -75,7 +71,7 @@ export class LoanFeatureFormComponent implements OnInit {
       //create or edit plan
       if (this.id) {
         formData.id = this.id;
-        formData.updatedBy = `${this.user.firstName} ${this.user.lastName}`;
+        formData.lastModifiedBy = `${this.user.firstName} ${this.user.lastName}`;
       } else {
         formData.createdDate = `${this.user.firstName} ${this.user.lastName}`;
       }

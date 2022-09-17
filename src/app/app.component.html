@@ -5,6 +5,7 @@
             nzBreakpoint="md"
             [(nzCollapsed)]="isCollapsed"
             [nzTrigger]="null">
+
     <div class="sidebar-logo" title="CreditFrames Admin Console">
       <a [routerLink]="['/']">
         <img src="favicon.ico" alt="logo" class="icon" *ngIf="isCollapsed">
@@ -13,13 +14,13 @@
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-menu-item nzMatchRouter>
+      <li nz-menu-item nzMatchRouter nzMatchRouterExact>
         <a routerLink="/">
           <i nz-icon nzType="dashboard"></i>
           <span>Dashboard</span>
         </a>
       </li>
-      <li nz-submenu nzOpen nzTitle="Lenders Management" nzIcon="money-collect">
+      <li nz-submenu nzTitle="Lenders Management" nzIcon="money-collect">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/lenders">
@@ -47,28 +48,6 @@
           <span>Manage Loans</span>
         </a>
       </li>
-      <li nz-submenu nzOpen nzTitle="Payment Management" nzIcon="wallet">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/payments">
-              <i nz-icon nzType="credit-card"></i>
-              <span>Payment History</span>
-            </a>
-          </li>
-          <li nz-menu-item nzMatchRouter>
-            <a routerLink="/payment-plans">
-              <i nz-icon nzType="dollar"></i>
-              <span>Payment Plans</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li nz-menu-item nzMatchRouter>
-        <a routerLink="/consultations">
-          <i nz-icon nzType="medicine-box"></i>
-          <span>All Consultations</span>
-        </a>
-      </li>
       <li nz-submenu nzTitle="User Management" nzIcon="team">
         <ul>
           <li nz-menu-item nzMatchRouter>
@@ -85,11 +64,27 @@
           </li>
         </ul>
       </li>
-      <li nz-menu-item nzMatchRouter>
-        <a routerLink="/settings">
-          <i nz-icon nzType="setting"></i>
-          <span>System Settings</span>
-        </a>
+      <li nz-submenu nzTitle="Settings & Configurations" nzIcon="setting">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/countries">
+              <i nz-icon nzType="flag"></i>
+              <span>Countries</span>
+            </a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/states">
+              <i nz-icon nzType="translation"></i>
+              <span>States</span>
+            </a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/settings">
+              <i nz-icon nzType="tool"></i>
+              <span>System Settings</span>
+            </a>
+          </li>
+        </ul>
       </li>
       <li nz-menu-item nzMatchRouter>
         <a (click)="logout()">
@@ -130,7 +125,7 @@
                 </div> -->
                 <li nz-menu-divider></li>
                 <div nz-menu-item (click)="logout()">
-                  <i nz-icon nzType="logout" class="mr-sm"></i>
+                  <i nz-icon nzType="logout" class="mr-sm"></i> &nbsp; 
                   Logout
                 </div>
               </div>

@@ -1,0 +1,43 @@
+<form nz-form [formGroup]="requestForm" (ngSubmit)="onFormSubmit()">
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Name</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="Name is required!">
+            <input nz-input formControlName="name" placeholder="please enter Name" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Short Code</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="This is required!">
+            <input nz-input formControlName="code" placeholder="please enter Short Code" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>CurrencyCode</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="This is required!">
+            <input nz-input formControlName="currencyCode" placeholder="please enter Currency Code" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>unicode</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="This is required!">
+            <input nz-input formControlName="unicode" placeholder="please enter Unicode" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <label nz-checkbox formControlName="isActive">
+            <span>Is Active</span>
+        </label>
+    </nz-form-item>
+
+    <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary" [nzLoading]="loading">Submit</button>
+        </nz-form-control>
+    </nz-form-item>
+
+</form>

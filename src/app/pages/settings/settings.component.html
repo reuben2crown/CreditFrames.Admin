@@ -52,7 +52,6 @@
                 <td colspan="3">
                     <input *ngIf="data.inputType != 'checkbox'" type="{{data.inputType}}" nz-input [(ngModel)]="editCache[data.id].data.value" min="1" />
                     <nz-switch *ngIf="data.inputType == 'checkbox'" [ngModel]="togglevalue(data.id)" (ngModelChange)="toggle($event, data.id)" nzCheckedChildren="True" nzUnCheckedChildren="False"></nz-switch>
-                    <!-- {{editCache[data.id].data.value}} -->
                 </td>
                 <td>
                     <a nz-popconfirm nzPopconfirmTitle="Sure to update this setting?" (nzOnConfirm)="saveEdit(data.id)" class="save">Save</a>

@@ -6,18 +6,22 @@ import { LendersComponent } from './lenders.component';
 import { PageProviderModule } from 'src/app/modules/page-provider.module';
 import { LenderFormComponent } from './lender-form/lender-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LenderLoantypeFormComponent } from './lender-loantype-form/lender-loantype-form.component';
+import { PipesModule } from 'src/app/shared';
 
 
 @NgModule({
   declarations: [
     LendersComponent,
-    LenderFormComponent
+    LenderFormComponent,
+    LenderLoantypeFormComponent
   ],
   imports: [
     CommonModule,
     LendersRoutingModule,
     PageProviderModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PipesModule
   ]
 })
 export class LendersModule { }

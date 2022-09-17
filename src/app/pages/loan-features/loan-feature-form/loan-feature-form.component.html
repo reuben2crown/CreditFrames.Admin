@@ -2,10 +2,11 @@
 
     <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Feature Name</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Loan Feature Name is required!">
+        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="Loan Feature Name is required!">
             <input nz-input formControlName="name" placeholder="please enter loan feature Name" />
         </nz-form-control>
     </nz-form-item>
+
     <nz-form-item>
         <label nz-checkbox formControlName="isActive">
             <span>Is Active</span>

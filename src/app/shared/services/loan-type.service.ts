@@ -3,8 +3,8 @@ import { ResourceService } from './resource.service';
 import { LoanTypeModel } from '../models/loan-type-model';
 import { DataResponseModel, ResponseModel } from '../models/response-model';
 import { Observable } from 'rxjs';
-import { PagedList } from '../models/pagination';
-import { QueryParams } from '../models/query-params';
+// import { PagedList } from '../models/pagination';
+// import { QueryParams } from '../models/query-params';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +20,10 @@ export class LoanTypeService {
     return this.resource.getAll<LoanTypeModel[]>();
   }
 
-  public getPaged(query: QueryParams): Observable<PagedList<LoanTypeModel>> {
-    this.setActionUrl();
-    return this.resource.getPagedList<LoanTypeModel>(query);
-  }
+  // public getPaged(query: QueryParams): Observable<PagedList<LoanTypeModel>> {
+  //   this.setActionUrl();
+  //   return this.resource.getPagedList<LoanTypeModel>(query);
+  // }
 
   public getById = (id: number): Observable<LoanTypeModel> => {
     this.setActionUrl();

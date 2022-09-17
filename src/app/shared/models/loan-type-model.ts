@@ -1,6 +1,7 @@
 export class LoanTypeModel {
     public id: number;
     public name: string;
+    public isActive: boolean;
     public createdBy: string;
-    public editedBy: string;
+    public lastModifiedBy: string;
 }

@@ -75,15 +75,10 @@ export class CustomersComponent implements OnInit {
         }
       });
   
-      drawerRef.afterOpen.subscribe(() => {
-        // console.log('Drawer(Component) open');
-      });
-  
       drawerRef.afterClose.subscribe(data => {
-        // console.log(data);
-        // if (typeof data === 'string') {
-        //   this.value = data;
-        // }
+        if (data) {
+          this.getData();
+        }
       });
     }
   }

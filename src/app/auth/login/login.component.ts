@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.authData.logout();
     this.createForm();
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = decodeURIComponent(this.route.snapshot.queryParams['returnUrl']) || '/';
   }
 
   createForm(): void {
@@ -67,10 +67,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.formData = this.loginForm.value;
 
-      if (!(this.loginForm.value.captcha) || this.loginForm.value.captcha != this.captchaCode) {
-        this.commonService.showToastWarning('Invalid captcha');
-        return;
-      }
+      // if (!(this.loginForm.value.captcha) || this.loginForm.value.captcha != this.captchaCode) {
+      //   this.commonService.showToastWarning('Invalid captcha');
+      //   return;
+      // }
       this.submitted = true;
       this.commonService.showLoading();
       this.authService.login(this.formData).subscribe((response) => {
@@ -85,11 +85,11 @@ export class LoginComponent implements OnInit {
               this.commonService.showToastError('Your account is not authorized to access this section');
               setTimeout(() => {
                 this.authData.logout();
-                window.location.href = '/login';
+                return window.location.href = '/login';
               }, 1);
             } else {
               this.commonService.showToastSuccess(response.message);
-              this.router.navigate([this.returnUrl]).then(() => window.location.reload());
+              this.router.navigateByUrl(this.returnUrl); //.then(() => window.location.reload());
             }
           } else {
             this.commonService.showToastError(response.message);

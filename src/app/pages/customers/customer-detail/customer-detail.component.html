@@ -17,28 +17,19 @@
                 </nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Birthday / Age" [nzSpan]="1">{{data?.dateOfBirth ? (data?.dateOfBirth |
                     date: 'd-MMM-yyyy') : 'N/A'}} &nbsp; ({{data?.age || 0}} years)</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Consultation Balance" [nzSpan]="1">{{data?.consultationBalance}}
-                </nz-descriptions-item>
+                <!-- <nz-descriptions-item nzTitle="Current Loan" [nzSpan]="1">{{data?.currentLoan}}
+                </nz-descriptions-item> -->
             </nz-descriptions>
             <nz-divider></nz-divider>
-            <!-- <nz-descriptions [nzColumn]="2" nzTitle="Consultation Details">
-                <nz-descriptions-item nzTitle="Date" [nzSpan]="1">{{data.createdDate | date: 'd-MMM-yyyy h:mm a'}}
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Doctor" [nzSpan]="1">{{data.agent}}</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Free Consultation" [nzSpan]="1">{{data.isFree ? 'Yes' : 'No'}}</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Ticket URL" [nzSpan]="2">
-                    <a href="{{data?.ticketUrl}}" target="_blank">{{data?.ticketUrl}}</a>
-                </nz-descriptions-item>
-            </nz-descriptions> -->
         </nz-tab>
 
         <nz-tab [nzTitle]="tabTpl2">
             <ng-template #tabTpl2>
                 <i nz-icon nzType="credit-card"></i>
-                Payment History
+                Loan History
             </ng-template>
 
-            <nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="paymentList"
+            <nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="loanHistory"
                 [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount"
                 [nzPageSize]="pageQuery?.pageSize" [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber"
                 (nzQueryParams)="pageChanged($event)" [nzScroll]="{ x: '1100px' }">
@@ -46,22 +37,22 @@
                     <tr>
                         <th nowrap>S/N</th>
                         <th>Date</th>
-                        <th>Plan</th>
+                        <th>Loan Type</th>
                         <th nowrap>Amount</th>
+                        <th>Lender</th>
                         <th nowrap>Reference</th>
-                        <th>Gateway</th>
                         <th>Status</th>
                         <!-- <th>...</th> -->
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of paymentList; let i = index;" [ngClass]="{'red': !data.isCompleted}">
-                        <td>{{i + 1}}</td>
-                        <td nowrap>{{ (data.paymentDate || data.createdDate) | date: 'd-MMM-yyyy h:mm a' }}</td>
-                        <td>{{ data.paymentPlanTitle || 'N/A' }}</td>
+                    <tr *ngFor="let data of loanHistory; let i = index;" [ngClass]="{'red': !data.isCompleted}">
+                        <td>{{ (basicTable.nzPageIndex - 1) * basicTable.nzPageSize + i + 1 }}</td>
+                        <td nowrap>{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
+                        <td>{{ data.loanTypeName || 'N/A' }}</td>
                         <td>{{ data.amount | currency: (data.currency || '&#8358;') }}</td>
+                        <td>{{ data.lenderName }}</td>
                         <td>{{ data.referenceNumber }}</td>
-                        <td>{{ data.paymentGateway }} - {{ data.paymentType }}</td>
                         <td>
                             <nz-tag [nzColor]="data.isCompleted ? '#87d068' : '#f50'">{{ data.isCompleted ? 'Paid' : 'Unpaid' }}</nz-tag>
                         </td>
@@ -72,13 +63,14 @@
                 </tbody>
             </nz-table>
         </nz-tab>
+
         <nz-tab [nzTitle]="tabTpl3">
             <ng-template #tabTpl3>
                 <i nz-icon nzType="medicine-box"></i>
-                Consultations
+                Search History
             </ng-template>
 
-            <nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="consultationList"
+            <nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="searchHistory"
                 [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount"
                 [nzPageSize]="pageQuery?.pageSize" [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber"
                 (nzQueryParams)="pageChanged($event)">
@@ -86,26 +78,22 @@
                     <tr>
                         <th>S/N</th>
                         <th nowrap>Date</th>
-                        <!-- <th>Phone Number</th> -->
-                        <th>Doctor</th>
-                        <th>Free</th>
-                        <th>...</th>
+                        <th>Loan Type</th>
+                        <th>Amount</th>
+                        <!-- <th>...</th> -->
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of consultationList; let i = index;">
-                        <td>{{i + 1}}</td>
+                    <tr *ngFor="let data of searchHistory; let i = index;">
+                        <td>{{ (basicTable.nzPageIndex - 1) * basicTable.nzPageSize + i + 1 }}</td>
                         <td nowrap>{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
-                        <!-- <td>{{ data.phoneNumber }}</td> -->
-                        <td>{{ data.agent }}</td>
-                        <td>
-                            <nz-tag [nzColor]="data.isFree ? 'red' : 'green'">{{ data.isFree ? 'Free' : 'Paid' }}</nz-tag>
-                        </td>
-                        <td>
+                        <td>{{ data.loanTypeName }}</td>
+                        <td>{{ data.amount | currency: (data.currency || '&#8358;') }}</td>
+                        <!-- <td>
                             <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details"
                                 [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> <i nz-icon nzType="eye"></i>
                             </button>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </nz-table>

@@ -6,35 +6,55 @@ import { LoanModel } from '../models/loan-model';
 import { DataResponseModel, ResponseModel } from '../models/response-model';
 import { Observable } from 'rxjs';
 import { PagedList } from '../models/pagination';
-import { QueryParams } from '../models/query-params';
+import { QueryParams, RequestQueryParams } from '../models/query-params';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoanService {
+  private endpoint = 'Loans';
 
-  constructor(private http: HttpClient) { }
-  url: string = 'https://apitest.creditframeys.com/api/Loans';
+  constructor(public resource: ResourceService) {
+  }
 
-  getAll() {
-    return this.http.get<LoanModel[]>(this.url);
-    }
+  public getAll = (onlyActive = false): Observable<LoanModel[]> => {
+    this.setActionUrl(`/?onlyActive=${onlyActive}`);
+    return this.resource.getAll<LoanModel[]>();
+  }
 
-    getById(id: string) {
-        var result = this.http.get<LoanModel>(`${this.url}/${id}`);
-        return result;
-    }
+  // public getPaged(query: QueryParams): Observable<PagedList<LoanModel>> {
+  //   this.setActionUrl();
+  //   return this.resource.getPagedList<LoanModel>(query);
+  // }
 
-    create(model: LoanModel) {
-        return this.http.post<LoanModel[]>(this.url, ModuleKind);
-    }
+  public getById = (id: number): Observable<LoanModel> => {
+    this.setActionUrl();
+    return this.resource.get<LoanModel>(id);
+  }
+  
+  public getByUser = (userId: number, query: RequestQueryParams): Observable<PagedList<LoanModel>> => {
+    this.setActionUrl(`/GetByUser/${userId}`);
+    return this.resource.getPagedList<LoanModel>(query);
+  }
 
-    edit(id: string, model: LoanModel) {
-        return this.http.put<LoanModel>(`${this.url}/${id}`, model);
-    }
+  public post = (model: LoanModel): Observable<DataResponseModel<LoanModel>> => {
+    this.setActionUrl();
+    return this.resource.post<any>(model);
+  }
 
-    delete(id: string) {
-        return this.http.delete<LoanModel>(`${this.url}/${id}`);
-    }
+  public update = (id: number, model: LoanModel): Observable<ResponseModel> => {
+    this.resource.endpoint = `${this.endpoint}`;
+    return this.resource.put<any>(id, model);
+  }
+
+  public delete = (id: number): Observable<any> => {
+    this.setActionUrl();
+    return this.resource.delete(id);
+  }
+
+  private setActionUrl(path = ''): void {
+    this.resource.setBaseUrl();
+    this.resource.endpoint = this.endpoint + path;
+  }
 }

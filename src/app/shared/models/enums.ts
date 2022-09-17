@@ -44,3 +44,10 @@ export enum BonusTypeEnum {
   SignupBonus = 'SignupBonus',
   OtherBonus = 'OtherBonus'
 }
+
+export enum LoanSecurityEnum
+{
+    None,
+    Guarantor,
+    Asset
+}

@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { CommonService, ConsultationModel, ConsultationService, PagedList, PaymentModel, PaymentService, RequestQueryParams, UserModel } from 'src/app/shared';
+import { CommonService, LoanModel, LoanService, PagedList, RequestQueryParams, SearchHistoryModel, SearchHistoryService, UserModel } from 'src/app/shared';
 
 @Component({
   selector: 'app-customer-detail',
@@ -17,15 +17,15 @@ export class CustomerDetailComponent implements OnInit {
   }>;
 
   @Input() data: UserModel;
-  paymentList: PaymentModel[] = [];
-  consultationList: ConsultationModel[] = [];
+  searchHistory: SearchHistoryModel[] = [];
+  loanHistory: LoanModel[] = [];
   loading: boolean;
   pageQuery: RequestQueryParams = new RequestQueryParams();
   pagination: PagedList<any> = new PagedList<any>();
   tabIndex: number;
   
   constructor(private drawerRef: NzDrawerRef<any>, private commonService: CommonService,
-    private consultationService: ConsultationService, private paymentService: PaymentService) {}
+    private loanService: LoanService, private searchHistoryService: SearchHistoryService) {}
 
   close(): void {
     this.drawerRef.close();
@@ -35,12 +35,12 @@ export class CustomerDetailComponent implements OnInit {
 
   }
 
-  getConsultations() {
+  getLoans() {
     this.loading = true;
-    this.consultationService.getByUser(this.data.phoneNumber, this.pageQuery).subscribe(
+    this.loanService.getByUser(this.data.id, this.pageQuery).subscribe(
       result => {
         this.pagination = result;
-        this.consultationList = result.items || [];
+        this.loanHistory = result.items || [];
         this.loading = false;
       },
       error => {
@@ -50,12 +50,12 @@ export class CustomerDetailComponent implements OnInit {
     );
   }
 
-  getPayments() {
+  getSearchHistory() {
     this.loading = true;
-    this.paymentService.getByUser(this.data.phoneNumber, this.pageQuery).subscribe(
+    this.searchHistoryService.getByUser(this.data.id, this.pageQuery).subscribe(
       result => {
         this.pagination = result;
-        this.paymentList = result.items || [];
+        this.searchHistory = result.items || [];
         this.loading = false;
       },
       error => {
@@ -66,17 +66,17 @@ export class CustomerDetailComponent implements OnInit {
   }
 
   tabChanged(index) {
-    this.paymentList = [];
-    this.consultationList = [];
+    this.searchHistory = [];
+    this.loanHistory = [];
     this.loading = true;
     this.pageQuery = new RequestQueryParams();
     this.pagination = new PagedList<any>();
     this.tabIndex = index;
     if (index == 1) {
-      this.getPayments();
+      this.getSearchHistory();
     }
     if (index == 2) {
-      this.getConsultations();
+      this.getLoans();
     }
   }
   
@@ -87,10 +87,10 @@ export class CustomerDetailComponent implements OnInit {
     if (!this.pageQuery.pageNumber) {
       // this.pageQuery.pageNumber = 1;
       if (this.tabIndex == 1) {
-        this.getPayments();
+        this.getSearchHistory();
       }
       if (this.tabIndex == 2) {
-        this.getConsultations();
+        this.getLoans();
       }
     }
   }

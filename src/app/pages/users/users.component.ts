@@ -3,7 +3,6 @@ import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { UserModel, RequestQueryParams, PagedList, CommonService, AuthUserData, UserService, DataResponseModel } from 'src/app/shared';
 import { UserFormComponent } from './user-form/user-form.component';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { format, startOfMonth, startOfYesterday, endOfYesterday, startOfToday, endOfToday } from 'date-fns';
 
 @Component({
@@ -26,8 +25,7 @@ export class UsersComponent implements OnInit {
     private commonService: CommonService,
     private userService: UserService,
     private authData: AuthUserData,
-    private drawerService: NzDrawerService,
-    private nzMessageService: NzMessageService
+    private drawerService: NzDrawerService
   ) { }
 
   ngOnInit(): void {
@@ -80,13 +78,15 @@ export class UsersComponent implements OnInit {
       }
     });
 
-    drawerRef.afterOpen.subscribe(() => {
-      // console.log('Drawer(Component) open');
-    });
-
     drawerRef.afterClose.subscribe(response => {
       if (response && response.status && response.data) {
-        this.dataList.push(response.data);
+        var index = this.dataList.findIndex(x => x.id == response.data.id);
+        
+        if (index > -1) {
+          this.dataList.splice(index, 1, response.data);
+        } else {
+          this.dataList.push(response.data);
+        }
       }
     });
   }
@@ -107,7 +107,6 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  
   pageChanged(params: NzTableQueryParams): void {
     // console.log(params);
     const { pageSize, pageIndex, sort, filter } = params;
@@ -116,7 +115,6 @@ export class UsersComponent implements OnInit {
     
     this.getData();
   }
-
 
   delete(item: UserModel) {
     this.commonService.showLoading('Delete in progress..');
@@ -172,5 +170,4 @@ export class UsersComponent implements OnInit {
       this.commonService.showMessage('No action was taken');
     }, 1000);
   }
-
 }

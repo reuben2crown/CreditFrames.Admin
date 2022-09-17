@@ -27,6 +27,7 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { DatePipe } from '@angular/common';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     NzStatisticModule,
     NzAlertModule,
     NzTagModule,
-    NzSwitchModule
+    NzSwitchModule,
+    NzUploadModule
   ],
   exports: [
     NzPaginationModule,
@@ -87,7 +89,8 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
     NzStatisticModule,
     NzAlertModule,
     NzTagModule,
-    NzSwitchModule
+    NzSwitchModule,
+    NzUploadModule
   ],
   providers: [DatePipe]
 })

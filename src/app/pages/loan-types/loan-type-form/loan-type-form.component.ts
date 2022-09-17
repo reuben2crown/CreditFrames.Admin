@@ -15,7 +15,6 @@ export class LoanTypeFormComponent implements OnInit {
   @Input() id: number;
   requestForm: FormGroup;
   user: AuthTokenModel;
-  showPassword: boolean;
   loading: boolean;
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate?: TemplateRef<{
     $implicit: { value: DataResponseModel<LoanTypeModel> };
@@ -27,15 +26,12 @@ export class LoanTypeFormComponent implements OnInit {
   constructor(
     private drawerRef: NzDrawerRef<any>, 
     public router: Router, private commonService: CommonService,
-     private loanTypeService: LoanTypeService, 
-     private authService: AuthService, private authData: AuthUserData) { }
+     private loanTypeService: LoanTypeService, private authData: AuthUserData) { }
 
   ngOnInit(): void {
     this.createForm();
     if (this.id) {
       this.getData();
-    } else {
-      this.showPassword = true;
     }
     this.user = this.authData.getUserData();
   }
@@ -59,8 +55,9 @@ export class LoanTypeFormComponent implements OnInit {
 
   createForm(): void {
     this.requestForm = new FormGroup({
-      id: new FormControl(0),
-      name: new FormControl(null, Validators.required),
+      id: new FormControl(this.data?.id || 0),
+      name: new FormControl(this.data?.name, Validators.required),
+      isActive: new FormControl(this.data?.isActive || true)
     });
   }
 
@@ -73,7 +70,7 @@ export class LoanTypeFormComponent implements OnInit {
       //create or edit plan
       if (this.id) {
         formData.id = this.id;
-        formData.editedBy = `${this.user.firstName} ${this.user.lastName}`;
+        formData.lastModifiedBy = `${this.user.firstName} ${this.user.lastName}`;
       } else {
         formData.createdBy = `${this.user.firstName} ${this.user.lastName}`;
       }
@@ -99,5 +96,4 @@ export class LoanTypeFormComponent implements OnInit {
       this.commonService.showToastWarning("Validation Error. Please check the fields and try again");
     }
   }
-
 }

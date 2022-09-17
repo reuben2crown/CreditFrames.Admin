@@ -16,8 +16,6 @@ export class UserModel extends BaseModel {
   public emailVerified: boolean;
   public phoneVerified: boolean;
   public isActive: boolean;
-  public createdBy?: number | string | null;
-  public updatedBy?: number | string | null;
   public currentPaymentPlan: string;
   public planExpiryDate: string;
   public lastLogin: Date;

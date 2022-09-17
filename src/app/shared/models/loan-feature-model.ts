@@ -3,7 +3,7 @@ export class LoanFeatureModel {
     public name: string;
     public isActive: boolean;
     public createdBy: string;
-    public updatedBy: string;
+    public lastModifiedBy: string;
     public createdDate: string;
 }
 

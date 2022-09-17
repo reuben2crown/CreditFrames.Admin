@@ -1,24 +1,138 @@
-<ng-container *ngFor="let item of dataList">
-    <div class="site-page-header-ghost-wrapper">
-        <nz-page-header nzBackIcon [nzGhost]="false">
-            <nz-page-header-title>Lender Name</nz-page-header-title>
-            <nz-page-header-extra>
-                <nz-space>
-                    <button *nzSpaceItem nz-button nzType="primary" [routerLink]="['/lenders/lender-form', item.id]">Edit</button>
-                    <button *nzSpaceItem nz-button nzType="primary" nzDanger>Delete</button>
-                </nz-space>
-            </nz-page-header-extra>
-            <nz-page-header-content>
-                <nz-descriptions nzSize="small" [nzColumn]="3">
-                    <nz-descriptions-item nzTitle="Created By" [nzSpan]="1">Lili Qu</nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Effective Time" [nzSpan]="1">2017-10-10</nz-descriptions-item>
-                    <nz-descriptions-item nzTitle="Remarks" [nzSpan]="2">
-                        Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
-                    </nz-descriptions-item>
-                </nz-descriptions>
-            </nz-page-header-content>
-        </nz-page-header>
+<nz-page-header class="site-page-header" nzTitle="Lenders Management"
+  nzSubtitle="Create, Edit and Configure the lenders">
+  <nz-page-header-extra>
+
+    <button nz-button nzType="primary" [routerLink]="['lender-form']">Add New Lender</button> &nbsp;
+    <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+      <i nz-icon nzType="download"></i>
+      Download
+      <i nz-icon nzType="down"></i>
+    </button>
+
+  </nz-page-header-extra>
+
+  <nz-page-header-content>
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
+      <div nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="10">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Enter your search keyword">
+              <nz-input-group nzPrefixIcon="user">
+                <input [(ngModel)]="pageQuery.searchKeyword" nz-input class="ant-input"
+                  placeholder="Search by name or reference number" [ngModelOptions]="{standalone: true}" />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Select your search date">
+              <nz-range-picker [nzRanges]="dateRange" ngModel [ngModelOptions]="{standalone: true}"
+                (ngModelChange)="onDateChange($event)"></nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="6">
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
+            </nz-form-control> &nbsp;
+            <nz-form-control>
+              <button nz-button type="button" (click)="clear()">Clear</button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </form>
+  </nz-page-header-content>
+
+</nz-page-header>
+
+<ng-container *ngIf="!dataList?.length">
+  <nz-result nzStatus="404" nzTitle="404" nzSubTitle="No result was found.">
+    <div nz-result-extra>
+      <button nz-button nzType="primary" [routerLink]="['lender-form']">Add New Lender</button> 
     </div>
+  </nz-result>
 </ng-container>
+
+<ng-container *ngFor="let item of dataList">
+  <div class="site-page-header">
+    <nz-page-header nzBackIcon [nzGhost]="false">
+      <nz-page-header-title>{{item.lenderName}}</nz-page-header-title>
+
+      <nz-page-header-tags>
+        <nz-tag><span *ngIf="item.hasMobileApp" nz-icon nzType="mobile" nzTheme="outline"></span> Mobile</nz-tag>
+        <nz-tag><span *ngIf="item.hasWebApp" nz-icon nzType="laptop" nzTheme="outline"></span> Web</nz-tag>
+      </nz-page-header-tags>
+
+      <nz-page-header-extra>
+        <nz-space>
+          <button *nzSpaceItem nz-button nzType="primary" [routerLink]="['lender-form', item.id]">Edit</button> &nbsp;
+          <button *nzSpaceItem nz-button nzDanger nzType="primary" nz-popconfirm
+            nzPopconfirmTitle="Are you sure you want to delete this item: {{item?.lenderName}}?"
+            (nzOnConfirm)="delete(item)" nzTooltipTitle="Delete" nz-tooltip [nzLoading]="loading"> <i nz-icon
+              nzType="delete"></i> </button>
+        </nz-space>
+      </nz-page-header-extra>
+
+      <nz-page-header-content>
+        <div nz-row>
+          <div class="content">
+            <p nz-paragraph>
+              {{item.description}}
+            </p>
+
+            <nz-row nzType="flex">
+              <nz-statistic nzTitle="Minimum Amount" [nzValue]="item.minimumLoanAmount" nzPrefix="item?.country?.currencyCode || '&#8358;'" style="margin: 0 32px"></nz-statistic>
+              <nz-statistic nzTitle="Maximum Amount" [nzValue]="item.maximumLoanAmount" nzPrefix="item?.country?.currencyCode || '&#8358;'"></nz-statistic>
+              <nz-statistic nzTitle="Status" nzValue="Pending"></nz-statistic>
+            </nz-row>
+
+            <nz-descriptions nzSize="small" [nzColumn]="3">
+              <nz-descriptions-item nzTitle="Email Address" [nzSpan]="1">{{item.emailAddress}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">{{item.phoneNumber}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Website" [nzSpan]="1"><a href="{{item.website}}">{{item.website}}</a>
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="City" [nzSpan]="1">{{item.city}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Country" [nzSpan]="1">{{item.country?.name}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="State/Region" [nzSpan]="1">{{item.state?.name}}</nz-descriptions-item>
+
+              <nz-descriptions-item nzTitle="Eligiblity Criteria" [nzSpan]="3">
+                {{item.eligiblityCriteria || 'Not Available'}}
+              </nz-descriptions-item>
+            </nz-descriptions>
+
+            <nz-descriptions nzSize="small" [nzColumn]="4">
+              <nz-descriptions-item nzTitle="Created By" [nzSpan]="1">{{item.createdBy}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">{{item.createdDate | date:'d-MMM-yyyy h:mm a'}}
+              </nz-descriptions-item>
+              <nz-descriptions-item *ngIf="item.lastEditedBy" nzTitle="Updated By" [nzSpan]="1">{{item.lastEditedBy}}</nz-descriptions-item>
+              <nz-descriptions-item *ngIf="item.lastEditedDate" nzTitle="Updated Time" [nzSpan]="1">{{item.lastEditedDate | date:'d-MMM-yyyy h:mm a'}}
+              </nz-descriptions-item>
+            </nz-descriptions>
+
+            <div class="content-link">
+              <a *ngIf="item.facebookUrl" href="{{item.facebookUrl}}"><span nz-icon nzType="facebook" nzTheme="outline"></span> Facebook</a>
+              
+              <a *ngIf="item.twitterUrl" href="{{item.twitterUrl}}"><span nz-icon nzType="twitter" nzTheme="outline"></span> Twitter</a>
+              
+              <a *ngIf="item.instagramUrl" href="{{item.instagramUrl}}"><span nz-icon nzType="instagram" nzTheme="outline"></span> Instagram</a>
+              
+              <a *ngIf="item.linkedinUrl" href="{{item.linkedinUrl}}"><span nz-icon nzType="linkedin" nzTheme="outline"></span> Linkedin</a>
+            </div>
+          </div>
+          <div class="content-image">
+            <img src="{{logoUrl || 'https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg'}}"
+              alt="logo" />
+          </div>
+        </div>
+      </nz-page-header-content>
+    </nz-page-header>
+  </div>
+</ng-container>
+
+<br />
+<nz-pagination [nzTotal]="pagination?.totalCount" [nzPageSize]="pageQuery?.pageSize"
+  [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber" (nzQueryParams)="pageChanged($event)"></nz-pagination>

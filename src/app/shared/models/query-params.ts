@@ -8,4 +8,5 @@ export class RequestQueryParams extends QueryParams {
   public status: any = '';
   public startDate: Date | any;
   public endDate: Date | any;
+  public isActive?: boolean | '' = '';
 }

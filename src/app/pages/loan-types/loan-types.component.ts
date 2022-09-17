@@ -14,11 +14,7 @@ import { LoanTypeFormComponent } from './loan-type-form/loan-type-form.component
 export class LoanTypesComponent implements OnInit {
   dataList: LoanTypeModel[] = [];
   pageQuery: RequestQueryParams = new RequestQueryParams();
-  // pagination: PagedList<PaymentPlanModel> = new PagedList<PaymentPlanModel>();
-  checked = false;
   loading = false;
-  indeterminate = false;
-  setOfCheckedId = new Set<number>();
   onlyActive: boolean;
 
   constructor(
@@ -39,9 +35,7 @@ export class LoanTypesComponent implements OnInit {
 
   getData() {
     this.loading = true;
-    this.loanTypeService.getAll(this.onlyActive).subscribe(
-      result => {
-        // this.pagination = result;
+    this.loanTypeService.getAll(this.onlyActive).subscribe(result => {
         this.dataList = result || [];
         this.loading = false;
       },
@@ -65,15 +59,26 @@ export class LoanTypesComponent implements OnInit {
         id: data?.id
       }
     });
+
+    drawerRef.afterClose.subscribe(result => {
+      if (result && result.status && result.data) {
+        var index = this.dataList.findIndex(x => x.id == result.data.id);
+        
+        if (index > -1) {
+          this.dataList.splice(index, 1, result.data);
+        } else {
+          this.dataList.push(result.data);
+        }
+      }
+    });
   }
-    
 
   pageChanged(params: NzTableQueryParams): void {
     // console.log(params);
     const { pageSize, pageIndex, sort, filter } = params;
     this.pageQuery.pageNumber = pageIndex; // || this.pageQuery.pageNumber;
     this.pageQuery.pageSize = pageSize; // || this.pageQuery.pageSize;
-    
+
     this.getData();
   }
 
@@ -96,7 +101,7 @@ export class LoanTypesComponent implements OnInit {
     );
   }
 
-  deleteMany() {
+  deleteMany(action: 'delete' | 'disable' | 'enable') {
 
   }
 }

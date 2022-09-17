@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { RequestQueryParams, CommonService, AuthUserData, DataResponseModel } from 'src/app/shared';
 import { LoanFeatureModel } from 'src/app/shared/models/loan-feature-model';
 import { LoanFeatureService } from 'src/app/shared/services/loan-feature.service';
 import { LoanFeatureFormComponent } from './loan-feature-form/loan-feature-form.component';
-
 
 @Component({
   selector: 'app-loan-features',
@@ -16,11 +14,7 @@ import { LoanFeatureFormComponent } from './loan-feature-form/loan-feature-form.
 export class LoanFeaturesComponent implements OnInit {
   dataList: LoanFeatureModel[] = [];
   pageQuery: RequestQueryParams = new RequestQueryParams();
-  // pagination: PagedList<PaymentPlanModel> = new PagedList<PaymentPlanModel>();
-  checked = false;
   loading = false;
-  indeterminate = false;
-  setOfCheckedId = new Set<number>();
   onlyActive: boolean;
 
   constructor(
@@ -31,8 +25,9 @@ export class LoanFeaturesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-     this.getData();
+    this.getData();
   }
+
   search() {
     this.pageQuery.pageNumber = 1;
     this.getData();
@@ -40,9 +35,7 @@ export class LoanFeaturesComponent implements OnInit {
 
   getData() {
     this.loading = true;
-    this.loanFeatureService.getAll(this.onlyActive).subscribe(
-      result => {
-        // this.pagination = result;
+    this.loanFeatureService.getAll(this.onlyActive).subscribe(result => {
         this.dataList = result || [];
         this.loading = false;
       },
@@ -56,7 +49,7 @@ export class LoanFeaturesComponent implements OnInit {
   openForm(data?: LoanFeatureModel) {
     var formType = (data) ? 'Edit' : 'Create';
     const drawerRef = this.drawerService.create<LoanFeatureFormComponent, { result: DataResponseModel<LoanFeatureModel> }, DataResponseModel<LoanFeatureModel>>({
-      nzTitle: `${formType} Payment Plan Form`,
+      nzTitle: `${formType} Loan Feature Form`,
       nzContent: LoanFeatureFormComponent,
       nzWidth: 500,
       nzClosable: true,
@@ -66,6 +59,18 @@ export class LoanFeaturesComponent implements OnInit {
         id: data?.id
       }
     });
+
+    drawerRef.afterClose.subscribe(result => {
+      if (result && result.status && result.data) {
+        var index = this.dataList.findIndex(x => x.id == result.data.id);
+        
+        if (index > -1) {
+          this.dataList.splice(index, 1, result.data);
+        } else {
+          this.dataList.push(result.data);
+        }
+      }
+    });
   }
 
   pageChanged(params: NzTableQueryParams): void {
@@ -73,7 +78,7 @@ export class LoanFeaturesComponent implements OnInit {
     const { pageSize, pageIndex, sort, filter } = params;
     this.pageQuery.pageNumber = pageIndex; // || this.pageQuery.pageNumber;
     this.pageQuery.pageSize = pageSize; // || this.pageQuery.pageSize;
-    
+
     this.getData();
   }
 
@@ -96,7 +101,7 @@ export class LoanFeaturesComponent implements OnInit {
     );
   }
 
-  deleteMany() {
+  deleteMany(action: 'delete' | 'disable' | 'enable') {
 
   }
 }
