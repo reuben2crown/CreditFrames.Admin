@@ -6,10 +6,3 @@ export class LoanFeatureModel {
     public lastModifiedBy: string;
     public createdDate: string;
 }
-
-export class LoanFeatureItemModel {
-    public id: number;
-    public featureId: number;
-    public featureName: string;
-    public isSelected: boolean;
-}

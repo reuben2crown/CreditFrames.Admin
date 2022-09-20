@@ -43,7 +43,8 @@
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="countryId">Country</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="The input is not valid E-mail!">
-          <nz-select nzShowSearch nzAllowClear formControlName="countryId" id="countryId" nzPlaceHolder="Select A Country" (ngModelChange)="changeCountry($event)">
+          <nz-select nzShowSearch nzAllowClear formControlName="countryId" id="countryId"
+            nzPlaceHolder="Select A Country" (change)="changeCountry($event)">
             <nz-option *ngFor="let item of countryList" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
           </nz-select>
         </nz-form-control>
@@ -52,7 +53,8 @@
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="stateId">State</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="The input is not valid E-mail!">
-          <nz-select nzShowSearch nzAllowClear formControlName="stateId" id="stateId" nzPlaceHolder="Select State/Region">
+          <nz-select nzShowSearch nzAllowClear formControlName="stateId" id="stateId"
+            nzPlaceHolder="Select State/Region">
             <nz-option *ngFor="let item of stateList" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
           </nz-select>
         </nz-form-control>
@@ -66,7 +68,7 @@
           </nz-input-number-group>
         </nz-form-control>
       </nz-form-item>
-      
+
       <nz-form-item>
         <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzTooltipTitle="Maximum Loan Amount">Max Amount</nz-form-label>
         <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
@@ -75,35 +77,36 @@
           </nz-input-number-group>
         </nz-form-control>
       </nz-form-item>
-      
+
       <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzTooltipTitle="Turn Around Time (In Minutes)">TAT (In Minutes)</nz-form-label>
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzTooltipTitle="Turn Around Time (In Minutes)">TAT (In Minutes)
+        </nz-form-label>
         <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
           <nz-input-number-group nzAddOnAfter="Minute(s)" style="width: 100%">
             <nz-input-number [nzStep]="5" formControlName="turnAroundTimeInMinute"></nz-input-number>
           </nz-input-number-group>
         </nz-form-control>
       </nz-form-item>
-      
+
       <nz-form-item>
         <nz-form-label [nzSm]="7" [nzXs]="24">Has Web App</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-            <nz-switch formControlName="hasWebApp"></nz-switch>
+          <nz-switch formControlName="hasWebApp"></nz-switch>
         </nz-form-control>
       </nz-form-item>
-    
+
       <nz-form-item>
         <nz-form-label [nzSm]="7" [nzXs]="24">Has Mobile App</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-            <nz-switch formControlName="hasMobileApp"></nz-switch>
+          <nz-switch formControlName="hasMobileApp"></nz-switch>
         </nz-form-control>
       </nz-form-item>
-  
+
     </div>
 
     <div nz-col nzSpan="10">
       <nz-form-item>
-        <nz-upload class="avatar-uploader" nzName="avatar" nzListType="picture-card" [nzShowUploadList]="false"
+        <nz-upload class="avatar-uploader" nzName="avatar" nzListType="picture-card" nzAccept="image/*" [nzShowUploadList]="false"
           [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
           <ng-container *ngIf="!logoUrl">
             <span class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></span>
@@ -112,7 +115,7 @@
           <img *ngIf="logoUrl" [src]="logoUrl" style="width: 100%" />
         </nz-upload>
       </nz-form-item>
-
+      
       <div class="d-block">Description:</div>
       <nz-form-item>
         <nz-form-control [nzSm]="24" [nzXs]="24" nzHasFeedback nzErrorTip="Please input value!">
@@ -122,10 +125,10 @@
         </nz-form-control>
       </nz-form-item>
 
+      <div class="d-block">Eligiblity Criteria:</div>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="city">Eligiblity Criteria</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Please input value!">
-          <input nz-input id="city" formControlName="eligiblityCriteria" placeholder="Enter city" />
+        <nz-form-control nzHasFeedback nzErrorTip="Please input value!">
+          <input nz-input id="city" formControlName="eligiblityCriteria" placeholder="Enter Criteria" />
         </nz-form-control>
       </nz-form-item>
 
@@ -133,61 +136,65 @@
       <nz-form-item>
         <nz-form-control>
           <nz-select nzMode="tags" formControlName="loanFeatures" nzPlaceHolder="Add Loan Features">
-            <nz-option *ngFor="let option of loanFeatureList" [nzLabel]="option.id" [nzValue]="option.name"></nz-option>
+            <nz-option *ngFor="let option of loanFeatureList" [nzLabel]="option.name" [nzValue]="option"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="facebook">Facebook URL</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Please enter valid URL">
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="facebook">Facebook URL</nz-form-label>
+        <nz-form-control [nzSm]="17" [nzXs]="24" nzHasFeedback nzErrorTip="Please enter valid URL">
           <nz-input-group nzAddOnBeforeIcon="facebook" style="width: 100%">
-            <input formControlName="facebookUrl" id="facebook" nz-input class="ant-input" placeholder="https://facebook.com/username" />
+            <input formControlName="facebookUrl" id="facebook" nz-input class="ant-input"
+              placeholder="https://facebook.com/username" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="twitter">Twitter URL</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Please enter valid URL">
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="twitter">Twitter URL</nz-form-label>
+        <nz-form-control [nzSm]="17" [nzXs]="24" nzHasFeedback nzErrorTip="Please enter valid URL">
           <nz-input-group nzAddOnBeforeIcon="twitter" style="width: 100%">
-            <input formControlName="twitterUrl" id="twitter" nz-input class="ant-input" placeholder="https://twitter.com/username" />
+            <input formControlName="twitterUrl" id="twitter" nz-input class="ant-input"
+              placeholder="https://twitter.com/username" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="instagram">Instagram URL</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Please enter valid URL">
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="instagram">Instagram URL</nz-form-label>
+        <nz-form-control [nzSm]="17" [nzXs]="24" nzHasFeedback nzErrorTip="Please enter valid URL">
           <nz-input-group nzAddOnBeforeIcon="instagram" style="width: 100%">
-            <input formControlName="instagramUrl" id="instagram" nz-input class="ant-input" placeholder="https://instagram.com/username" />
+            <input formControlName="instagramUrl" id="instagram" nz-input class="ant-input"
+              placeholder="https://instagram.com/username" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="linkedin">Twitter URL</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Please enter valid URL">
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzFor="linkedin">Linkedin URL</nz-form-label>
+        <nz-form-control [nzSm]="17" [nzXs]="24" nzHasFeedback nzErrorTip="Please enter valid URL">
           <nz-input-group nzAddOnBeforeIcon="linkedin" style="width: 100%">
-            <input formControlName="linkedinUrl" id="linkedin" nz-input class="ant-input" placeholder="https://linkedin.com/in/username" />
+            <input formControlName="linkedinUrl" id="linkedin" nz-input class="ant-input"
+              placeholder="https://linkedin.com/in/username" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24">Enable / Disable</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24">
-            <nz-switch formControlName="isActive"></nz-switch>
+        <nz-form-label [nzSm]="8" [nzXs]="24">Enable / Disable</nz-form-label>
+        <nz-form-control [nzSm]="16" [nzXs]="24">
+          <nz-switch formControlName="isActive"></nz-switch>
         </nz-form-control>
       </nz-form-item>
-    
+
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzTooltipTitle="Turn this on to acivate API">API Activated</nz-form-label>
-        <nz-form-control [nzSm]="14" [nzXs]="24">
-            <nz-switch formControlName="apiActivated"></nz-switch> 
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzTooltipTitle="Turn this on to acivate API">API Activated</nz-form-label>
+        <nz-form-control [nzSm]="16" [nzXs]="24">
+          <nz-switch formControlName="apiActivated"></nz-switch>
         </nz-form-control>
       </nz-form-item>
-    
+
     </div>
   </div>
 
@@ -205,29 +212,26 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td colspan="5">
+              <button class="pull-right" type="button" nz-button nzType="primary" (click)="openLoanTypeForm()" nzTooltipTitle="Add Loan Type"
+                nz-tooltip> <i nz-icon nzType="plus"></i> Add Loan Type</button>
+            </td>
+          </tr>
           <tr *ngFor="let item of lenderLoanTypes">
             <td>{{item.loanTypeName}}</td>
             <td>{{item.minimumLoanAmount}} / {{item.maximumLoanAmount}}</td>
             <td>{{item.averageInterestRate}}</td>
             <td>{{item.averageLoanTenor}}</td>
             <td>
-              <a>Delete</a>
-              <nz-divider nzType="vertical"></nz-divider>
-              <a>Delete</a>
-              
-              <button nz-button nzType="primary" (click)="loanTypeForm(data)" nzTooltipTitle="Update" nz-tooltip> <i nz-icon
-                nzType="form"></i> </button> &nbsp;
+              <button type="button" nz-button nzType="primary" (click)="openLoanTypeForm(item)" nzTooltipTitle="Update"
+                nz-tooltip> <i nz-icon nzType="form"></i> </button>
+                <nz-divider nzType="vertical"></nz-divider>
 
-        <button nz-button nzDanger nzType="primary" nz-popconfirm
-            nzPopconfirmTitle="Are you sure you want to delete this item: {{data?.name}}?"
-            (nzOnConfirm)="removeTypeForm(data)" nzTooltipTitle="Delete" nz-tooltip [nzLoading]="loading"> <i nz-icon
-                nzType="delete"></i> </button>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="5">
-              <button nz-button nzType="primary" (click)="loanTypeForm()" nzTooltipTitle="Add Loan Type" nz-tooltip> <i nz-icon
-                nzType="form"></i> </button>
+              <button type="button" nz-button nzDanger nzType="primary" nz-popconfirm
+                nzPopconfirmTitle="Are you sure you want to delete this item: {{item?.loanTypeName}}?"
+                (nzOnConfirm)="removeLoanType(item)" nzTooltipTitle="Delete" nz-tooltip [nzLoading]="loading"> <i
+                  nz-icon nzType="delete"></i> </button>
             </td>
           </tr>
         </tbody>
@@ -237,6 +241,7 @@
 
   <div nz-row>
     <div nz-col nzSpan="24">
+      <br />
       <nz-form-item nz-row class="register-area">
         <button nz-button nzType="primary" [nzLoading]="loading">Submit</button>
       </nz-form-item>

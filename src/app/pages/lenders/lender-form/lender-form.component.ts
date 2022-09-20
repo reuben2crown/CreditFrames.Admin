@@ -1,11 +1,12 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Observer, Subscription } from 'rxjs';
-import { AuthTokenModel, AuthUserData, CommonService, CountryModel, CountryService, LenderService, LenderModel, StateService, LoanFeatureModel, LoanTypeModel, LenderLoanType, LoanTypeService, LoanFeatureService, StateModel, FormHelper } from 'src/app/shared';
+import { AuthTokenModel, AuthUserData, CommonService, CountryModel, CountryService, LenderService, LenderModel, StateService, LoanFeatureModel, LoanTypeModel, LenderLoanType, LoanTypeService, LoanFeatureService, StateModel, FormHelper, LenderFeatureItemModel } from 'src/app/shared';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { LenderLoantypeFormComponent } from '../lender-loantype-form/lender-loantype-form.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-lender-form',
@@ -17,18 +18,18 @@ export class LenderFormComponent implements OnInit, OnDestroy {
   requestForm: FormGroup;
   formData: LenderModel;
   loanTypeList: LoanTypeModel[] = [];
-  loanFeatureList: LoanFeatureModel[] = [];
+  loanFeatureList: LenderFeatureItemModel[] = [];
   countryList: CountryModel[] = [];
   stateList: StateModel[] = [];
   private routeSub: Subscription;
   loading: boolean;
   user: AuthTokenModel;
-  logoUrl: string;
+  logoUrl: SafeResourceUrl | string;
   logoUpload: File;
   selectedCountry: CountryModel;
   lenderLoanTypes: LenderLoanType[] = [];
 
-  constructor(private route: ActivatedRoute, private commonService: CommonService, private authData: AuthUserData, private lenderService: LenderService, private loanTypeService: LoanTypeService, private loanFeatureService: LoanFeatureService, private countryService: CountryService, private stateService: StateService, private drawerService: NzDrawerService, private formHelper: FormHelper) { }
+  constructor(private route: ActivatedRoute, private commonService: CommonService, private authData: AuthUserData, private lenderService: LenderService, private loanTypeService: LoanTypeService, private loanFeatureService: LoanFeatureService, private countryService: CountryService, private stateService: StateService, private drawerService: NzDrawerService, private formHelper: FormHelper, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
@@ -67,11 +68,13 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       isActive: new FormControl(true),
       apiActivated: new FormControl(false),
       loanTypes: new FormArray([]),
-      features: new FormArray([])
+      loanFeatures: new FormControl([])
     });
 
     if (this.formData) {
-      this.requestForm.patchValue(this.formData, { onlySelf: true })
+      setTimeout(() => {
+        this.requestForm.patchValue(this.formData, { onlySelf: true });
+      }, 1);
     }
   }
 
@@ -92,8 +95,12 @@ export class LenderFormComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.lenderService.getById(this.id).subscribe(response => {
       this.formData = response;
-      this.requestForm.patchValue(response, { onlySelf: true });
+      setTimeout(() => {
+        this.requestForm.patchValue(response, { onlySelf: true });
+        this.requestForm.patchValue({loanFeatures: response.features || []}, { onlySelf: true });
+      }, 1);
       this.logoUrl = response?.logo;
+      this.lenderLoanTypes = response.loanTypes;
       this.loading = false;
       this.commonService.hideLoading();
     }, error => {
@@ -113,7 +120,16 @@ export class LenderFormComponent implements OnInit, OnDestroy {
 
     // loan features
     this.loanFeatureService.getAll().subscribe(results => {
-      this.loanFeatureList = results || [];
+      this.loanFeatureList = (results || []).map(x => {
+        var item: LenderFeatureItemModel = {
+          featureId: x.id,
+          featureName: x.name,
+          isSelected: false,
+          id: 0
+        };
+          
+          return item;
+      });
     },
       (error) => {
         this.commonService.handleError(error);
@@ -141,6 +157,20 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.commonService.showLoading();
       let formValue = this.requestForm.value as LenderModel;
+
+      var loanFeatures = this.requestForm.get('loanFeatures').value as LenderFeatureItemModel[];
+      this.lenderLoanTypes = [];
+      if (loanFeatures && loanFeatures?.length) {
+        loanFeatures.forEach(item => {
+          item.isSelected = true;
+          if (!item.featureId) {
+            item.featureId = 0;
+            item.id = 0;
+          }
+        });
+
+        formValue.features = loanFeatures;
+      }
       formValue.loanTypes = this.lenderLoanTypes;
 
       //create or edit plan
@@ -182,20 +212,21 @@ export class LenderFormComponent implements OnInit, OnDestroy {
 
   beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]): Observable<boolean> =>
     new Observable((observer: Observer<boolean>) => {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-      if (!isJpgOrPng) {
-        this.commonService.showMessage('You can only upload JPEG or PNG file!');
+      const isValidImage = file.type === 'image/jpeg' || file.type === 'image/png' || 'image/svg+xml' || 'image/gif';
+      if (!isValidImage) {
+        this.commonService.showMessage('You can only upload JPEG, PNG, GIF or SVG file!');
         observer.complete();
         return;
       }
-      const validSize = file.size! / 1024 / 1024 < 5;
-      if (!validSize) {
+      const hasValidSize = file.size! / 1024 / 1024 < 5;
+      if (!hasValidSize) {
         this.commonService.showMessage('Image must smaller than 5MB!');
         observer.complete();
         return;
       }
-      observer.next(isJpgOrPng && validSize);
+      observer.next(isValidImage && hasValidSize);
       observer.complete();
+      return;
     });
 
   private getBase64(img: File, callback: (img: string) => void): void {
@@ -204,16 +235,16 @@ export class LenderFormComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(img);
   }
 
-  handleChange(info: NzUploadChangeParam): void {
-    if (info.file.originFileObj) {
-      this.logoUpload = info.file.originFileObj;
-      this.getBase64(info.file!.originFileObj!, (img: string) => {
-        this.logoUrl = img;
+  handleChange(input: NzUploadChangeParam): void {
+    if (input.file.originFileObj) {
+      this.logoUpload = input.file.originFileObj;
+      this.getBase64(input.file!.originFileObj!, (img: string) => {
+        this.logoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(img);
       });
     }
   }
 
-  removeTypeForm(item: LenderLoanType) {
+  removeLoanType(item: LenderLoanType) {
     if (item) {
       if (!item.id) {
         var index = this.lenderLoanTypes.findIndex(x => x.id == item.id);
@@ -244,7 +275,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  loanTypeForm(data?: LenderLoanType) {
+  openLoanTypeForm(data?: LenderLoanType) {
     var formType = (data) ? 'Edit' : 'Create';
     const drawerRef = this.drawerService.create<LenderLoantypeFormComponent, { result: LenderLoanType }, LenderLoanType>({
       nzTitle: `${formType} State Form`,
@@ -273,5 +304,4 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 }
