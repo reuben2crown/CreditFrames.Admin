@@ -7,15 +7,12 @@ export class LenderModel extends BaseModel {
     public phoneNumber: string;
     public logo: string;
     public website: string;
+    public loanApplicationUrl: string;
     public countryId: number;
-    public stateId: number;
-    public city: string;
+    public stateId?: number;
     public hasWebApp: boolean;
     public hasMobileApp: boolean;
-    public minimumLoanAmount: number;
-    public maximumLoanAmount: number;
-    public turnAroundTimeInMinute: number;
-    public eligiblityCriteria: string;
+    public averageRating: number;
     public facebookUrl: string;
     public twitterUrl: string;
     public instagramUrl: string;
@@ -45,7 +42,7 @@ export class LenderLoanType extends BaseModel {
     public returnCustomerAmount: number;
     public averageLoanTenor: number;
     public averageInterestRate: number;
-    public repaymentTimeFrame: number;
+    public repaymentTimeFrame: string;
     public moratoriumPeriod: number;
     public turnAroundTimeInMinute: number;
     public requirements: string;

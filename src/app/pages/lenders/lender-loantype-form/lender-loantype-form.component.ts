@@ -65,11 +65,11 @@ export class LenderLoantypeFormComponent implements OnInit {
       returnCustomerAmount: new FormControl(this.data?.returnCustomerAmount || 0),
       averageLoanTenor: new FormControl(this.data?.averageLoanTenor || 0),
       averageInterestRate: new FormControl(this.data?.averageInterestRate || 0),
-      repaymentTimeFrame: new FormControl(this.data?.repaymentTimeFrame || 0),
+      repaymentTimeFrame: new FormControl(this.data?.repaymentTimeFrame || ''),
       moratoriumPeriod: new FormControl(this.data?.moratoriumPeriod || 0),
       turnAroundTimeInMinute: new FormControl(this.data?.turnAroundTimeInMinute || 0),
       requirements: new FormControl(this.data?.requirements),
-      security: new FormControl(this.data?.security)
+      security: new FormControl(this.data?.security),
     });
   }
 

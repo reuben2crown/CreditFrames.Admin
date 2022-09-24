@@ -18,7 +18,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
   requestForm: FormGroup;
   formData: LenderModel;
   loanTypeList: LoanTypeModel[] = [];
-  loanFeatureList: LenderFeatureItemModel[] = [];
+  loanFeatureList: LoanFeatureModel[] = [];
   countryList: CountryModel[] = [];
   stateList: StateModel[] = [];
   private routeSub: Subscription;
@@ -45,30 +45,27 @@ export class LenderFormComponent implements OnInit, OnDestroy {
   }
 
   createForm() {
+    const reg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
     this.requestForm = new FormGroup({
       lenderName: new FormControl(null, Validators.required),
       description: new FormControl('', [Validators.maxLength(1000)]),
-      emailAddress: new FormControl(null),
+      emailAddress: new FormControl(null, [Validators.email]),
       phoneNumber: new FormControl(null),
-      website: new FormControl(''),
+      website: new FormControl(null, [Validators.required, Validators.pattern(reg)]),
+      loanApplicationUrl: new FormControl(null, [Validators.pattern(reg)]),      
       countryId: new FormControl(0, Validators.required),
       stateId: new FormControl(0),
       address: new FormControl(''),
-      city: new FormControl(''),
       hasWebApp: new FormControl(false),
       hasMobileApp: new FormControl(false),
-      minimumLoanAmount: new FormControl(0),
-      maximumLoanAmount: new FormControl(0),
-      turnAroundTimeInMinute: new FormControl(0),
-      eligiblityCriteria: new FormControl(),
-      facebookUrl: new FormControl(),
-      twitterUrl: new FormControl(),
-      instagramUrl: new FormControl(),
-      linkedinUrl: new FormControl(),
+      facebookUrl: new FormControl(null, [Validators.pattern(`^.*(?:facebook\.com|fb\.me).*$`)]),
+      twitterUrl: new FormControl(null, [Validators.pattern(`^.*(?:twitter\.com).*$`)]),
+      instagramUrl: new FormControl(null, [Validators.pattern(`^.*(?:instagram\.com).*$`)]),
+      linkedinUrl: new FormControl(null, [Validators.pattern(`^.*(?:linkedin\.com\/in\/|\/company\/).*$`)]),
       isActive: new FormControl(true),
       apiActivated: new FormControl(false),
       loanTypes: new FormArray([]),
-      loanFeatures: new FormControl([])
+      lenderFeatures: new FormControl([])
     });
 
     if (this.formData) {
@@ -97,7 +94,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       this.formData = response;
       setTimeout(() => {
         this.requestForm.patchValue(response, { onlySelf: true });
-        this.requestForm.patchValue({loanFeatures: response.features || []}, { onlySelf: true });
+        this.requestForm.patchValue({lenderFeatures: response.features.map(x => x.featureName) || []}, { onlySelf: true });
       }, 1);
       this.logoUrl = response?.logo;
       this.lenderLoanTypes = response.loanTypes;
@@ -120,16 +117,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
 
     // loan features
     this.loanFeatureService.getAll().subscribe(results => {
-      this.loanFeatureList = (results || []).map(x => {
-        var item: LenderFeatureItemModel = {
-          featureId: x.id,
-          featureName: x.name,
-          isSelected: false,
-          id: 0
-        };
-          
-          return item;
-      });
+      this.loanFeatureList = results;
     },
       (error) => {
         this.commonService.handleError(error);
@@ -158,18 +146,16 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       this.commonService.showLoading();
       let formValue = this.requestForm.value as LenderModel;
 
-      var loanFeatures = this.requestForm.get('loanFeatures').value as LenderFeatureItemModel[];
-      this.lenderLoanTypes = [];
-      if (loanFeatures && loanFeatures?.length) {
-        loanFeatures.forEach(item => {
-          item.isSelected = true;
-          if (!item.featureId) {
-            item.featureId = 0;
-            item.id = 0;
-          }
-        });
+      var featureValues = this.requestForm.get('lenderFeatures').value as string[]; // LenderFeatureItemModel
+      if (featureValues && featureValues?.length) {
+        var selectedFeatures = this.loanFeatureList.filter(x => featureValues.includes(x.name))
+        .map(item => ({
+          featureId: item.id,
+          featureName: item.name,
+          isSelected: true
+        })) as LenderFeatureItemModel[] || [];
 
-        formValue.features = loanFeatures;
+        formValue.features = selectedFeatures;
       }
       formValue.loanTypes = this.lenderLoanTypes;
 
