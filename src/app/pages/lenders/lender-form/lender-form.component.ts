@@ -147,16 +147,18 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       let formValue = this.requestForm.value as LenderModel;
 
       var featureValues = this.requestForm.get('lenderFeatures').value as string[]; // LenderFeatureItemModel
-      if (featureValues && featureValues?.length) {
-        var selectedFeatures = this.loanFeatureList.filter(x => featureValues.includes(x.name))
-        .map(item => ({
-          featureId: item.id,
-          featureName: item.name,
-          isSelected: true
-        })) as LenderFeatureItemModel[] || [];
+      // if (featureValues && featureValues?.length) {
+      //   var selectedFeatures = this.loanFeatureList.filter(x => featureValues.includes(x.name))
+      //   .map(item => ({
+      //     featureId: item.id,
+      //     featureName: item.name,
+      //     isSelected: true
+      //   })) as LenderFeatureItemModel[] || [];
 
-        formValue.features = selectedFeatures;
-      }
+      //   formValue.features = selectedFeatures;
+      // }
+      
+      formValue.features = featureValues || [];
       formValue.loanTypes = this.lenderLoanTypes;
 
       //create or edit plan
