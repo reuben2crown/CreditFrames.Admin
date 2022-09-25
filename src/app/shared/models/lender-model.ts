@@ -18,7 +18,7 @@ export class LenderModel extends BaseModel {
     public instagramUrl: string;
     public linkedinUrl: string;
     public loanTypes: LenderLoanType[] = [];
-    public features: LenderFeatureItemModel[] = [];
+    public features: LenderFeatureItemModel[] | string[] = [];
    
     public rank: number;
     public score: number;
