@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Observer, Subscription } from 'rxjs';
 import { AuthTokenModel, AuthUserData, CommonService, CountryModel, CountryService, LenderService, LenderModel, StateService, LoanFeatureModel, LoanTypeModel, LenderLoanType, LoanTypeService, LoanFeatureService, StateModel, FormHelper, LenderFeatureItemModel } from 'src/app/shared';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
@@ -29,7 +29,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
   selectedCountry: CountryModel;
   lenderLoanTypes: LenderLoanType[] = [];
 
-  constructor(private route: ActivatedRoute, private commonService: CommonService, private authData: AuthUserData, private lenderService: LenderService, private loanTypeService: LoanTypeService, private loanFeatureService: LoanFeatureService, private countryService: CountryService, private stateService: StateService, private drawerService: NzDrawerService, private formHelper: FormHelper, private sanitizer: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private commonService: CommonService, private authData: AuthUserData, private lenderService: LenderService, private loanTypeService: LoanTypeService, private loanFeatureService: LoanFeatureService, private countryService: CountryService, private stateService: StateService, private drawerService: NzDrawerService, private formHelper: FormHelper, private router: Router, private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
@@ -186,6 +186,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
             this.commonService.showToastError(response.body.message);
           }
           this.commonService.hideLoading();
+          this.router.navigate(['/lenders']);
         }
       }, error => {
         this.loading = false;
