@@ -28,6 +28,8 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { DatePipe } from '@angular/common';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzResultModule } from 'ng-zorro-antd/result';
 
 @NgModule({
   imports: [
@@ -59,7 +61,9 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzAlertModule,
     NzTagModule,
     NzSwitchModule,
-    NzUploadModule
+    NzUploadModule,
+    NzSkeletonModule,
+    NzResultModule
   ],
   exports: [
     NzPaginationModule,
@@ -90,7 +94,9 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzAlertModule,
     NzTagModule,
     NzSwitchModule,
-    NzUploadModule
+    NzUploadModule,
+    NzSkeletonModule,
+    NzResultModule
   ],
   providers: [DatePipe]
 })

@@ -75,9 +75,12 @@ export class LenderFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  addLoanTypes(loanType: LoanTypeModel) {
-    if (loanType) {
-
+  expandSet = new Set<any>();
+  onExpandChange(id: any, checked: boolean): void {
+    if (checked) {
+      this.expandSet.add(id);
+    } else {
+      this.expandSet.delete(id);
     }
   }
 
@@ -226,6 +229,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
   handleChange(input: NzUploadChangeParam): void {
     if (input.file.originFileObj) {
       this.logoUpload = input.file.originFileObj;
+      // console.log(this.logoUpload);
       this.getBase64(input.file!.originFileObj!, (img: string) => {
         this.logoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(img);
       });
@@ -264,9 +268,9 @@ export class LenderFormComponent implements OnInit, OnDestroy {
   }
 
   openLoanTypeForm(data?: LenderLoanType) {
-    var formType = (data) ? 'Edit' : 'Create';
+    var formType = (data) ? 'Edit' : 'Add';
     const drawerRef = this.drawerService.create<LenderLoantypeFormComponent, { result: LenderLoanType }, LenderLoanType>({
-      nzTitle: `${formType} State Form`,
+      nzTitle: `${formType} Loan Type`,
       nzContent: LenderLoantypeFormComponent,
       nzWidth: 500,
       nzClosable: true,
@@ -282,7 +286,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
 
     drawerRef.afterClose.subscribe(result => {
       if (result) {
-        var index = this.lenderLoanTypes.findIndex(x => x.id == result.id);
+        var index = (result.id) ? this.lenderLoanTypes.findIndex(x => x.id == result.id) : this.lenderLoanTypes.findIndex(x => x.loanTypeId == result.loanTypeId);
 
         if (index > -1) {
           this.lenderLoanTypes.splice(index, 1, result);

@@ -31,7 +31,7 @@ export class LenderLoantypeFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    if (this.data) {
+    if (this.data && this.data.id) {
       this.getData();
     }
     this.user = this.authData.getUserData();
@@ -60,23 +60,21 @@ export class LenderLoantypeFormComponent implements OnInit {
       lenderId: new FormControl(this.data?.lenderId || this.lenderId || 0), //, Validators.required
       loanTypeId: new FormControl(this.data?.loanTypeId || 0, Validators.required),
       loanTypeName: new FormControl(this.data?.loanTypeName),
-      minimumLoanAmount: new FormControl(this.data?.minimumLoanAmount || 0),
-      maximumLoanAmount: new FormControl(this.data?.maximumLoanAmount || 0),
+      minimumLoanAmount: new FormControl(this.data?.minimumLoanAmount || 0, Validators.required),
+      maximumLoanAmount: new FormControl(this.data?.maximumLoanAmount || 0, Validators.required),
       returnCustomerAmount: new FormControl(this.data?.returnCustomerAmount || 0),
-      averageLoanTenor: new FormControl(this.data?.averageLoanTenor || 0),
+      averageLoanTenor: new FormControl(this.data?.averageLoanTenor || 0, Validators.required),
       averageInterestRate: new FormControl(this.data?.averageInterestRate || 0),
       repaymentTimeFrame: new FormControl(this.data?.repaymentTimeFrame || ''),
       moratoriumPeriod: new FormControl(this.data?.moratoriumPeriod || 0),
-      turnAroundTimeInMinute: new FormControl(this.data?.turnAroundTimeInMinute || 0),
+      turnAroundTimeInMinute: new FormControl(this.data?.turnAroundTimeInMinute || 0, Validators.required),
       requirements: new FormControl(this.data?.requirements),
-      security: new FormControl(this.data?.security),
+      security: new FormControl(this.data?.security, Validators.required),
     });
   }
 
   addFormSubmit() {
     if (this.loanTypeForm.valid) {
-      this.loading = true;
-      this.commonService.showLoading();
       let formData = this.loanTypeForm.value as LenderLoanType;
       formData.loanTypeName = this.loanTypeList.find(x => x.id == formData.loanTypeId)?.name;
 
@@ -88,12 +86,10 @@ export class LenderLoantypeFormComponent implements OnInit {
         formData.createdBy = `${this.user.firstName} ${this.user.lastName}`;
       }
 
-      this.loading = false;
-      this.commonService.hideLoading();
       this.drawerRef.close(formData);
     } else {
       this.commonService.checkFormValidation(this.loanTypeForm);
-      this.commonService.showToastWarning("Validation Error. Please check the fields and try again");
+      this.commonService.showToastWarning("Validation Error. Please check the fields for errors and try again");
     }
   }
 }
