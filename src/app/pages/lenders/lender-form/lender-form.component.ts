@@ -52,7 +52,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       emailAddress: new FormControl(null, [Validators.email]),
       phoneNumber: new FormControl(null),
       website: new FormControl(null, [Validators.required, Validators.pattern(reg)]),
-      loanApplicationUrl: new FormControl(null, [Validators.pattern(reg)]),      
+      loanApplicationUrl: new FormControl(null, [Validators.pattern(reg)]),
       countryId: new FormControl(0, Validators.required),
       stateId: new FormControl(0),
       address: new FormControl(''),
@@ -64,6 +64,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       linkedinUrl: new FormControl(null, [Validators.pattern(`^.*(?:linkedin\.com\/in\/|\/company\/).*$`)]),
       isActive: new FormControl(true),
       apiActivated: new FormControl(false),
+      averageRating: new FormControl(0),
       loanTypes: new FormArray([]),
       lenderFeatures: new FormControl([])
     });
@@ -97,7 +98,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       this.formData = response;
       setTimeout(() => {
         this.requestForm.patchValue(response, { onlySelf: true });
-        this.requestForm.patchValue({lenderFeatures: response.features.map(x => x.featureName) || []}, { onlySelf: true });
+        this.requestForm.patchValue({ lenderFeatures: response.features.map(x => x.featureName) || [] }, { onlySelf: true });
       }, 1);
       this.logoUrl = response?.logo;
       this.lenderLoanTypes = response.loanTypes;
@@ -160,7 +161,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
 
       //   formValue.features = selectedFeatures;
       // }
-      
+
       formValue.features = featureValues || [];
       formValue.loanTypes = this.lenderLoanTypes;
 
@@ -173,7 +174,13 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       }
 
       var formData = this.formHelper.createFormData(formValue);
-      formData.append('logoUpload', this.logoUpload);
+      if (this.id) {
+        formData.append('updatedBy', formValue.lastModifiedBy);
+      }
+
+      if (this.logoUpload) {
+        formData.append('logoUpload', this.logoUpload);
+      }
 
       let service = (this.id) ? this.lenderService.update(this.id, formData) : this.lenderService.create(formData);
 
