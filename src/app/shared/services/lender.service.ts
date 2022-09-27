@@ -46,7 +46,7 @@ export class LenderService {
 
   public update = (id: number, formData: FormData): Observable<any> => {
     this.setActionUrl(`/${id}`);
-    return this.resource.upload<any>(formData);
+    return this.resource.upload<any>(formData, 'PUT');
   }
 
   public delete = (id: number): Observable<any> => {

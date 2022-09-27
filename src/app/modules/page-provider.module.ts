@@ -30,6 +30,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzRateModule } from 'ng-zorro-antd/rate';
 
 @NgModule({
   imports: [
@@ -63,7 +64,8 @@ import { NzResultModule } from 'ng-zorro-antd/result';
     NzSwitchModule,
     NzUploadModule,
     NzSkeletonModule,
-    NzResultModule
+    NzResultModule,
+    NzRateModule
   ],
   exports: [
     NzPaginationModule,
@@ -96,7 +98,8 @@ import { NzResultModule } from 'ng-zorro-antd/result';
     NzSwitchModule,
     NzUploadModule,
     NzSkeletonModule,
-    NzResultModule
+    NzResultModule,
+    NzRateModule
   ],
   providers: [DatePipe]
 })

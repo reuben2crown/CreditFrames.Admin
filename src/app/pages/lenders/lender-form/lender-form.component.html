@@ -91,16 +91,29 @@
     </div>
 
     <div nz-col nzSpan="10">
-      <nz-form-item>
-        <nz-upload class="avatar-uploader" nzName="avatar" nzListType="picture-card" nzAccept="image/*"
-          [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
-          <ng-container *ngIf="!logoUrl">
-            <span class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></span>
-            <div class="ant-upload-text">Upload Logo</div>
-          </ng-container>
-          <img *ngIf="logoUrl" [src]="logoUrl" style="width: 100%" />
-        </nz-upload>
-      </nz-form-item>
+      
+    <div nz-row [nzGutter]="16">
+      <div nz-col class="gutter-row" [nzSpan]="12">
+        <nz-form-item>
+          <nz-upload class="avatar-uploader" nzName="avatar" nzListType="picture-card" nzAccept="image/*"
+            [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
+            <ng-container *ngIf="!logoUrl">
+              <span class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></span>
+              <div class="ant-upload-text">Upload Logo</div>
+            </ng-container>
+            <img *ngIf="logoUrl" [src]="logoUrl" style="width: 100%" />
+          </nz-upload>
+        </nz-form-item>
+      </div>
+      <div nz-col class="gutter-row" [nzSpan]="12">
+        <div class="d-block ">Average Rating:</div>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-rate formControlName="averageRating"></nz-rate>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
 
       <div class="d-block">Description:</div>
       <nz-form-item>

@@ -69,6 +69,7 @@
         <nz-page-header-tags>
           <nz-tag><span *ngIf="item.hasMobileApp" nz-icon nzType="mobile" nzTheme="outline"></span> Mobile</nz-tag>
           <nz-tag><span *ngIf="item.hasWebApp" nz-icon nzType="laptop" nzTheme="outline"></span> Web</nz-tag>
+          <nz-rate [ngModel]="item.averageRating" nzAllowHalf nzDisabled></nz-rate>
         </nz-page-header-tags>
   
         <nz-page-header-extra>
@@ -84,51 +85,47 @@
         <nz-page-header-content>
           <div nz-row>
             <div class="content">
-              <p nz-paragraph>
+              <p nz-paragraph *ngIf="item.description">
                 {{item.description}}
               </p>
   
-              <nz-row nzType="flex">
-                <nz-statistic nzTitle="Minimum Amount" [nzValue]="item.minimumLoanAmount" nzPrefix="item?.country?.currencyCode || '&#8358;'" style="margin: 0 32px"></nz-statistic>
-                <nz-statistic nzTitle="Maximum Amount" [nzValue]="item.maximumLoanAmount" nzPrefix="item?.country?.currencyCode || '&#8358;'"></nz-statistic>
-                <nz-statistic nzTitle="Status" nzValue="Pending"></nz-statistic>
-              </nz-row>
-  
-              <nz-descriptions nzSize="small" [nzColumn]="3">
-                <nz-descriptions-item nzTitle="Email Address" [nzSpan]="1">{{item.emailAddress}}</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">{{item.phoneNumber}}</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Website" [nzSpan]="1"><a href="{{item.website}}">{{item.website}}</a>
-                </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="City" [nzSpan]="1">{{item.city}}</nz-descriptions-item>
+              <nz-descriptions nzSize="small">
+                <nz-descriptions-item nzTitle="Minimum Amount"><strong>{{item.minimumLoanAmount | currency: (item?.country?.currencyCode || '&#8358;')}}</strong></nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Maximum Amount"><strong>{{item.maximumLoanAmount | currency: (item?.country?.currencyCode || '&#8358;')}}</strong></nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Status"><nz-tag [nzColor]="item.isActive ? '#87d068' : '#f50'">{{item.isActive ? 'Active' : 'Inactive' }}</nz-tag></nz-descriptions-item>
+
+                <nz-descriptions-item nzTitle="Email Address" [nzSpan]="1">{{item.emailAddress || 'N/A'}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">{{item.phoneNumber || 'N/A'}}</nz-descriptions-item>
+
                 <nz-descriptions-item nzTitle="Country" [nzSpan]="1">{{item.country?.name}}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="State/Region" [nzSpan]="1">{{item.state?.name}}</nz-descriptions-item>
   
-                <nz-descriptions-item nzTitle="Eligiblity Criteria" [nzSpan]="3">
-                  {{item.eligiblityCriteria || 'Not Available'}}
+                <nz-descriptions-item nzTitle="Features" [nzSpan]="3" *ngIf="item.features?.length">
+                  <nz-tag *ngFor="let feature of item.features">{{feature.featureName}}</nz-tag>
                 </nz-descriptions-item>
-              </nz-descriptions>
-  
-              <nz-descriptions nzSize="small" [nzColumn]="4">
+                
                 <nz-descriptions-item nzTitle="Created By" [nzSpan]="1">{{item.createdBy}}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">{{item.createdDate | date:'d-MMM-yyyy h:mm a'}}
                 </nz-descriptions-item>
                 <nz-descriptions-item *ngIf="item.lastEditedBy" nzTitle="Updated By" [nzSpan]="1">{{item.lastEditedBy}}</nz-descriptions-item>
                 <nz-descriptions-item *ngIf="item.lastEditedDate" nzTitle="Updated Time" [nzSpan]="1">{{item.lastEditedDate | date:'d-MMM-yyyy h:mm a'}}
                 </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Website" [nzSpan]="1"><a href="{{item.website}}" target="_blank">{{item.website}}</a>
+                </nz-descriptions-item>
               </nz-descriptions>
   
               <div class="content-link">
-                <a *ngIf="item.facebookUrl" href="{{item.facebookUrl}}"><span nz-icon nzType="facebook" nzTheme="outline"></span> Facebook</a>
+                <a *ngIf="item.facebookUrl" href="{{item.facebookUrl}}" target="_blank"><span nz-icon nzType="facebook" nzTheme="outline"></span> Facebook</a>
                 
-                <a *ngIf="item.twitterUrl" href="{{item.twitterUrl}}"><span nz-icon nzType="twitter" nzTheme="outline"></span> Twitter</a>
+                <a *ngIf="item.twitterUrl" href="{{item.twitterUrl}}" target="_blank"><span nz-icon nzType="twitter" nzTheme="outline"></span> Twitter</a>
                 
-                <a *ngIf="item.instagramUrl" href="{{item.instagramUrl}}"><span nz-icon nzType="instagram" nzTheme="outline"></span> Instagram</a>
+                <a *ngIf="item.instagramUrl" href="{{item.instagramUrl}}" target="_blank"><span nz-icon nzType="instagram" nzTheme="outline"></span> Instagram</a>
                 
-                <a *ngIf="item.linkedinUrl" href="{{item.linkedinUrl}}"><span nz-icon nzType="linkedin" nzTheme="outline"></span> Linkedin</a>
+                <a *ngIf="item.linkedinUrl" href="{{item.linkedinUrl}}" target="_blank"><span nz-icon nzType="linkedin" nzTheme="outline"></span> Linkedin</a>
               </div>
             </div>
             <div class="content-image">
-              <img src="{{logoUrl || 'https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg'}}"
+              <img src="{{item.logo || 'https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg'}}"
                 alt="logo" />
             </div>
           </div>

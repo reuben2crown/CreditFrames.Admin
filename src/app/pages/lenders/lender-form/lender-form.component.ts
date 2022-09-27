@@ -187,13 +187,13 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       service.subscribe(response => {
         this.loading = false;
         if (response.ok) {
+          this.commonService.hideLoading();
           if (response.body.status) {
             this.commonService.showToastSuccess(response.body.message);
+            this.router.navigate(['/lenders']);
           } else {
             this.commonService.showToastError(response.body.message);
           }
-          this.commonService.hideLoading();
-          this.router.navigate(['/lenders']);
         }
       }, error => {
         this.loading = false;
