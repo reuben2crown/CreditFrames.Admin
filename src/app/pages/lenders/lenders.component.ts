@@ -94,11 +94,15 @@ export class LendersComponent implements OnInit {
     );
   }
 
-  pageChanged(params: NzTableQueryParams): void {
+  pageChanged($event: number, type: 'index' | 'size'): void { // params: NzTableQueryParams
     // console.log(params);
-    const { pageSize, pageIndex, sort, filter } = params;
-    this.pageQuery.pageNumber = pageIndex; // || this.pageQuery.pageNumber;
-    this.pageQuery.pageSize = pageSize; // || this.pageQuery.pageSize;
+    // const { pageSize, pageIndex, sort, filter } = params;
+    if (type == 'index') {
+      this.pageQuery.pageNumber = $event;
+    }
+    if (type == 'size') {
+      this.pageQuery.pageSize = $event;
+    }
     
     this.getData();
   }

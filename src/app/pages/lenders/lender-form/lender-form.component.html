@@ -51,7 +51,7 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="stateId">State</nz-form-label>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="stateId">State</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error.">
           <nz-select nzShowSearch nzAllowClear formControlName="stateId" id="stateId"
             nzPlaceHolder="Select State/Region">
@@ -75,16 +75,16 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="7" [nzXs]="24">Enable / Disable</nz-form-label>
+        <nz-form-label [nzSm]="7" [nzXs]="24" nzTooltipTitle="Turn this on to acivate API">API Activated</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-          <nz-switch formControlName="isActive"></nz-switch>
+          <nz-switch formControlName="apiActivated"></nz-switch>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="7" [nzXs]="24" nzTooltipTitle="Turn this on to acivate API">API Activated</nz-form-label>
+        <nz-form-label [nzSm]="7" [nzXs]="24">Enable / Disable</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-          <nz-switch formControlName="apiActivated"></nz-switch>
+          <nz-switch formControlName="isActive"></nz-switch>
         </nz-form-control>
       </nz-form-item>
 
@@ -241,7 +241,8 @@
     <div nz-col nzSpan="24">
       <br />
       <nz-form-item nz-row class="register-area">
-        <button nz-button nzType="primary" [nzLoading]="loading">Submit</button>
+        <button type="submit" nz-button nzType="primary" [nzLoading]="loading" style="margin-right: 50px">Submit</button> 
+        <button type="button" nz-button nzType="primary" class="btn-dark" [routerLink]="['/lenders']">Go Back</button> 
       </nz-form-item>
     </div>
   </div>
