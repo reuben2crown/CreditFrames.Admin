@@ -31,6 +31,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
     NzUploadModule,
     NzSkeletonModule,
     NzResultModule,
-    NzRateModule
+    NzRateModule,
+    NzTypographyModule
   ],
   exports: [
     NzPaginationModule,
@@ -99,7 +101,8 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
     NzUploadModule,
     NzSkeletonModule,
     NzResultModule,
-    NzRateModule
+    NzRateModule,
+    NzTypographyModule
   ],
   providers: [DatePipe]
 })

@@ -14,7 +14,7 @@
   <nz-page-header-content>
     <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
       <div nz-row [nzGutter]="24">
-        <div nz-col [nzSpan]="10">
+        <div nz-col [nzSpan]="14">
           <nz-form-item>
             <nz-form-control nzErrorTip="Enter your search keyword">
               <nz-input-group nzPrefixIcon="user">
@@ -24,20 +24,20 @@
             </nz-form-control>
           </nz-form-item>
         </div>
-        <div nz-col [nzSpan]="8">
-          <nz-form-item>
+        <div nz-col [nzSpan]="1">
+          <!-- <nz-form-item>
             <nz-form-control nzErrorTip="Select your search date">
               <nz-range-picker [nzRanges]="dateRange" ngModel [ngModelOptions]="{standalone: true}"
                 (ngModelChange)="onDateChange($event)"></nz-range-picker>
             </nz-form-control>
-          </nz-form-item>
+          </nz-form-item> -->
         </div>
 
-        <div nz-col [nzSpan]="6">
+        <div nz-col [nzSpan]="8">
           <nz-form-item>
             <nz-form-control>
               <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
-            </nz-form-control> &nbsp;
+            </nz-form-control> &nbsp; 
             <nz-form-control>
               <button nz-button type="button" (click)="clear()">Clear</button>
             </nz-form-control>
@@ -92,10 +92,13 @@
               <nz-descriptions nzSize="small">
                 <!-- <nz-descriptions-item nzTitle="Minimum Amount"><strong>{{item.minimumLoanAmount | currency: (item?.country?.currencyCode || '&#8358;')}}</strong></nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Maximum Amount"><strong>{{item.maximumLoanAmount | currency: (item?.country?.currencyCode || '&#8358;')}}</strong></nz-descriptions-item> -->
-                <nz-descriptions-item nzTitle="Status"><nz-tag [nzColor]="item.isActive ? '#87d068' : '#f50'">{{item.isActive ? 'Active' : 'Inactive' }}</nz-tag></nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Status">
+                  <nz-tag [nzColor]="item.isActive ? '#87d068' : '#f50'">{{item.isActive ? 'Active' : 'Inactive' }}</nz-tag> &nbsp; 
+                  <nz-tag nzColor="volcano" *ngIf="item.apiActivated">API</nz-tag>
+                </nz-descriptions-item>
 
-                <nz-descriptions-item nzTitle="Email Address" [nzSpan]="1">{{item.emailAddress || 'N/A'}}</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Phone Number" [nzSpan]="1">{{item.phoneNumber || 'N/A'}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Email" [nzSpan]="1">{{item.emailAddress || 'N/A'}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Phone" [nzSpan]="1">{{item.phoneNumber || 'N/A'}}</nz-descriptions-item>
 
                 <nz-descriptions-item nzTitle="Country" [nzSpan]="1">{{item.country?.name}}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="State/Region" [nzSpan]="1">{{item.state?.name}}</nz-descriptions-item>
@@ -107,8 +110,8 @@
                 <nz-descriptions-item nzTitle="Created By" [nzSpan]="1">{{item.createdBy}}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">{{item.createdDate | date:'d.MMM.yyyy h:mm a'}}
                 </nz-descriptions-item>
-                <nz-descriptions-item *ngIf="item.lastEditedBy" nzTitle="Updated By" [nzSpan]="1">{{item.lastEditedBy}}</nz-descriptions-item>
-                <nz-descriptions-item *ngIf="item.lastEditedDate" nzTitle="Updated Time" [nzSpan]="1">{{item.lastEditedDate | date:'d-MMM-yyyy h:mm a'}}
+                <nz-descriptions-item *ngIf="item.lastModifiedBy" nzTitle="Updated By" [nzSpan]="1">{{item.lastModifiedBy}}</nz-descriptions-item>
+                <nz-descriptions-item *ngIf="item.lastModifiedDate" nzTitle="Updated Time" [nzSpan]="1">{{item.lastModifiedDate | date:'d-MMM-yyyy h:mm a'}}
                 </nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Website" [nzSpan]="1"><a href="{{item.website}}" target="_blank">{{item.website}}</a>
                 </nz-descriptions-item>
@@ -125,8 +128,7 @@
               </div>
             </div>
             <div class="content-image">
-              <img src="{{item.logo || 'https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg'}}"
-                alt="logo" />
+              <img style="max-width: 180px;" src="{{item.logo || 'https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg'}}" alt="logo" />
             </div>
           </div>
         </nz-page-header-content>

@@ -16,7 +16,7 @@ export class CommonService {
     private nzMessageService: NzMessageService,
     private toastr: ToastrService,
     private datePipe: DatePipe
-  ) {}
+  ) { }
 
   public showLoading(message: string = 'Please wait...', spinnerName = '') {
     if (!this.loading) {
@@ -121,7 +121,7 @@ export class CommonService {
     let controls = formGroup.controls;
     let errors: AllValidationErrors[] = [];
     Object.keys(controls).forEach(key => {
-      const control = controls[ key ];
+      const control = controls[key];
       if (control instanceof FormGroup) {
         errors = errors.concat(this.getFormValidationErrors(control));
       }
@@ -133,13 +133,13 @@ export class CommonService {
           }
         }
       }
-      const controlErrors: ValidationErrors = controls[ key ].errors;
+      const controlErrors: ValidationErrors = controls[key].errors;
       if (controlErrors !== null) {
         Object.keys(controlErrors).forEach(keyError => {
           errors.push({
             control_name: key,
             error_name: keyError,
-            error_value: controlErrors[ keyError ]
+            error_value: controlErrors[keyError]
           });
         });
       }
@@ -159,6 +159,24 @@ export class CommonService {
     const KeyAsString = enumKey.toString();
     enumKey = myEnum[this.titleCase(KeyAsString)];
     return enumKey;
+  }
+
+  convertSecondsToDhms(value, unit: 'Seconds' | 'Minutes') {
+    if (value) {
+      const seconds = (unit == 'Seconds') ? Number(value) : Number(value) * 60;
+      var d = Math.floor(seconds / (3600 * 24));
+      var h = Math.floor(seconds % (3600 * 24) / 3600);
+      var m = Math.floor(seconds % 3600 / 60);
+      var s = Math.floor(seconds % 60);
+  
+      var dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
+      var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+      var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+      var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+      return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
+    }
+
+    return null;
   }
 
   formatResponseDate(date) {

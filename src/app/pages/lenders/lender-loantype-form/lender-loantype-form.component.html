@@ -1,8 +1,8 @@
 <form nz-form [formGroup]="loanTypeForm" (ngSubmit)="addFormSubmit()">
 
     <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loan Type</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="Loan Type is required!">
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>Loan Type</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Loan Type is required!">
             <nz-select nzShowSearch nzAllowClear formControlName="loanTypeId" nzPlaceHolder="Add Loan Type">
                 <nz-option *ngFor="let item of loanTypeList" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
             </nz-select>
@@ -10,89 +10,135 @@
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzTooltipTitle="Minimum Loan Amount">Min Amount</nz-form-label>
-        <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
-            <nz-input-number-group nzAddOnBefore="{{selectedCountry?.currencyCode}}" style="width: 100%">
-                <nz-input-number [nzMin]="0" [nzStep]="500" formControlName="minimumLoanAmount" placeholder="0.00">
-                </nz-input-number>
-            </nz-input-number-group>
-        </nz-form-control>
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Minimum Loan Amount">Min Amount</nz-form-label>
+        <div nz-col [nzSm]="15" [nzXs]="24">
+            <nz-form-control nzHasFeedback nzErrorTip="This field has an error">
+                <nz-input-number-group nzAddOnBefore="{{selectedCountry?.currencyCode}}" style="width: 100%">
+                    <nz-input-number [nzMin]="0" [nzStep]="500" formControlName="minimumLoanAmount" placeholder="0.00">
+                    </nz-input-number>
+                </nz-input-number-group>
+            </nz-form-control>
+            <pre nz-typography nzType="success">{{(loanTypeForm.get('minimumLoanAmount').value || 0) | currency: selectedCountry?.currencyCode || '&#8358;'}}</pre>
+        </div>
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired nzTooltipTitle="Maximum Loan Amount">Max Amount</nz-form-label>
-        <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
-            <nz-input-number-group nzAddOnBefore="{{selectedCountry?.currencyCode}}" style="width: 100%">
-                <nz-input-number [nzMin]="0" [nzStep]="500" formControlName="maximumLoanAmount" placeholder="0.00">
-                </nz-input-number>
-            </nz-input-number-group>
-        </nz-form-control>
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Maximum Loan Amount">Max Amount</nz-form-label>
+        <div nz-col [nzSm]="15" [nzXs]="24">
+            <nz-form-control nzHasFeedback nzErrorTip="This field has an error">
+                <nz-input-number-group nzAddOnBefore="{{selectedCountry?.currencyCode}}" style="width: 100%">
+                    <nz-input-number [nzMin]="0" [nzStep]="500" formControlName="maximumLoanAmount" placeholder="0.00">
+                    </nz-input-number>
+                </nz-input-number-group>
+            </nz-form-control>
+            <pre nz-typography nzType="success">{{(loanTypeForm.get('maximumLoanAmount').value || 0) | currency: selectedCountry?.currencyCode || '&#8358;'}}</pre>
+        </div>
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label [nzSm]="7" [nzXs]="24" nzTooltipTitle="Maximum Loan Amount for a return customer">Return Limit</nz-form-label>
-        <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
-            <nz-input-number-group nzAddOnBefore="{{selectedCountry?.currencyCode}}" style="width: 100%">
-                <nz-input-number [nzMin]="0" [nzStep]="500" formControlName="returnCustomerAmount" placeholder="0.00">
-                </nz-input-number>
-            </nz-input-number-group>
-        </nz-form-control>
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzTooltipTitle="Maximum Loan Amount for a return customer">Return Limit</nz-form-label>
+        <div nz-col [nzSm]="15" [nzXs]="24">
+            <nz-form-control nzHasFeedback nzErrorTip="This field has an error">
+                <nz-input-number-group nzAddOnBefore="{{selectedCountry?.currencyCode}}" style="width: 100%">
+                    <nz-input-number [nzMin]="0" [nzStep]="500" formControlName="returnCustomerAmount" placeholder="0.00">
+                    </nz-input-number>
+                </nz-input-number-group>
+            </nz-form-control>
+            <pre nz-typography nzType="success">{{(loanTypeForm.get('returnCustomerAmount').value || 0) | currency: selectedCountry?.currencyCode || '&#8358;'}}</pre>
+        </div>
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzTooltipTitle="Average Interest Rate">Average Interest</nz-form-label>
-        <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
+        <!-- <div nz-col [nzSm]="24" [nzXs]="24">
+            
+        </div> -->
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Minimum Interest Rate">Minimum Interest</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
             <nz-input-number-group nzAddOnAfter="%" style="width: 100%">
-                <nz-input-number [nzMin]="0" [nzStep]="1" formControlName="averageInterestRate"></nz-input-number>
+                <nz-input-number [nzMin]="0" [nzStep]="1" formControlName="minimumInterestRate"></nz-input-number>
             </nz-input-number-group>
         </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Average Loan Tenor">Avg. Loan Tenor</nz-form-label>
-        <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Maximum Interest Rate">Maximum Interest</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
+            <nz-input-number-group nzAddOnAfter="%" style="width: 100%">
+                <nz-input-number [nzMin]="0" [nzStep]="1" formControlName="maximumInterestRate"></nz-input-number>
+            </nz-input-number-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Minimum Loan Tenor">Min Loan Tenor</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
             <nz-input-number-group nzAddOnAfter="Month(s)" style="width: 100%">
-                <nz-input-number [nzMin]="0" [nzStep]="1" formControlName="averageLoanTenor"></nz-input-number>
+                <nz-input-number [nzMin]="0" [nzStep]="1" formControlName="minimumLoanTenor"></nz-input-number>
             </nz-input-number-group>
         </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Turn Around Time (In Minutes)">TAT (In Minutes)
-        </nz-form-label>
-        <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
-            <nz-input-number-group nzAddOnAfter="Minute(s)" style="width: 100%">
-                <nz-input-number [nzMin]="0" [nzStep]="5" formControlName="turnAroundTimeInMinute"></nz-input-number>
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Maximum Loan Tenor">Max. Loan Tenor</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
+            <nz-input-number-group nzAddOnAfter="Month(s)" style="width: 100%">
+                <nz-input-number [nzMin]="0" [nzStep]="1" formControlName="maximumLoanTenor"></nz-input-number>
             </nz-input-number-group>
         </nz-form-control>
     </nz-form-item>
-    
-    <nz-form-item>
-        <nz-form-label [nzSm]="8" [nzXs]="24">Moratorium Period</nz-form-label>
-        <nz-form-control [nzSm]="13" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
+
+    <!-- <nz-form-item>
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzTooltipTitle="Moratorium Period of Repayment">Moratorium Period</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzHasFeedback nzErrorTip="This field has an error">
             <nz-input-number-group style="width: 100%">
                 <nz-input-number [nzMin]="0" formControlName="moratoriumPeriod"></nz-input-number>
             </nz-input-number-group>
         </nz-form-control>
-    </nz-form-item>
+    </nz-form-item> -->
 
     <nz-form-item>
-        <nz-form-label [nzSm]="10" [nzXs]="24">Repayment TimeFrame</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="This is required!">
-            <input nz-input formControlName="repaymentTimeFrame" placeholder="please enter value" />
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Minimum Turn Around Time (In Minutes)">Minimum TAT
+        </nz-form-label>
+        <div nz-col [nzSm]="15" [nzXs]="24">
+            <nz-form-control nzHasFeedback nzErrorTip="This field has an error">
+                <nz-input-number-group nzAddOnAfter="Minute(s)" style="width: 100%">
+                    <nz-input-number [nzMin]="0" [nzStep]="5" formControlName="minTurnAroundTimeInMinute"></nz-input-number>
+                </nz-input-number-group>
+            </nz-form-control>
+            <pre nz-typography nzType="success">{{timeConvert(loanTypeForm.get('minTurnAroundTimeInMinute').value)}}</pre>
+        </div>
+    </nz-form-item>
+    
+    <nz-form-item>
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzTooltipTitle="Maximum Turn Around Time (In Minutes)">Maximum TAT
+        </nz-form-label>
+        <div nz-col [nzSm]="15" [nzXs]="24">
+            <nz-form-control nzHasFeedback nzErrorTip="This field has an error">
+                <nz-input-number-group nzAddOnAfter="Minute(s)" style="width: 100%">
+                    <nz-input-number [nzMin]="0" [nzStep]="5" formControlName="maxTurnAroundTimeInMinute"></nz-input-number>
+                </nz-input-number-group>
+            </nz-form-control>
+            <pre nz-typography nzType="success">{{timeConvert(loanTypeForm.get('maxTurnAroundTimeInMinute').value)}}</pre>
+        </div>
+    </nz-form-item>
+    
+    <nz-form-item>
+        <nz-form-label [nzSm]="8" [nzXs]="24">Eligiblity Criteria</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="This is required!">
+            <input nz-input formControlName="eligiblityCriteria" placeholder="please enter value" />
         </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24">Requirements</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="This is required!">
+        <nz-form-label [nzSm]="8" [nzXs]="24">Loan Requirements</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="This is required!">
             <input nz-input formControlName="requirements" placeholder="please enter value" />
         </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Loan Security</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="This is required!">
+        <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>Loan Security</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="This is required!">
             <nz-select formControlName="security" nzPlaceHolder="Select Security(s)">
                 <nz-option *ngFor="let item of loanSecurityEnum | enumToArray" [nzValue]="item.name"
                     [nzLabel]="item.name"></nz-option>
@@ -101,7 +147,7 @@
     </nz-form-item>
 
     <nz-form-item nz-row class="register-area">
-        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <nz-form-control [nzSpan]="15" [nzOffset]="8">
             <button nz-button nzType="primary" [nzLoading]="loading">Done!</button>
         </nz-form-control>
     </nz-form-item>

@@ -63,14 +63,21 @@ export class LenderLoantypeFormComponent implements OnInit {
       minimumLoanAmount: new FormControl(this.data?.minimumLoanAmount || 0, Validators.required),
       maximumLoanAmount: new FormControl(this.data?.maximumLoanAmount || 0, Validators.required),
       returnCustomerAmount: new FormControl(this.data?.returnCustomerAmount || 0),
-      averageLoanTenor: new FormControl(this.data?.averageLoanTenor || 0, Validators.required),
-      averageInterestRate: new FormControl(this.data?.averageInterestRate || 0),
-      repaymentTimeFrame: new FormControl(this.data?.repaymentTimeFrame || ''),
+      minimumInterestRate: new FormControl(this.data?.minimumInterestRate || 0, Validators.required),
+      maximumInterestRate: new FormControl(this.data?.maximumInterestRate || 0, Validators.required),
+      minimumLoanTenor: new FormControl(this.data?.minimumLoanTenor || 0, Validators.required),
+      maximumLoanTenor: new FormControl(this.data?.maximumLoanTenor || 0, Validators.required),
       moratoriumPeriod: new FormControl(this.data?.moratoriumPeriod || 0),
-      turnAroundTimeInMinute: new FormControl(this.data?.turnAroundTimeInMinute || 0, Validators.required),
+      minTurnAroundTimeInMinute: new FormControl(this.data?.minTurnAroundTimeInMinute || 0, Validators.required),
+      maxTurnAroundTimeInMinute: new FormControl(this.data?.maxTurnAroundTimeInMinute || 0, Validators.required),
       requirements: new FormControl(this.data?.requirements),
+      eligiblityCriteria: new FormControl(this.data?.eligiblityCriteria),
       security: new FormControl(this.data?.security, Validators.required),
     });
+  }
+
+  timeConvert(input) {
+    return this.commonService.convertSecondsToDhms(input, 'Minutes');
   }
 
   addFormSubmit() {

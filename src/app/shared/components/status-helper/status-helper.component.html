@@ -1,15 +1,15 @@
 <span class="d-flex align-items-center" [ngSwitch]="loanStatus">
-    <small class="status default" *ngSwitchCase="'Pending'">Pending</small>
-    <small class="status danger" *ngSwitchCase="'NotEligible'">Not Eligible</small>
-    <small class="status waiting" *ngSwitchCase="'PendingCreditCheck'">Awaiting Credit Check</small>
-    <small class="status waiting" *ngSwitchCase="'AwaitingDocumentation'">Awaiting Documentation</small>
-    <small class="status waiting" *ngSwitchCase="'PendingVerification'">Pending Verification</small>
-    <small class="status waiting" *ngSwitchCase="'AwaitingApproval'">Awaiting Approval</small>
-    <small class="status completed" *ngSwitchCase="'Approved'">Approved</small>
-    <small class="status completed" *ngSwitchCase="'Disbursed'">Disbursed</small>
-    <small class="status completed" *ngSwitchCase="'RepaymentOngoing'">Repayment Ongoing</small>
-    <small class="status default" *ngSwitchCase="'CompleteRepayment'">Complete Repayment</small>
-    <small class="status danger" *ngSwitchCase="'Cancelled'">Cancelled</small>
-    <small class="status danger" *ngSwitchCase="'Rejected'">Rejected</small>
-    <small class="status default" *ngSwitchDefault>Unknow</small>
+    <nz-tag class="status default" *ngSwitchCase="'Pending'">Pending</nz-tag>
+    <nz-tag class="status danger" *ngSwitchCase="'NotEligible'">Not Eligible</nz-tag>
+    <nz-tag class="status waiting" *ngSwitchCase="'PendingCreditCheck'">Awaiting Credit Check</nz-tag>
+    <nz-tag class="status waiting" *ngSwitchCase="'AwaitingDocumentation'">Awaiting Documentation</nz-tag>
+    <nz-tag class="status waiting" *ngSwitchCase="'PendingVerification'">Pending Verification</nz-tag>
+    <nz-tag class="status waiting" *ngSwitchCase="'AwaitingApproval'">Awaiting Approval</nz-tag>
+    <nz-tag class="status completed" *ngSwitchCase="'Approved'">Approved</nz-tag>
+    <nz-tag class="status completed" *ngSwitchCase="'Disbursed'">Disbursed</nz-tag>
+    <nz-tag class="status completed" *ngSwitchCase="'RepaymentOngoing'">Repayment Ongoing</nz-tag>
+    <nz-tag class="status default" *ngSwitchCase="'CompleteRepayment'">Complete Repayment</nz-tag>
+    <nz-tag class="status danger" *ngSwitchCase="'Cancelled'">Cancelled</nz-tag>
+    <nz-tag class="status danger" *ngSwitchCase="'Rejected'">Rejected</nz-tag>
+    <nz-tag class="status default" *ngSwitchDefault>Unknow</nz-tag>
 </span>

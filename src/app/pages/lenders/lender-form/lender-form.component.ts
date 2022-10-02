@@ -55,7 +55,6 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       loanApplicationUrl: new FormControl(null, [Validators.pattern(reg)]),
       countryId: new FormControl(0, Validators.required),
       stateId: new FormControl(0),
-      address: new FormControl(''),
       hasWebApp: new FormControl(false),
       hasMobileApp: new FormControl(false),
       facebookUrl: new FormControl(null, [Validators.pattern(`^.*(?:facebook\.com|fb\.me).*$`)]),
@@ -66,7 +65,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       apiActivated: new FormControl(false),
       averageRating: new FormControl(0),
       loanTypes: new FormArray([]),
-      lenderFeatures: new FormControl([])
+      lenderFeatures: new FormControl([]),
     });
 
     if (this.formData) {

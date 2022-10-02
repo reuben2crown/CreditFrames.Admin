@@ -1,1 +1,98 @@
-<p>loans works!</p>
+<nz-page-header class="site-page-header" nzTitle="Loan Management"
+    nzSubtitle="This is where you can access all loans from the customers">
+    <nz-page-header-extra>
+        <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+            <i nz-icon nzType="download"></i>
+            Download
+            <i nz-icon nzType="down"></i>
+        </button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item>
+                    <a (click)="download('csv')" ngbDropdownItem>CSV</a>
+                </li>
+                <li nz-menu-item>
+                    <a (click)="download('excel')" ngbDropdownItem>Excel</a>
+                </li>
+                <li nz-menu-item>
+                    <a (click)="download('json')" ngbDropdownItem>JSON</a>
+                </li>
+            </ul>
+        </nz-dropdown-menu>
+    </nz-page-header-extra>
+
+    <nz-page-header-content>
+        <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="10">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Enter your search keyword">
+                            <nz-input-group nzPrefixIcon="user">
+                                <input [(ngModel)]="pageQuery.searchKeyword" nz-input class="ant-input"
+                                    placeholder="Search..." [ngModelOptions]="{standalone: true}" />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Select your search date">
+                            <nz-range-picker [nzRanges]="dateRange" ngModel [ngModelOptions]="{standalone: true}"
+                                (ngModelChange)="onDateChange($event)"></nz-range-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col [nzSpan]="6">
+                    <nz-form-item>
+                        <nz-form-control>
+                            <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
+                        </nz-form-control> &nbsp;
+                        <nz-form-control>
+                            <button nz-button type="button" (click)="clear()">Clear</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </nz-page-header-content>
+
+</nz-page-header>
+
+<nz-table #loanTable #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="dataList" [nzLoading]="loading"
+    nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount" [nzPageSize]="pageQuery?.pageSize"
+    [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber" (nzQueryParams)="pageChanged($event)">
+    <thead>
+        <tr>
+            <th>S/N</th>
+            <th nowrap>Date</th>
+            <th nowrap>Customer Name</th>
+            <th nowrap>Loan Type</th>
+            <th nowrap>Amount</th>
+            <th>Lender</th>
+            <th>Status</th>
+            <th>...</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of loanTable.data; let i = index;">
+          <td>{{ (loanTable.nzPageIndex - 1) * loanTable.nzPageSize + i + 1 }}</td>
+            <td>
+                {{ data.createdDate | date: 'd-MMM-yyyy' }}
+                <small style="display:block;">{{ data.createdDate | date: 'h:mm a' }}</small>
+            </td>
+            <td>
+                {{ data?.user?.firstName + ' ' + data?.user?.lastName }}
+                <small style="display:block;">{{data?.user?.emailAddress}}</small>
+            </td>
+            <td>{{ data?.loanType?.name }}</td>
+            <td>{{ data.loanAmount | currency: data?.currencyCode || '&#8358;' }}</td>
+            <td>{{ data?.lender?.lenderName }}</td>
+            <td><loan-status-helper [loanStatus]="data.loanStatus"></loan-status-helper></td>
+            <td>
+                <button nz-button nzType="primary" (click)="openForm(data)" nzTooltipTitle="View Loan Details"
+                    [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> Details </button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

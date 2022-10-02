@@ -18,15 +18,10 @@ export class LoanService {
   constructor(public resource: ResourceService) {
   }
 
-  public getAll = (onlyActive = false): Observable<LoanModel[]> => {
-    this.setActionUrl(`/?onlyActive=${onlyActive}`);
-    return this.resource.getAll<LoanModel[]>();
+  public getPaged(query: QueryParams): Observable<PagedList<LoanModel>> {
+    this.setActionUrl();
+    return this.resource.getPagedList<LoanModel>(query);
   }
-
-  // public getPaged(query: QueryParams): Observable<PagedList<LoanModel>> {
-  //   this.setActionUrl();
-  //   return this.resource.getPagedList<LoanModel>(query);
-  // }
 
   public getById = (id: number): Observable<LoanModel> => {
     this.setActionUrl();
@@ -37,6 +32,12 @@ export class LoanService {
     this.setActionUrl(`/GetByUser/${userId}`);
     return this.resource.getPagedList<LoanModel>(query);
   }
+
+  public export = (query: QueryParams, exportType: string = 'csv', reportType: 'all' | 'summary' = 'all'): Observable<any> => {
+    var isSummary = (reportType == 'summary');
+    this.setActionUrl(`/Export/?exportType=${exportType}&isSummary=${isSummary}`);
+    return this.resource.downloadFile(query);
+  };
 
   public post = (model: LoanModel): Observable<DataResponseModel<LoanModel>> => {
     this.setActionUrl();

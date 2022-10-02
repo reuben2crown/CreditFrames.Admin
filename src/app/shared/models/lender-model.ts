@@ -1,4 +1,6 @@
 import { BaseModel } from "./base-model";
+import { CountryModel } from "./country-model";
+import { StateModel } from "./state-model";
 
 export class LenderModel extends BaseModel {
     public lenderName: string;
@@ -9,7 +11,9 @@ export class LenderModel extends BaseModel {
     public website: string;
     public loanApplicationUrl: string;
     public countryId: number;
+    public country: CountryModel;
     public stateId?: number;
+    public state: StateModel;
     public hasWebApp: boolean;
     public hasMobileApp: boolean;
     public averageRating: number;
@@ -17,13 +21,16 @@ export class LenderModel extends BaseModel {
     public twitterUrl: string;
     public instagramUrl: string;
     public linkedinUrl: string;
-    public loanTypes: LenderLoanType[] = [];
-    public features: LenderFeatureItemModel[] | string[] = [];
-   
-    public rank: number;
-    public score: number;
     public isActive: boolean;
     public apiActivated: boolean;
+
+    public minimumLoanAmount: number;
+    public maximumLoanAmount: number;
+    public turnAroundTimeInMinute: number;
+
+    public loanTypes: LenderLoanType[] = [];
+    public features: LenderFeatureItemModel[] | string[] = [];
+    public ratings: RatingModel[];
 }
 
 export class LenderFeatureItemModel {
@@ -37,15 +44,24 @@ export class LenderLoanType extends BaseModel {
     public lenderId: number;
     public loanTypeId: number;
     public loanTypeName: string;
+    public lender: LenderModel;
     public minimumLoanAmount: number;
     public maximumLoanAmount: number;
     public returnCustomerAmount: number;
-    public averageLoanTenor: number;
-    public averageInterestRate: number;
-    public repaymentTimeFrame: string;
+    public minimumInterestRate: number;
+    public maximumInterestRate: number;
+    public minimumLoanTenor: number;
+    public maximumLoanTenor: number;
     public moratoriumPeriod: number;
-    public turnAroundTimeInMinute: number;
+    public minTurnAroundTimeInMinute: number;
+    public maxTurnAroundTimeInMinute: number;
     public requirements: string;
+    public eligiblityCriteria: string;
     public security: string;
     public score: number;
+    public rank: number;
+}
+
+export class RatingModel {
+
 }

@@ -2,11 +2,11 @@ import { RequestStatusEnum } from './enums';
 import { BaseModel } from './base-model';
 import { LenderModel } from './lender-model';
 import { LoanTypeModel } from './loan-type-model';
-import { UserFormModel } from './user-model';
+import { UserModel } from './user-model';
 
 export class LoanModel extends BaseModel {
   public userId: number;
-  public user: UserFormModel;
+  public user: UserModel;
   public loanTypeId: number;
   public loanType: LoanTypeModel;
   public lenderId: number;
@@ -32,7 +32,7 @@ export class LoanModel extends BaseModel {
   public requestChannel: string;
   public submittedBy: string;
   public brokerCode: string;
-  public loanStatus: string;
+  public loanStatus: string | RequestStatusEnum;
   public loanProcessor: string;
   public overdueBalance: number;
 }

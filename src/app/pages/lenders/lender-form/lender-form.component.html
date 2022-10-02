@@ -200,8 +200,8 @@
               <td>{{item.loanTypeName}}</td>
               <td>{{(item.minimumLoanAmount || 0) | currency: selectedCountry?.currencyCode: '&#8358;'}} /
                 {{(item.maximumLoanAmount || 0) | currency: selectedCountry?.currencyCode: '&#8358;'}}</td>
-              <td>{{item.averageInterestRate}}%</td>
-              <td>{{item.averageLoanTenor}}</td>
+              <td>{{item.minimumInterestRate}}% - {{item.maximumInterestRate}}%</td>
+              <td>{{item.minimumLoanTenor}} Month(s) - {{item.maximumLoanTenor}} Month(s)</td>
               <td>
                 <button type="button" nz-button nzType="primary" (click)="openLoanTypeForm(item)"
                   nzTooltipTitle="Update" nz-tooltip> <i nz-icon nzType="form"></i> </button>
@@ -218,7 +218,7 @@
                 <nz-descriptions-item nzTitle="Return Customer Amount">{{item.returnCustomerAmount}}
                 </nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Repayment TimeFrame">{{item.repaymentTimeFrame}}</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Moratorium Period">{{item.moratoriumPeriod}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="Moratorium Period">{{item.moratoriumPeriod}} Month(s)</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="TurnAround Time">{{item.turnAroundTimeInMinute}} Minutes
                 </nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Security">{{item.security}}</nz-descriptions-item>
