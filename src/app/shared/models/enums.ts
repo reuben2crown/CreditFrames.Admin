@@ -51,3 +51,28 @@ export enum LoanSecurityEnum
     Guarantor,
     Asset
 }
+
+export enum LoanRequirementEnum
+{
+    // [Display(Name = "Smart Phone")]
+    SmartPhone = 1,
+    // [Display(Name = "Bank Statement")]
+    BankStatement,
+    // [Display(Name = "Debit Card")]
+    DebitCard,
+    // [Display(Name = "Utility Bill")]
+    UtilityBill,
+    // [Display(Name = "Government ID")]
+    GovtID,
+    // [Display(Name = "Account Domicile")]
+    AccountDomicile
+}
+
+export const LoanRequirementLabel = new Map<string, string>([
+  [LoanRequirementEnum[LoanRequirementEnum.SmartPhone], 'Smart Phone'],
+  [LoanRequirementEnum[LoanRequirementEnum.BankStatement], 'Bank Statement'],
+  [LoanRequirementEnum[LoanRequirementEnum.DebitCard], 'Debit Card'],
+  [LoanRequirementEnum[LoanRequirementEnum.UtilityBill], 'Utility Bill'],
+  [LoanRequirementEnum[LoanRequirementEnum.GovtID], 'Government ID'],
+  [LoanRequirementEnum[LoanRequirementEnum.AccountDomicile], 'Account Domicile']
+]);

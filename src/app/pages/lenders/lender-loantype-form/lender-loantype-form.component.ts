@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
-import { AuthTokenModel, AuthUserData, CommonService, CountryModel, LenderService, LoanSecurityEnum } from 'src/app/shared';
+import { AuthTokenModel, AuthUserData, CommonService, CountryModel, LenderService, LoanRequirementEnum, LoanRequirementLabel, LoanSecurityEnum } from 'src/app/shared';
 import { LenderLoanType } from 'src/app/shared/models/lender-model';
 import { LoanTypeModel } from 'src/app/shared/models/loan-type-model';
 
@@ -20,6 +20,7 @@ export class LenderLoantypeFormComponent implements OnInit {
   loading: boolean;
   loanTypeList: LoanTypeModel[] = [];
   loanSecurityEnum: typeof LoanSecurityEnum = LoanSecurityEnum;
+  loanRequirementEnum: typeof LoanRequirementEnum = LoanRequirementEnum;
 
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate?: TemplateRef<{
     $implicit: { value: LenderLoanType };
@@ -35,6 +36,14 @@ export class LenderLoantypeFormComponent implements OnInit {
       this.getData();
     }
     this.user = this.authData.getUserData();
+  }
+
+  getDisplayName(input: LoanRequirementEnum | string | any) {
+    if (input) {
+      return LoanRequirementLabel.get(input);
+    }
+    
+    return null;
   }
 
   close(): void {
