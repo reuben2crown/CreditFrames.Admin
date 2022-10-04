@@ -6,6 +6,7 @@ import { CustomersComponent } from './customers.component';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 import { PageProviderModule } from 'src/app/modules/page-provider.module';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { StatusHelperModule } from 'src/app/shared';
 
 @NgModule({
   declarations: [CustomersComponent, CustomerDetailComponent],
@@ -13,7 +14,8 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     CommonModule,
     CustomersRoutingModule,
     PageProviderModule,
-    NzTabsModule
+    NzTabsModule,
+    StatusHelperModule
   ]
 })
 export class CustomersModule { }

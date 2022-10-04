@@ -6,7 +6,7 @@
                 Personal Details
             </ng-template>
 
-            <p class="title" style=" margin-bottom: 24px;">User Info: <strong>{{data?.phoneNumber}}</strong></p>
+            <p class="title" style=" margin-bottom: 24px;">User Info: <strong>{{data?.emailAddress}}</strong></p>
             <nz-descriptions [nzColumn]="2" nzTitle="Personal">
                 <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">{{data?.firstName ? data?.firstName + ' ' +
                     data?.lastName : 'N/A'}}</nz-descriptions-item>
@@ -29,13 +29,13 @@
                 Loan History
             </ng-template>
 
-            <nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="loanHistory"
+            <nz-table #loanTable nzBordered #rowSelectionTable nzShowPagination [nzData]="loanHistory"
                 [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount"
                 [nzPageSize]="pageQuery?.pageSize" [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber"
-                (nzQueryParams)="pageChanged($event)" [nzScroll]="{ x: '1100px' }">
+                (nzQueryParams)="pageChanged($event)" [nzScroll]="{ x: '185px' }">
                 <thead>
                     <tr>
-                        <th nowrap>S/N</th>
+                        <th style="width: 85px;">S/N</th>
                         <th>Date</th>
                         <th>Loan Type</th>
                         <th nowrap>Amount</th>
@@ -46,15 +46,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of loanHistory; let i = index;" [ngClass]="{'red': !data.isCompleted}">
-                        <td>{{ (basicTable.nzPageIndex - 1) * basicTable.nzPageSize + i + 1 }}</td>
-                        <td nowrap>{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
-                        <td>{{ data.loanTypeName || 'N/A' }}</td>
-                        <td>{{ data.amount | currency: (data.currency || '&#8358;') }}</td>
-                        <td>{{ data.lenderName }}</td>
-                        <td>{{ data.referenceNumber }}</td>
+                    <tr *ngFor="let data of loanTable.data; let i = index;">
+                        <td>{{ (loanTable.nzPageIndex - 1) * loanTable.nzPageSize + i + 1 }}</td>
+                        <td nowrap>
+                            {{ data.createdDate | date: 'd-MMM-yyyy' }}
+                            <small style="display:block;">{{ data.createdDate | date: 'h:mm a' }}</small></td>
+                        <td>{{ data.loanType?.name || 'N/A' }}</td>
+                        <td nowrap>{{ data.loanAmount | currency: (data.currencyCode || '&#8358;') }}</td>
+                        <td>{{ data.lender?.lenderName }}</td>
+                        <td>{{ data.referenceNumber || 'N/A' }}</td>
                         <td>
-                            <nz-tag [nzColor]="data.isCompleted ? '#87d068' : '#f50'">{{ data.isCompleted ? 'Paid' : 'Unpaid' }}</nz-tag>
+                            <status-helper [loanStatus]="data.loanStatus"></status-helper>
                         </td>
                         <!-- <td>
                             <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details" nzTooltipPlacement="topRight" nz-tooltip> <i nz-icon nzType="eye"></i> </button>
@@ -70,25 +72,27 @@
                 Search History
             </ng-template>
 
-            <nz-table #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="searchHistory"
+            <nz-table #searchTable nzBordered #rowSelectionTable nzShowPagination [nzData]="searchHistory"
                 [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount"
                 [nzPageSize]="pageQuery?.pageSize" [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber"
                 (nzQueryParams)="pageChanged($event)">
                 <thead>
                     <tr>
-                        <th>S/N</th>
-                        <th nowrap>Date</th>
+                        <th style="width: 85px;">S/N</th>
                         <th>Loan Type</th>
                         <th>Amount</th>
+                        <th>Retry</th>
+                        <th nowrap>Last Trial</th>
                         <!-- <th>...</th> -->
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of searchHistory; let i = index;">
-                        <td>{{ (basicTable.nzPageIndex - 1) * basicTable.nzPageSize + i + 1 }}</td>
-                        <td nowrap>{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
-                        <td>{{ data.loanTypeName }}</td>
-                        <td>{{ data.amount | currency: (data.currency || '&#8358;') }}</td>
+                    <tr *ngFor="let data of searchTable.data; let i = index;">
+                        <td>{{ (searchTable.nzPageIndex - 1) * searchTable.nzPageSize + i + 1 }}</td>
+                        <td>{{ data.loanType?.name || 'N/A' }}</td>
+                        <td nowrap>{{ data.loanAmount | currency: (data.currencyCode || '&#8358;') }}</td>
+                        <td>{{ data.trialCount }} Times</td>
+                        <td nowrap>{{ (data.lastTrialDate || data.createdDate) | date: 'd-MMM-yyyy h:mm a' }}</td>
                         <!-- <td>
                             <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details"
                                 nzTooltipPlacement="topRight" nz-tooltip> <i nz-icon nzType="eye"></i>

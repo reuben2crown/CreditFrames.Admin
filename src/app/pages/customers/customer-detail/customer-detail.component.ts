@@ -73,10 +73,10 @@ export class CustomerDetailComponent implements OnInit {
     this.pagination = new PagedList<any>();
     this.tabIndex = index;
     if (index == 1) {
-      this.getSearchHistory();
+      this.getLoans();
     }
     if (index == 2) {
-      this.getLoans();
+      this.getSearchHistory();
     }
   }
   
@@ -84,14 +84,11 @@ export class CustomerDetailComponent implements OnInit {
     const { pageSize, pageIndex, sort, filter } = params;
     this.pageQuery.pageNumber = pageIndex; // || this.pageQuery.pageNumber;
     this.pageQuery.pageSize = pageSize; // || this.pageQuery.pageSize;
-    if (!this.pageQuery.pageNumber) {
-      // this.pageQuery.pageNumber = 1;
-      if (this.tabIndex == 1) {
-        this.getSearchHistory();
-      }
-      if (this.tabIndex == 2) {
-        this.getLoans();
-      }
+    if (this.tabIndex == 1) {
+      this.getLoans();
+    }
+    if (this.tabIndex == 2) {
+      this.getSearchHistory();
     }
   }
 

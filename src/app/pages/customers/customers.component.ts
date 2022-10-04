@@ -66,7 +66,7 @@ export class CustomersComponent implements OnInit {
       const drawerRef = this.drawerService.create<CustomerDetailComponent, { value: string }, string>({
         nzTitle: 'Customer Details',
         nzContent: CustomerDetailComponent,
-        nzWidth: 640,
+        nzWidth: 850,
         nzClosable: true,
         nzCloseOnNavigation: true,
         nzContentParams: {
