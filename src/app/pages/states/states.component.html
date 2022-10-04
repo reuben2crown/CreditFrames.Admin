@@ -48,7 +48,7 @@
 
 </nz-page-header>
 
-<nz-table #basicTable #borderedTable nzBordered [nzData]="dataList" [nzLoading]="loading">
+<nz-table #basicTable nzBordered [nzData]="dataList" [nzLoading]="loading">
     <thead>
         <tr>
             <th>S/N</th>
@@ -68,7 +68,7 @@
                 <nz-tag [nzColor]="data.isActive ? 'green' : 'red'">{{ data.isActive ? 'Active' : 'Inactive' }}</nz-tag>
             </td>
             <td>{{ data.lastModifiedBy || data.createdBy }}</td>
-            <td nowrap>{{ data.updatedDate || data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
+            <td nowrap>{{ data.lastModifiedDate || data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
             <td nowrap>
                 &nbsp;
                 <button nz-button nzType="primary" (click)="openForm(data)" nzTooltipTitle="Edit" nz-tooltip> <i nz-icon

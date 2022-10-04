@@ -1,7 +1,11 @@
-export class LoanTypeModel {
-    public id: number;
+import { BaseModel } from "./base-model";
+
+export class LoanTypeModel extends BaseModel {
     public name: string;
     public isActive: boolean;
-    public createdBy: string;
-    public lastModifiedBy: string;
+}
+
+export class LoanTypeItemModel {
+    public id: number;
+    public name: string;
 }

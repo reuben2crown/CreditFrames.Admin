@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LoginModel, ReissueTokenModel, LoginResponseModel, ChangePasswordModel, PasswordResetModel, ForgotPasswordModel, AccountVerificationModel, ResendVerificationModel, ValidateTokenModel } from '../models/login-model';
-import { from, Observable, throwError } from 'rxjs';
+import { LoginModel, ReissueTokenModel, LoginResponseModel, ChangePasswordModel, PasswordResetModel, ForgotPasswordModel, AccountVerificationModel, ResendVerificationModel, Validate2FATokenModel } from '../models/login-model';
+import { from, Observable } from 'rxjs';
 import { ResourceService } from './resource.service';
 import { AuthUserData } from '../common/auth-data';
 // import { IpAddressService } from './ipaddress.service';
@@ -13,96 +13,96 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private endpoint = 'Auth';
+  // private endpoint = 'Auth';
   private deviceId: string;
 
   constructor(
     public resource: ResourceService,
     // private ipservice: IpAddressService
   ) {
-    this.resource.endpoint = this.endpoint;
+    // this.resource.endpoint = this.endpoint;
   }
 
   public login = (model: LoginModel): Observable<DataResponseModel<LoginResponseModel>> => {
-    this.setActionUrl('/Login');
+    this.setActionUrl('/Login', 'Auth');
     return from(this.getDeviceId())
-    .pipe(mergeMap((deviceId) => {
-      if (deviceId) {
-        model.deviceId = deviceId;
-      }
+      .pipe(mergeMap((deviceId) => {
+        if (deviceId) {
+          model.deviceId = deviceId;
+        }
 
-      // var encryptedData = JSON.stringify(model)
-      // const headers = new HttpHeaders().append('Accept-Auth', encryptedData);
+        // var encryptedData = JSON.stringify(model)
+        // const headers = new HttpHeaders().append('Accept-Auth', encryptedData);
 
-      return this.resource.post<DataResponseModel<LoginResponseModel>>(model); //, headers
-    }));
+        return this.resource.post<DataResponseModel<LoginResponseModel>>(model); //, headers
+      }));
   }
 
-  public validateToken = (model: ValidateTokenModel): Observable<DataResponseModel<LoginResponseModel>> => {
-    this.setActionUrl('/ValidateToken');
+  public validate2FAToken = (model: Validate2FATokenModel): Observable<DataResponseModel<LoginResponseModel>> => {
+    this.setActionUrl('/Validate2FAToken', 'Auth');
     return from(this.getDeviceId())
-    .pipe(mergeMap((deviceId) => {
-      if (deviceId) {
-        model.deviceId = deviceId;
-      }
-      return this.resource.post<DataResponseModel<LoginResponseModel>>(model);
-    }));
+      .pipe(mergeMap((deviceId) => {
+        if (deviceId) {
+          model.deviceId = deviceId;
+        }
+        return this.resource.post<DataResponseModel<LoginResponseModel>>(model);
+      }));
   }
 
   public reissue_token(token: string, refreshToken: string): Observable<LoginResponseModel> {
-    this.setActionUrl('/RefreshToken');
+    this.setActionUrl('/RefreshToken', 'Auth');
     const model: ReissueTokenModel = {
       // token: token,
       refreshToken: refreshToken
     }
     return from(this.getDeviceId())
-    .pipe(mergeMap((deviceId) => {
-      if (deviceId) {
-        model.deviceId = deviceId;
-      }
-      return this.resource.post<LoginResponseModel>(model);
-    }));
+      .pipe(mergeMap((deviceId) => {
+        if (deviceId) {
+          model.deviceId = deviceId;
+        }
+        return this.resource.post<LoginResponseModel>(model);
+      }));
   }
 
   public changePassword = (model: ChangePasswordModel): Observable<ResponseModel> => {
-    this.setActionUrl(`/ChangePassword`);
+    this.setActionUrl(`/ChangePassword`, 'PasswordManagers');
     return this.resource.post<any>(model);
   };
 
-  public forgotPassword = (model: ForgotPasswordModel): Observable<any> => {
-        this.setActionUrl(`/ForgotPassword`);
+  public initiatePasswordReset = (model: ForgotPasswordModel): Observable<any> => {
+    this.setActionUrl(`/InitiatePasswordReset`, 'PasswordManagers');
     return this.resource.post<any>(model);
   };
 
-  public confirmPasswordReset = (model: PasswordResetModel): Observable<any> => {
-    this.setActionUrl(`/ConfirmPasswordReset`);
+  public completePasswordReset = (model: PasswordResetModel): Observable<any> => {
+    this.setActionUrl(`/CompletePasswordReset`, 'PasswordManagers');
     return this.resource.post<any>(model);
   };
 
   public verifyAccount = (model: AccountVerificationModel): Observable<any> => {
-    this.setActionUrl(`/VerifyAccount`);
+    this.setActionUrl(`/VerifyAccount`, 'Verifications');
     return this.resource.post<any>(model);
   };
 
   public checkIfEmailExist = (item: {}): Observable<any> => {
-    this.setActionUrl(`/CheckIfEmailExist`); //, 'Onboarding'
+    this.setActionUrl(`/CheckIfEmailExist`, 'Verifications'); //, 'Onboarding'
     return this.resource.post<any>(item);
   };
 
   public resendVerication = (model: ResendVerificationModel): Observable<any> => {
-    this.setActionUrl(`/ResendVerification`);
+    this.setActionUrl(`/ResendVerification`, 'Verifications');
     return this.resource.post<any>(model);
   };
 
   public logout = (): Observable<any> => {
-    this.setActionUrl(`/Logout`);
+    this.setActionUrl(`/Logout`, 'Auth');
     return this.resource.post<any>(null);
   };
 
-  private setActionUrl(path = ''): void { // , microservice: 'Onboarding' | 'UserSecurity' | 'Trips' = 'UserSecurity'
+  private setActionUrl(path = '', baseEndpoint: 'Auth' | 'PasswordManagers' | 'Verifications'): void { // , microservice: 'Onboarding' | 'UserSecurity' | 'Trips' = 'UserSecurity'
     // this.resource.microservice = microservice;
     this.resource.setBaseUrl();
-    this.resource.endpoint = this.endpoint + path;
+    this.resource.endpoint = baseEndpoint + path;
   }
 
   public getDeviceId = async () => {
@@ -133,10 +133,10 @@ export class RefreshTokenService {
     if (!refresh_token || !token) {
       return null;
     }
-    
+
     try {
       let response = await this.authService.reissue_token(token, refresh_token).toPromise();
-      if(response){
+      if (response) {
         if (response && response.accessToken) {
           this._authData.saveLogin(response);
           return response.accessToken;

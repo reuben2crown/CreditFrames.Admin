@@ -8,7 +8,7 @@ export class LoginModel {
   public deviceId?: string;
 }
 
-export class ValidateTokenModel {
+export class Validate2FATokenModel {
   public username: string;
   public tokenCode: string; // Generated Token Code
   public deviceId?:string;
@@ -18,6 +18,7 @@ export class ValidateTokenModel {
 
 export class ForgotPasswordModel {
   public emailAddress: string;
+  public channel: string;
 }
 
 export class ChangePasswordModel {

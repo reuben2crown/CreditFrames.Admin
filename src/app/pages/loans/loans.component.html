@@ -59,7 +59,7 @@
 
 </nz-page-header>
 
-<nz-table #loanTable #borderedTable nzBordered #rowSelectionTable nzShowPagination [nzData]="dataList" [nzLoading]="loading"
+<nz-table #loanTable #basicTable nzBordered #rowSelectionTable nzShowPagination [nzData]="dataList" [nzLoading]="loading"
     nzShowSizeChanger [nzFrontPagination]="false" [nzTotal]="pagination?.totalCount" [nzPageSize]="pageQuery?.pageSize"
     [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber" (nzQueryParams)="pageChanged($event)">
     <thead>

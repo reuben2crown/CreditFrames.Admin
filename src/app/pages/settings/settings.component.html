@@ -44,7 +44,7 @@
                 <td nowrap>{{ data.key }}</td>
                 <td>{{ data.value }}</td>
                 <td>{{ data.editorName }}</td>
-                <td nowrap>{{ data.updatedDate || data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
+                <td nowrap>{{ data.lastModifiedDate || data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
                 <td><a (click)="startEdit(data.id)" [ngClass]="{'disabled': !data.isEditable}">Edit</a></td>
             </ng-container>
             <ng-template #editTemplate>

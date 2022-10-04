@@ -56,19 +56,19 @@ export class UserService {
         if (result) {
           model.ipAddress = result.ip;
         }
-        this.setActionUrl(`/CreateAdmin`);
+        this.setActionUrl(`/`);
         return this.resource.post<any>(model);
       })
     );
   }
 
   public update = (id: number, model: UserFormModel): Observable<ResponseModel> => {
-    this.setActionUrl(`/UpdateUser`);
+    this.setActionUrl(`/`);
     return this.resource.put<any>(id, model);
   }
 
   public delete = (id: number): Observable<any> => {
-    this.setActionUrl(`/DeleteUser`);
+    this.setActionUrl(`/`);
     return this.resource.delete(id);
   }
 

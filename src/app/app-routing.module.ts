@@ -14,6 +14,20 @@ const routes: Routes = [
     loadChildren: () => import('./auth/password-reset-form/password-reset-form.module').then(m => m.PasswordResetFormModule)
   },
   { path: 'users', loadChildren: () => import('./pages/users/users.module').then(m => m.UsersModule), canActivate: [AuthGuard], data: { title: 'Manage Users'} },
+  {
+    path: 'roles',
+    loadChildren: () => import('./pages/roles/roles.module').then(m => m.RolesModule),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+    data: { title: 'Manage Role' } //, permissions: ['manage:role']
+  },
+  {
+    path: 'permissions',
+    loadChildren: () => import('./pages/permissions/permissions.module').then(m => m.PermissionsModule),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+    data: { title: 'Manage Permissions' }, // , permissions: ['manage:permission']
+  },
   { path: 'audit-logs', loadChildren: () => import('./pages/audit-log/audit-log.module').then(m => m.AuditLogModule), canActivate: [AuthGuard], data: { title: 'Audit History'} },
   { path: 'customers', loadChildren: () => import('./pages/customers/customers.module').then(m => m.CustomersModule), canActivate: [AuthGuard], data: { title: 'Customers'} },
   { path: 'settings', loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsModule), canActivate: [AuthGuard], data: { title: 'Settings'} },

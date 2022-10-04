@@ -47,7 +47,7 @@ export class PasswordResetFormComponent implements OnInit {
       this.loading = true;
       this.commonService.showLoading();
       this.passwordResetData = this.passwordResetForm.value;
-      this.authService.confirmPasswordReset(this.passwordResetData).subscribe(response => {
+      this.authService.completePasswordReset(this.passwordResetData).subscribe(response => {
         if (response && response.status) {
           this.commonService.showToastSuccess(response.message);
           this.router.navigate(['/login']);

@@ -119,7 +119,7 @@ export class LoginComponent implements OnInit {
       this.submitted = true;
       this.commonService.showLoading();
       this.recoveryFormData = this.recoveryForm.value;
-      this.authService.forgotPassword(this.recoveryFormData).subscribe(response => {
+      this.authService.initiatePasswordReset(this.recoveryFormData).subscribe(response => {
         if (response) {
           if (response.status) {
             this.commonService.showToastSuccess(response.message);

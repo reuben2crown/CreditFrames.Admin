@@ -1,82 +1,182 @@
 <form nz-form [formGroup]="requestForm" (ngSubmit)="onFormSubmit()">
-  <div nz-row [nzGutter]="8">
+    
+  <div nz-row class="row" [nzGutter]="8" *ngIf="!id || (id && !showPassword)">
     <div nz-col nzSpan="12">
       <nz-form-item>
-        <nz-form-label>First Name</nz-form-label>
-        <nz-form-control nzErrorTip="Firstname is required!">
+        <nz-form-label nzRequired nzFor="roleId">Role</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="Role is required!">
+            <nz-select id="roleId" nzShowSearch nzAllowClear formControlName="roleId" nzPlaceHolder="Select A Role" autocorrect="off" autocapitalize="none" (ngModelChange)="getRolePermissions($event)">
+                <nz-option *ngFor="let item of roleList" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+            </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div nz-row class="row" [nzGutter]="8">
+    <div nz-col nzSpan="12">
+      <nz-form-item>
+        <nz-form-label nzRequired nzFor="firstName">First Name</nz-form-label>
+        <nz-form-control nzHasFeedback nzErrorTip="Firstname is required!">
           <nz-input-group nzPrefixIcon="user">
-            <input nz-input formControlName="firstName" placeholder="please enter user first name" />
+            <input id="firstName" nz-input formControlName="firstName" placeholder="please enter user first name" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
     </div>
     <div nz-col nzSpan="12">
       <nz-form-item>
-        <nz-form-label>Last Name</nz-form-label>
-        <nz-form-control nzErrorTip="Lastname is required!">
+        <nz-form-label nzRequired nzFor="lastName">Last Name</nz-form-label>
+        <nz-form-control nzHasFeedback nzErrorTip="Lastname is required!">
           <nz-input-group nzPrefixIcon="user">
-            <input nz-input formControlName="lastName" placeholder="please enter user last name" />
+            <input id="lastName" nz-input formControlName="lastName" placeholder="please enter user last name" />
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
     </div>
   </div>
 
-  <div nz-row [nzGutter]="8">
-    <div nz-col nzSpan="12">
-      <nz-form-item>
-        <nz-form-label>Email Address</nz-form-label>
-        <nz-form-control nzErrorTip="Please enter a valid email address!">
-          <nz-input-group nzPrefixIcon="mail">
-            <input type="email" nz-input formControlName="emailAddress" placeholder="Email Address" />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
+  <ng-container *ngIf="!id || (id && !showPassword)">
+    <div nz-row class="row" [nzGutter]="8">
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="email">Email Address</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please enter a valid email address!">
+            <nz-input-group nzPrefixIcon="mail">
+              <input id="email" type="email" nz-input formControlName="emailAddress" placeholder="Email Address" autocorrect="off" autocapitalize="none" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzFor="phoneNumber">Phone Number </nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please enter phone number!">
+            <nz-input-group nzPrefixIcon="phone">
+              <input id="phoneNumber" nz-input formControlName="phoneNumber" placeholder="Phone Number (Optional)" autocorrect="off" autocapitalize="none" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
     </div>
-    <div nz-col nzSpan="12">
-      <nz-form-item>
-        <nz-form-label>Phone Number </nz-form-label>
-        <nz-form-control nzErrorTip="Please enter phone number!">
-          <nz-input-group nzPrefixIcon="phone">
-            <input nz-input formControlName="phoneNumber" placeholder="Phone Number (Optional)" />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-    </div>
-  </div>
+    
+    <div nz-row class="row" [nzGutter]="8">
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label>Account Active</nz-form-label>
+            <nz-form-control>
+                <nz-switch formControlName="isActive"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
 
-  <nz-divider nzText="{{showPassword ? 'Hide' : 'Click here to'}} Change Password" class="pointer" nzOrientation="left" *ngIf="id" (click)="togglePassword()">
+      <div nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired nzTooltipTitle="Enable Two Factor Authentication">Enable 2FA</nz-form-label>
+          <nz-form-control>
+              <nz-switch formControlName="enable2FA"></nz-switch>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    
+    <ng-container *ngIf="id && !showPassword">
+
+      <div nz-row [nzGutter]="8">
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label>Block User</nz-form-label>
+            <nz-form-control>
+                <nz-switch formControlName="isBlocked"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row [nzGutter]="8">
+        <p>Reason for Block / Unblock User</p>
+        <div nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-control>
+              <textarea nz-input formControlName="blockedReason" rows="3"
+                placeholder="Why do you want to block/unblock this user?"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </ng-container>
+    
+  </ng-container>
+
+  <nz-divider nzText="{{showPassword ? 'Click to Exit' : 'Click here to'}} Change Password" class="pointer" nzOrientation="left" *ngIf="id" (click)="togglePassword()">
   </nz-divider>
 
   <div *ngIf="showPassword">
     <div class="note" *ngIf="id">
-      <nz-alert nzType="warning" nzMessage="Note: This action will only change the user password. It will not update the use information." nzShowIcon></nz-alert>
+      <nz-alert nzType="warning" nzMessage="Note: This action will only change the user password. It will not update the user information." nzShowIcon></nz-alert>
     </div>
-    <div nz-row [nzGutter]="8">
+    <div nz-row class="row" [nzGutter]="8">
       <div nz-col nzSpan="12">
         <nz-form-item>
-          <nz-form-label>Password</nz-form-label>
-          <nz-form-control nzErrorTip="Please enter a password!">
+          <nz-form-label nzRequired nzFor="password">Password</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Please enter a password!">
             <nz-input-group nzPrefixIcon="lock">
-              <input type="password" nz-input formControlName="password" placeholder="Enter Password" />
+              <input id="password" type="password" nz-input formControlName="password" autocorrect="off" autocapitalize="none" placeholder="Enter Password" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
       </div>
       <div nz-col nzSpan="12">
         <nz-form-item>
-          <nz-form-label>Password</nz-form-label>
-          <nz-form-control nzErrorTip="Please confirm your password!">
+          <nz-form-label nzRequired nzFor="confirmPassword">Confirm Password</nz-form-label>
+          <nz-form-control nzHasFeedback nzErrorTip="Password and Confirm password must match!">
             <nz-input-group nzPrefixIcon="lock">
-              <input type="password" nz-input formControlName="confirmPassword" placeholder="Confirm Password" />
+              <input id="confirmPassword" type="password" nz-input formControlName="confirmPassword" placeholder="Confirm Password" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
       </div>
     </div>
   </div>
+  
+  <div nz-row *ngIf="!id || (id && !showPassword)">
+    <div nz-col nzSpan="24">
+
+      <nz-divider nzText="Permissions" nzOrientation="left"></nz-divider>
+      <p style="border-bottom: 1px solid rgb(233, 233, 233);">
+        <label nz-checkbox [(ngModel)]="checkAll" (ngModelChange)="onCheckAll($event)" [ngModelOptions]="{ standalone : true }"  [nzIndeterminate]="indeterminate">
+          Check all
+        </label>
+      </p>
+
+      <div nz-col nzSpan="24" class="row">
+
+        <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="updateSingleChecked()">
+          <div nz-row formArrayName="permissions">
+              <div nz-col nzSpan="{{item.value.permissionName?.length > 25 ? 24 : 12}}" *ngFor="let item of permissionList.controls; let i=index" class="check-group">
+                  <ng-container [formGroupName]="i">
+                      <label title="{{ item.value.permissionName }}" nz-checkbox formControlName="isSelected">{{ item.value.permissionName }}</label>
+                  </ng-container>
+              </div>
+          </div>
+        </nz-checkbox-wrapper>
+
+        <div *ngIf="!permissionList.controls.length && !loading" class="col-12">
+          <p *ngIf="form.roleId.value" class="text-center">
+            There is no permission found on the selected role. Pls add some permissions to this role.
+          </p>
+
+          <p *ngIf="!form.roleId.value" class="text-center">
+            Pls select a role to see its available permissions.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <nz-form-item>
-    <nz-form-control [nzOffset]="6" [nzSpan]="12">
+    <nz-form-control [nzOffset]="2" [nzSpan]="12">
       <button nz-button nzType="primary" [nzLoading]="">{{id && showPassword ? 'Change Password' : 'Submit'}}</button>
     </nz-form-control>
   </nz-form-item>

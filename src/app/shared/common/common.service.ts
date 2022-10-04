@@ -99,6 +99,8 @@ export class CommonService {
       // FormControl
       if (control instanceof FormControl) {
         control.markAsTouched({ onlySelf: true });
+        control.markAsDirty({ onlySelf: true });
+        control.updateValueAndValidity({ onlySelf: true });
       }
 
       // FormGroup

@@ -104,7 +104,7 @@ export class SettingsComponent implements OnInit {
           this.commonService.showToastSuccess(response.message);
 
           model.value = formData.value;
-          model.updatedDate = new Date();
+          model.lastModifiedDate = new Date();
           model.editorName = formData.editorName;
           const index = this.dataList.findIndex(item => item.id === id);
           Object.assign(this.dataList[index], model);

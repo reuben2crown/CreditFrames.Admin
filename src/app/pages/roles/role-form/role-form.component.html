@@ -1,0 +1,45 @@
+<form nz-form [formGroup]="requestForm" (ngSubmit)="onFormSubmit()">
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Role Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Name is required!">
+            <input nz-input formControlName="name" placeholder="please enter Name" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-divider nzText="Permissions" nzOrientation="left"></nz-divider>
+      
+    <div nz-row>
+    
+        <p nz-col nzSpan="24">
+            <label *ngIf="itemId" nz-checkbox formControlName="updateUserAccess">
+                Tick this box if you want to update existing user access to the permission you check/uncheck
+                below
+            </label>
+        </p>
+
+        <div nz-col nzSpan="24" class="row">
+
+            <nz-checkbox-wrapper style="width: 100%;">
+                <div nz-row formArrayName="permissions">
+                    <div nz-col nzSpan="{{item.value.permissionName?.length > 25 ? 24 : 12}}" *ngFor="let item of permissionList.controls; let i=index" class="check-group">
+                        <ng-container [formGroupName]="i">
+                            <label title="{{ item.value.permissionName }}" nz-checkbox formControlName="isSelected">{{ item.value.permissionName }}</label>
+                        </ng-container>
+                    </div>
+                </div>
+            </nz-checkbox-wrapper>
+            
+            <p *ngIf="!permissionList.controls.length && !loading">
+                There is no permission found on the system. Pls setup some permissions on the permission page.
+            </p>
+        </div>
+    </div>
+
+    <nz-form-item nz-row class="register-area" style="margin-top: 20px;">
+        <nz-form-control [nzSpan]="14" [nzOffset]="2">
+            <button nz-button nzType="primary" [nzLoading]="loading">Submit</button>
+        </nz-form-control>
+    </nz-form-item>
+
+</form>

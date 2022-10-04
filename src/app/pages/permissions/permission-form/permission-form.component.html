@@ -1,0 +1,33 @@
+<form nz-form [formGroup]="requestForm" (ngSubmit)="onFormSubmit()">
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Name</nz-form-label>
+        <div nz-col [nzSm]="14" [nzXs]="24">
+            <nz-form-control nzHasFeedback nzErrorTip="Name is required!">
+                <input nz-input formControlName="name" placeholder="please enter Name" />
+            </nz-form-control>
+            <small class="display-block">Format: <em style="color: orangered">accessType:moduleName</em></small>
+        </div>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>Module</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24" nzErrorTip="Name is required!">
+            <input nz-input formControlName="module" placeholder="Module / Category" />
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24">Description</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24">
+            <textarea style="width: 100%;" class="form-control" formControlName="description" placeholder="Describe the Permission"></textarea>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary" [nzLoading]="loading">Submit</button>
+        </nz-form-control>
+    </nz-form-item>
+
+</form>

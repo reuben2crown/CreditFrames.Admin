@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, Validators, AbstractControl, FormArray } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
-import { AuthService, AuthTokenModel, AuthUserData, ChangePasswordModel, ChannelEnum, CommonService, DataResponseModel, UserModel, UserService } from 'src/app/shared';
+import { forkJoin } from 'rxjs';
+import { AuthService, AuthTokenModel, AuthUserData, ChangePasswordModel, ChannelEnum, CommonService, DataResponseModel, PermissionModel, RoleModel, RoleService, UserModel, UserPermissionModel, UserService } from 'src/app/shared';
 
 @Component({
   selector: 'app-user-form',
@@ -15,6 +16,13 @@ export class UserFormComponent implements OnInit {
   user: AuthTokenModel;
   showPassword: boolean;
   loading: boolean;
+
+  roleList: RoleModel[] = [];
+  permissionItems: PermissionModel[] = [];
+  userPermissions: UserPermissionModel[] = [];
+  checkAll: boolean;
+  indeterminate = true;
+
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate?: TemplateRef<{
     $implicit: { value: DataResponseModel<UserModel> };
     drawerRef: NzDrawerRef<DataResponseModel<UserModel>>;
@@ -22,7 +30,7 @@ export class UserFormComponent implements OnInit {
 
   @Input() data: UserModel;
 
-  constructor(private drawerRef: NzDrawerRef<any>, public router: Router, private commonService: CommonService, private userService: UserService, private authService: AuthService, private activatedRoute: ActivatedRoute, private authData: AuthUserData) { }
+  constructor(private drawerRef: NzDrawerRef<any>, public router: Router, private commonService: CommonService, private userService: UserService, private authService: AuthService, private authData: AuthUserData, private roleService: RoleService) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -61,8 +69,17 @@ export class UserFormComponent implements OnInit {
       emailAddress: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required),
       confirmPassword: new FormControl(null, [Validators.required, this.passwordConfirming]),
+
+      roleId: new FormControl(this.data?.roleId, [Validators.required]),
+      enable2FA: new FormControl(this.data?.enable2FA || false),
+      isActive: new FormControl(this.data?.isActive || true),
+      isBlocked: new FormControl(this.data?.isBlocked || false),
+      blockedReason: new FormControl(this.data?.blockedReason),
+      permissions: new FormArray([]),
     });
     this.validatePassword();
+
+    this.getUserAndRoles();
   }
 
   validatePassword() {
@@ -156,9 +173,88 @@ export class UserFormComponent implements OnInit {
     const pwd = c.parent.get('password');
     const cpwd = c.parent.get('confirmPassword');
 
-    if (!pwd || !cpwd) { return; }
+    if (!pwd && !cpwd) { return; }
     if (pwd.value !== cpwd.value) {
       return { mustMatch: true, invalid: true };
     }
   }
+  
+  getUserAndRoles(): void {
+    if (!this.roleList.length && !this.userPermissions.length) {
+      this.commonService.showLoading();
+      this.loading = true;
+      forkJoin([this.roleService.getAll(), this.userService.getById(this.data?.id)]).subscribe(results => {
+        this.roleList = results[0];
+        this.data = results[1];
+        this.userPermissions = results[1].permissions || [];
+        if (this.data.roleId) {
+          this.getRolePermissions(this.data.roleId);
+        }
+        this.commonService.hideLoading();
+        this.loading = false;
+      },
+        (error) => {
+          this.commonService.handleError(error);
+          this.loading = false;
+        },
+        () => {
+          this.commonService.hideLoading();
+          this.loading = false;
+        });
+    }
+  }
+
+  get permissionList(): FormArray {
+    return this.requestForm.get("permissions") as FormArray
+  }
+
+  get form(): any {
+    return this.requestForm.controls;
+  }
+
+  getRolePermissions(roleId) {
+    this.permissionList.clear();
+    if (roleId) {
+      this.roleService.getRolePermissions(roleId).subscribe(result => {
+        this.permissionItems = result?.map(x => x.permission) || [];
+        if (this.permissionItems.length) {
+          this.permissionItems.forEach(item => {
+            this.permissionList.push(new FormGroup({
+              permissionId: new FormControl(item.id),
+              permissionName: new FormControl(item.name),
+              isSelected: new FormControl(this.userPermissions.some(x => x.permissionId == item.id) || false)
+            }));
+          });
+        }
+        this.commonService.hideLoading();
+        this.loading = false;
+      },
+        (error) => {
+          this.loading = false;
+          this.commonService.handleError(error);
+        });
+    }
+  }
+
+  onCheckAll(value: boolean) {
+    this.indeterminate = false;
+    setTimeout(() => {
+      (this.requestForm.get("permissions") as FormArray).controls.forEach((item) => {
+        item.patchValue({ isSelected: value }); //, { onlySelf: true }
+      });
+    }, 0);
+  }
+
+  updateSingleChecked(): void {
+    if ((this.requestForm.get("permissions") as FormArray).controls.every(item => !item.value.isSelected)) {
+      this.checkAll = false;
+      this.indeterminate = false;
+    } else if ((this.requestForm.get("permissions") as FormArray).controls.every(item => item.value.isSelected)) {
+      this.checkAll = true;
+      this.indeterminate = false;
+    } else {
+      this.indeterminate = true;
+    }
+  }
+
 }

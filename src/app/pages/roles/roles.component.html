@@ -1,0 +1,66 @@
+  <nz-page-header class="site-page-header" nzTitle="Roles" nzSubtitle="Setup Roles">
+
+    <nz-page-header-extra>
+      <button nz-button nzType="primary" (click)="openForm()">Create Role</button>
+    </nz-page-header-extra>
+  
+    <nz-page-header-content>
+      <form nz-form [nzLayout]="'inline'" (ngSubmit)="search()">
+        <div nz-row>
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-control>
+                <nz-input-group nzPrefixIcon="search">
+                  <input [(ngModel)]="pageQuery.searchKeyword" nz-input class="ant-input" placeholder="Search by name" [ngModelOptions]="{standalone: true}" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          
+          <div nz-col [nzSpan]="6">
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
+              </nz-form-control> &nbsp;
+            </nz-form-item>
+          </div>
+        </div>
+      </form>
+    </nz-page-header-content>
+  </nz-page-header>
+  
+  <nz-table #basicTable nzBordered [nzData]="dataList" nzShowSizeChanger [nzLoading]="loading">
+    <thead>
+      <tr>
+        <th>S/N</th>
+        <th>Name</th>
+        <!-- <th>Status</th> -->
+        <th title="Last Editor">Editor</th>
+        <th>Date</th>
+        <th>...</th>
+      </tr>
+    </thead>
+  
+    <tbody>
+      <tr *ngFor="let data of basicTable.data; let i = index;">
+        <td>{{ (basicTable.nzPageIndex - 1) * basicTable.nzPageSize + i + 1 }}</td>
+        <td nowrap>
+          {{ data.name }}
+          <small class="display-block"><em>{{ data.description }}</em></small>
+        </td>
+        <!-- <td>
+          <nz-tag [nzColor]="data.isActive ? 'green' : 'red'">{{ data.isActive ? 'Active' : 'Inactive' }}</nz-tag>
+        </td> -->
+        <td>{{ data.lastModifiedBy || data.createdBy }}</td>
+        <td nowrap>{{ data.lastModifiedDate || data.createdDate | date: 'dd.MMM.yyyy h:mm a' }}</td>
+        <td nowrap>
+          &nbsp;
+          <button nz-button nzType="primary" (click)="openForm(data)" nzTooltipTitle="Edit" nz-tooltip> <i nz-icon
+              nzType="form"></i> </button> &nbsp;
+          <button nz-button nzDanger nzType="primary" nz-popconfirm
+            nzPopconfirmTitle="Are you sure you want to delete this item: {{data?.name}}?" (nzOnConfirm)="delete(data)"
+            nzTooltipTitle="Delete" nz-tooltip [nzLoading]="loading"> <i nz-icon nzType="delete"></i> </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>

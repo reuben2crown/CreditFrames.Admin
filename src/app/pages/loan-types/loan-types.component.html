@@ -57,7 +57,7 @@
     <span>Selected {{ setOfCheckedId.size }} items</span>
   </div> -->
 
-<nz-table #borderedTable nzBordered [nzData]="dataList" [nzLoading]="loading">
+<nz-table #basicTable nzBordered [nzData]="dataList" [nzLoading]="loading">
   <thead>
     <tr>
       <th>S/N</th>
@@ -70,14 +70,14 @@
   </thead>
 
   <tbody>
-    <tr *ngFor="let data of dataList; let i = index;">
-      <td>{{ i + 1 }}</td>
+    <tr *ngFor="let data of basicTable.data; let i = index;">
+      <td>{{ (basicTable.nzPageIndex - 1) * basicTable.nzPageSize + i + 1 }}</td>
       <td nowrap>{{ data.name }}</td>
       <td>
         <nz-tag [nzColor]="data.isActive ? 'green' : 'red'">{{ data.isActive ? 'Active' : 'Inactive' }}</nz-tag>
       </td>
       <td>{{ data.lastModifiedBy || data.createdBy }}</td>
-      <td nowrap>{{ data.updatedDate || data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
+      <td nowrap>{{ data.lastModifiedDate || data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</td>
       <td nowrap>
         &nbsp;
         <button nz-button nzType="primary" (click)="openForm(data)" nzTooltipTitle="Edit" nz-tooltip> <i nz-icon
