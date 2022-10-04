@@ -2,26 +2,33 @@ import { BaseModel } from './base-model';
 import { AccountTypeEnum, ChannelEnum } from './enums';
 
 export class UserModel extends BaseModel {
-  public phoneNumber: string;
-  public emailAddress: string;
   public lastName: string;
   public firstName: string;
+  public phoneNumber: string;
+  public emailAddress: string;
   public gender: string;
   public dateOfBirth: string | Date;
   public age: number;
-  public consultationBalance: number
-  public lastLoginDate: string;
   public accountType: AccountTypeEnum;
   public signupChannel: string;
-  public emailVerified: boolean;
-  public phoneVerified: boolean;
+  public emailIsVerififed: boolean;
+  public phoneNumberVerified: boolean;
+  public lastLoginDate: string;
+  public isOnline: boolean;
   public isActive: boolean;
   public currentPaymentPlan: string;
   public planExpiryDate: string;
   public lastLogin: Date;
   public enable2FA: boolean;
   public isBlocked: boolean;
+  public blockedReason: string;
   public isLockedOut: boolean;
+  public lockedOutDate: Date;
+  public role: RoleModel;
+}
+
+export class RoleModel extends BaseModel {
+  public name: string;
 }
 
 export class BlockUserModel {

@@ -281,6 +281,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       nzContent: LenderLoantypeFormComponent,
       nzWidth: 500,
       nzClosable: true,
+      nzMaskClosable: false,
       nzCloseOnNavigation: true,
       nzContentParams: {
         data: data,

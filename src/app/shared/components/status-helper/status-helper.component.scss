@@ -1,30 +1,21 @@
-.status {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    padding: 1em 1.5em !important;
-    white-space: nowrap !important;
 
-    &.completed {
-      background: rgba(#6ac895, 0.18);
-      color: #6ac895;
-      border: 1px solid #6ac895;
-    }
-    &.waiting {
-      background: rgba(#fbb700, 0.15);
-      color: #fbb700;
-      border: 1px solid #fbb700;
-    }
-    &.danger {
-      background: rgba(#ff7070, 0.18);
-      color: #ff7070;
-      border: 1px solid #ff7070;
-    }
-    &.default {
-      background: rgba(#aaa, 0.18);
-      color: #333;
-      margin-right: 0 !important;
-      border: 1px solid #aaa;
-    }
+.completed {
+  background: rgba(#6ac895, 0.18);
+  color: #6ac895;
+  border: 1px solid #6ac895;
+}
+.waiting {
+  background: rgba(#fbb700, 0.18);
+  color: #fbb700;
+  border: 1px solid #fbb700;
+}
+.danger {
+  background: rgba(#ff7070, 0.18);
+  color: #ff7070;
+  border: 1px solid #ff7070;
+}
+.default {
+  background: rgba(#aaa, 0.18);
+  color: #333;
+  border: 1px solid #aaa;
 }

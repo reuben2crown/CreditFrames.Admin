@@ -1,1 +1,84 @@
-<p>loan-detail works!</p>
+<ng-container>
+
+    <div class="site-page-header">
+        <nz-page-header [nzGhost]="false">
+            <nz-page-header-title>
+                {{data?.loanType?.name}} / {{ data.loanAmount | currency: data?.currencyCode || '&#8358;' }} / {{ data?.lender?.lenderName }}
+            </nz-page-header-title>
+                
+        <nz-page-header-tags>
+            <status-helper [loanStatus]="data.loanStatus"></status-helper>
+        </nz-page-header-tags>
+  
+        </nz-page-header>
+    </div>
+
+    <nz-divider nzOrientation="left" nzText="Loan Details"></nz-divider>
+
+    <nz-descriptions nzBordered nzSize="small" nzLayout="vertical">
+        <nz-descriptions-item nzTitle="Date">{{ data.createdDate | date: 'd-MMM-yyyy h:mm a' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Loan Type">{{data?.loanType?.name}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Lender">{{data?.lender?.lenderName}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Status">
+            <status-helper [loanStatus]="data.loanStatus"></status-helper>
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Loan Amount">{{data?.loanAmount | currency: data?.currencyCode ||
+            '&#8358;'}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Interest Rate">{{data?.interestRate}}%</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Loan Tenor">{{data?.loanTenor}} {{data?.paybackFrequency}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Moratorium">{{data?.moratoriumPeriod}} Month(s)</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Reference Number">{{data?.referenceNumber || 'N/A'}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Eligibility"><nz-tag nzColor="{{data?.isEligible ? 'green' : 'red'}}">{{data?.isEligible ? 'Eligible' : 'Not Eligible'}}</nz-tag></nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Broker Code">{{data?.brokerCode || 'N/A'}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Processor">{{data?.loanProcessor || 'N/A'}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Overdue Balance">{{data?.overdueBalance | currency: data?.currencyCode ||
+            '&#8358;'}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Channel">{{data?.requestChannel}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Retry Count">{{data?.retryCount}} Times</nz-descriptions-item>
+
+        <nz-descriptions-item nzTitle="Loan Purpose">{{data?.loanPurpose}}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-divider nzOrientation="left" nzText="User Details"></nz-divider>
+
+    <nz-descriptions nzBordered nzSize="small" nzLayout="vertical">
+        <nz-descriptions-item nzTitle="Full Name">{{ data?.user?.firstName + ' ' + data?.user?.lastName }}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Email">{{data?.user?.emailAddress}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Phone">{{data?.user?.phoneNumber}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Gender">{{data?.user?.gender || 'N/A'}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Date of Birth">{{(data?.user?.dateOfBirth | date: 'd-MMM-yyyy') || 'N/A'}}
+        </nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Residence Address">{{data?.residenceAddress}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Residence City">{{data?.residenceCity}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Residence State">{{data?.residenceState?.name}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Residence Country">{{data?.residenceCountry?.name}}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-divider nzOrientation="left" nzText="Bank Details"></nz-divider>
+
+    <nz-descriptions nzBordered nzSize="small" nzLayout="vertical">        
+        <nz-descriptions-item nzTitle="Bank Name">{{data?.bankName}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Bank Code">{{data?.bankCode}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Account Number">{{data?.accountNumber}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Account Name">{{data?.accountName}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="BVN">
+            {{data?.bvn}} <nz-tag nzColor="{{data?.bvnIsValid ? 'green' : 'red'}}">{{data?.bvnIsValid ? 'Validated' : 'Not Validated'}}</nz-tag>
+        </nz-descriptions-item>        
+        <nz-descriptions-item *ngIf="!data?.bvnValidationError" nzTitle="Bvn Error">{{data?.bvnValidationError}}</nz-descriptions-item>
+    </nz-descriptions>
+
+    <nz-divider nzOrientation="left" nzText="Employer / Business Details"></nz-divider>
+
+    <nz-descriptions nzBordered nzSize="small" nzLayout="vertical">
+        <nz-descriptions-item nzTitle="Salary / Monthy Turnover">{{data?.monthySalaryOrTurnover}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Company Name">{{data?.employerOrBusinessName}} <nz-tag nzColor="{{data?.isBusinessRegistered ? 'cyan' : 'red'}}">{{data?.isBusinessRegistered ? 'Registered' : 'Unregistered'}}</nz-tag></nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Business RegNumber">{{data?.businessRegNumber}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Tax ID">{{data?.taxID}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Company Address">{{data?.employerOrBusinessAddress}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Company City">{{data?.employerOrBusinessCity}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Company State">{{data?.employerOrBusinessState?.name}}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Company Country">{{data?.employerOrBusinessCountry?.name}}</nz-descriptions-item>
+    </nz-descriptions>
+
+</ng-container>

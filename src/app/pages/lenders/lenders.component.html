@@ -37,7 +37,7 @@
           <nz-form-item>
             <nz-form-control>
               <button nz-button nzType="primary"><i nz-icon nzType="search"></i> Search</button>
-            </nz-form-control> &nbsp; 
+            </nz-form-control> &nbsp;
             <nz-form-control>
               <button nz-button type="button" (click)="clear()">Clear</button>
             </nz-form-control>
@@ -54,7 +54,7 @@
   <div class="no-result">
     <nz-result nzStatus="404" nzTitle="No result was found." nzSubTitle="">
       <div nz-result-extra>
-        <button nz-button nzType="primary" [routerLink]="['lender-form']">Add New Lender</button> 
+        <button nz-button nzType="primary" [routerLink]="['lender-form']">Add New Lender</button>
       </div>
     </nz-result>
   </div>
@@ -63,15 +63,15 @@
 <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzAvatar]="true">
   <ng-container *ngFor="let item of dataList">
     <div class="site-page-header">
-      <nz-page-header nzBackIcon [nzGhost]="false">
+      <nz-page-header [nzGhost]="false">
         <nz-page-header-title>{{item.lenderName}}</nz-page-header-title>
-  
+
         <nz-page-header-tags>
           <nz-tag *ngIf="item.hasMobileApp"><span nz-icon nzType="mobile" nzTheme="outline"></span> Mobile</nz-tag>
           <nz-tag *ngIf="item.hasWebApp"><span nz-icon nzType="laptop" nzTheme="outline"></span> Web</nz-tag>
           <nz-rate [ngModel]="item.averageRating" nzAllowHalf nzDisabled></nz-rate>
         </nz-page-header-tags>
-  
+
         <nz-page-header-extra>
           <nz-space>
             <button *nzSpaceItem nz-button nzType="primary" [routerLink]="['lender-form', item.id]">Edit</button> &nbsp;
@@ -81,19 +81,20 @@
                 nzType="delete"></i> </button>
           </nz-space>
         </nz-page-header-extra>
-  
+
         <nz-page-header-content>
           <div nz-row>
             <div class="content">
               <p nz-paragraph *ngIf="item.description">
                 {{item.description}}
               </p>
-  
+
               <nz-descriptions nzSize="small">
                 <!-- <nz-descriptions-item nzTitle="Minimum Amount"><strong>{{item.minimumLoanAmount | currency: (item?.country?.currencyCode || '&#8358;')}}</strong></nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Maximum Amount"><strong>{{item.maximumLoanAmount | currency: (item?.country?.currencyCode || '&#8358;')}}</strong></nz-descriptions-item> -->
                 <nz-descriptions-item nzTitle="Status">
-                  <nz-tag [nzColor]="item.isActive ? '#87d068' : '#f50'">{{item.isActive ? 'Active' : 'Inactive' }}</nz-tag> &nbsp; 
+                  <nz-tag [nzColor]="item.isActive ? '#87d068' : '#f50'">{{item.isActive ? 'Active' : 'Inactive' }}
+                  </nz-tag> &nbsp;
                   <nz-tag nzColor="volcano" *ngIf="item.apiActivated">API</nz-tag>
                 </nz-descriptions-item>
 
@@ -102,43 +103,56 @@
 
                 <nz-descriptions-item nzTitle="Country" [nzSpan]="1">{{item.country?.name}}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="State/Region" [nzSpan]="1">{{item.state?.name}}</nz-descriptions-item>
-  
+
                 <nz-descriptions-item nzTitle="Features" [nzSpan]="3" *ngIf="item.features?.length">
                   <nz-tag *ngFor="let feature of item.features">{{feature.featureName}}</nz-tag>
                 </nz-descriptions-item>
-                
+
                 <nz-descriptions-item nzTitle="Created By" [nzSpan]="1">{{item.createdBy}}</nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">{{item.createdDate | date:'d.MMM.yyyy h:mm a'}}
+                <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">{{item.createdDate | date:'d.MMM.yyyy h:mm
+                  a'}}
                 </nz-descriptions-item>
-                <nz-descriptions-item *ngIf="item.lastModifiedBy" nzTitle="Updated By" [nzSpan]="1">{{item.lastModifiedBy}}</nz-descriptions-item>
-                <nz-descriptions-item *ngIf="item.lastModifiedDate" nzTitle="Updated Time" [nzSpan]="1">{{item.lastModifiedDate | date:'d-MMM-yyyy h:mm a'}}
+                <nz-descriptions-item *ngIf="item.lastModifiedBy" nzTitle="Updated By" [nzSpan]="1">
+                  {{item.lastModifiedBy}}</nz-descriptions-item>
+                <nz-descriptions-item *ngIf="item.lastModifiedDate" nzTitle="Updated Time" [nzSpan]="1">
+                  {{item.lastModifiedDate | date:'d-MMM-yyyy h:mm a'}}
                 </nz-descriptions-item>
-                <nz-descriptions-item nzTitle="Website" [nzSpan]="1"><a href="{{item.website}}" target="_blank">{{item.website}}</a>
+                <nz-descriptions-item nzTitle="Website" [nzSpan]="1"><a href="{{item.website}}"
+                    target="_blank">{{item.website}}</a>
                 </nz-descriptions-item>
               </nz-descriptions>
-  
+
               <div class="content-link">
-                <a *ngIf="item.facebookUrl" href="{{item.facebookUrl}}" target="_blank"><span nz-icon nzType="facebook" nzTheme="outline"></span> Facebook</a>
-                
-                <a *ngIf="item.twitterUrl" href="{{item.twitterUrl}}" target="_blank"><span nz-icon nzType="twitter" nzTheme="outline"></span> Twitter</a>
-                
-                <a *ngIf="item.instagramUrl" href="{{item.instagramUrl}}" target="_blank"><span nz-icon nzType="instagram" nzTheme="outline"></span> Instagram</a>
-                
-                <a *ngIf="item.linkedinUrl" href="{{item.linkedinUrl}}" target="_blank"><span nz-icon nzType="linkedin" nzTheme="outline"></span> Linkedin</a>
+                <a *ngIf="item.facebookUrl" href="{{item.facebookUrl}}" target="_blank"><span nz-icon nzType="facebook"
+                    nzTheme="outline"></span> Facebook</a>
+
+                <a *ngIf="item.twitterUrl" href="{{item.twitterUrl}}" target="_blank"><span nz-icon nzType="twitter"
+                    nzTheme="outline"></span> Twitter</a>
+
+                <a *ngIf="item.instagramUrl" href="{{item.instagramUrl}}" target="_blank"><span nz-icon
+                    nzType="instagram" nzTheme="outline"></span> Instagram</a>
+
+                <a *ngIf="item.linkedinUrl" href="{{item.linkedinUrl}}" target="_blank"><span nz-icon nzType="linkedin"
+                    nzTheme="outline"></span> Linkedin</a>
               </div>
             </div>
             <div class="content-image">
-              <img style="max-width: 180px;" src="{{item.logo || 'https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg'}}" alt="logo" />
+              <img style="max-width: 180px;"
+                src="{{item.logo || 'https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg'}}"
+                alt="logo" />
             </div>
           </div>
         </nz-page-header-content>
       </nz-page-header>
     </div>
-  </ng-container>  
+  </ng-container>
 </nz-skeleton>
 
 <br />
-<nz-pagination nzShowSizeChanger [nzTotal]="pagination?.totalCount" [nzPageSize]="pageQuery?.pageSize" [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber" (nzPageIndexChange)="pageChanged($event, 'index')" (nzPageSizeChange)="pageChanged($event, 'size')" [nzShowTotal]="rangeTemplate" [nzResponsive]="true" [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]"></nz-pagination>
+<nz-pagination nzShowSizeChanger [nzTotal]="pagination?.totalCount" [nzPageSize]="pageQuery?.pageSize"
+  [nzPageIndex]="pagination?.currentPage || pageQuery.pageNumber" (nzPageIndexChange)="pageChanged($event, 'index')"
+  (nzPageSizeChange)="pageChanged($event, 'size')" [nzShowTotal]="rangeTemplate" [nzResponsive]="true"
+  [nzPageSizeOptions]="[10, 20, 30, 40, 50, 100]"></nz-pagination>
 <ng-template #rangeTemplate let-range="range" let-total>
   {{ range[0] }}-{{ range[1] }} of {{ total }} items
 </ng-template>

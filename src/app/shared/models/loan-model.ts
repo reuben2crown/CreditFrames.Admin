@@ -3,6 +3,8 @@ import { BaseModel } from './base-model';
 import { LenderModel } from './lender-model';
 import { LoanTypeModel } from './loan-type-model';
 import { UserModel } from './user-model';
+import { StateModel } from './state-model';
+import { CountryModel } from './country-model';
 
 export class LoanModel extends BaseModel {
   public userId: number;
@@ -14,10 +16,11 @@ export class LoanModel extends BaseModel {
   public loanAmount: number;
   public loanPurpose: string;
   public loanTenor: number;
+  public paybackFrequency: string;
   public interestRate: number;
   public moratoriumPeriod: number;
-  public paybackOption: string;
   public bankName: string;
+  public bankCode: string;
   public accountNumber: string;
   public accountName: string;
   public taxID: string;
@@ -30,54 +33,24 @@ export class LoanModel extends BaseModel {
   public retryCount: number;
   public requestDate: Date;
   public requestChannel: string;
-  public submittedBy: string;
   public brokerCode: string;
   public loanStatus: string | RequestStatusEnum;
   public loanProcessor: string;
   public overdueBalance: number;
-}
-
-export class LoanRequestModel {  
-  public loanProductId: string;
-  public accountNumber: string;
-  public loanAmount: number;
-  public paybackOptionId: string;
-  public loanPurpose: string;
-  public secondaryEmail?: string;
-  public businessDetails: string;
-  public businessSectorCode: string;
-  public currentAddress?: string;
-  public existingLoanWithOtherBank: boolean;
-  public requestChannel: string;
-  public requestBranchID?: string;
-  public submittedBy: string;
-  public brokerCode?: string;
-  public customData: LoanCustomData[];
-}
-
-export class LoanResponseModel {
-  public loanApplicationId: string;
-  public accountNumber: string;
-  public accountName: string;
-  public customerId: string;
-  public loanAmount: number;
-  public requestDate: string | Date;
-  public referenceNumber: string;
-  public paybackOptionTitle: string;
-  public loanStatus: RequestStatusEnum;
-  public isPending: boolean;
-  public isEligible: boolean;
-  public isQualified: boolean;
-  
-  public loanTenor: number;
-  public interestRate: number;
-  public loanPurpose: string;
-  public submittedBy: string;
-  public brokerCode: string;
-  public accountOfficerEmail: string;
-}
-
-export class LoanCustomData {
-  public fieldName: string;
-  public value: string;
+  public residenceAddress: string;
+  public residenceCity: string;
+  public residenceStateId: number;
+  public residenceState: StateModel;
+  public residenceCountryId: number;
+  public residenceCountry: CountryModel;
+  public monthySalaryOrTurnover: number;
+  public isBusinessRegistered: boolean;
+  public businessRegNumber: string;
+  public employerOrBusinessName: string;
+  public employerOrBusinessAddress: string;
+  public employerOrBusinessCity: string;
+  public employerOrBusinessStateId: number;
+  public employerOrBusinessState: StateModel;
+  public employerOrBusinessCountryId: number;
+  public employerOrBusinessCountry: CountryModel;
 }

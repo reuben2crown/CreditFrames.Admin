@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LoanModel } from 'src/app/shared';
+import { CommonService, LoanModel, LoanService } from 'src/app/shared';
 
 @Component({
   selector: 'app-loan-detail',
@@ -9,9 +9,23 @@ import { LoanModel } from 'src/app/shared';
 export class LoanDetailComponent implements OnInit {
   @Input() data: LoanModel;
 
-  constructor() { }
+  constructor(
+    private commonService: CommonService,
+    private loanService: LoanService
+  ) { }
 
   ngOnInit(): void {
+    this.getData();
+  }
+
+  getData() {
+    this.commonService.showLoading();
+    this.loanService.getById(this.data.id).subscribe(response => {
+      this.data = response;
+      this.commonService.hideLoading();
+    }, error => {
+      this.commonService.handleError(error);
+    });
   }
 
 }

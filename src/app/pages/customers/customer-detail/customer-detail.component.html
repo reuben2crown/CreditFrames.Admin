@@ -16,7 +16,7 @@
                 <nz-descriptions-item nzTitle="Gender" [nzSpan]="1">{{data?.gender ? data?.gender : 'N/A'}}
                 </nz-descriptions-item>
                 <nz-descriptions-item nzTitle="Birthday / Age" [nzSpan]="1">{{data?.dateOfBirth ? (data?.dateOfBirth |
-                    date: 'd-MMM-yyyy') : 'N/A'}} &nbsp; ({{data?.age || 0}} years)</nz-descriptions-item>
+                    date: 'd-MMM-yyyy') : 'N/A'}} &nbsp; <!-- ({{data?.age || 0}} years) --></nz-descriptions-item>
                 <!-- <nz-descriptions-item nzTitle="Current Loan" [nzSpan]="1">{{data?.currentLoan}}
                 </nz-descriptions-item> -->
             </nz-descriptions>
@@ -57,7 +57,7 @@
                             <nz-tag [nzColor]="data.isCompleted ? '#87d068' : '#f50'">{{ data.isCompleted ? 'Paid' : 'Unpaid' }}</nz-tag>
                         </td>
                         <!-- <td>
-                            <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details" [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> <i nz-icon nzType="eye"></i> </button>
+                            <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details" nzTooltipPlacement="topRight" nz-tooltip> <i nz-icon nzType="eye"></i> </button>
                         </td> -->
                     </tr>
                 </tbody>
@@ -91,7 +91,7 @@
                         <td>{{ data.amount | currency: (data.currency || '&#8358;') }}</td>
                         <!-- <td>
                             <button nz-button nzType="primary" (click)="showDetails(data)" nzTooltipTitle="Show Details"
-                                [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> <i nz-icon nzType="eye"></i>
+                                nzTooltipPlacement="topRight" nz-tooltip> <i nz-icon nzType="eye"></i>
                             </button>
                         </td> -->
                     </tr>

@@ -77,7 +77,7 @@
     <tbody>
         <tr *ngFor="let data of loanTable.data; let i = index;">
           <td>{{ (loanTable.nzPageIndex - 1) * loanTable.nzPageSize + i + 1 }}</td>
-            <td>
+            <td nowrap>
                 {{ data.createdDate | date: 'd-MMM-yyyy' }}
                 <small style="display:block;">{{ data.createdDate | date: 'h:mm a' }}</small>
             </td>
@@ -88,10 +88,10 @@
             <td>{{ data?.loanType?.name }}</td>
             <td>{{ data.loanAmount | currency: data?.currencyCode || '&#8358;' }}</td>
             <td>{{ data?.lender?.lenderName }}</td>
-            <td><loan-status-helper [loanStatus]="data.loanStatus"></loan-status-helper></td>
+            <td><status-helper [loanStatus]="data.loanStatus"></status-helper></td>
             <td>
-                <button nz-button nzType="primary" (click)="openForm(data)" nzTooltipTitle="View Loan Details"
-                    [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-tooltip> Details </button>
+                <button nz-button nzType="primary" (click)="viewDetails(data)" nzTooltipTitle="View Loan Details"
+                nzTooltipPlacement="topRight" nz-tooltip> Details </button>
             </td>
         </tr>
     </tbody>
