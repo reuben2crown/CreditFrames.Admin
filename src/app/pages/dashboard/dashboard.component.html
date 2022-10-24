@@ -11,24 +11,35 @@
           [nzTitle]="'Total Users'"
           [nzPrefix]="prefixTplOne"
         ></nz-statistic>
-        <ng-template #prefixTplOne><i nz-icon nzType="user"></i></ng-template>
+        <ng-template #prefixTplOne><i nz-icon nzType="usergroup-add"></i></ng-template>
       </nz-card>
     </nz-col>
 
     <nz-col [nzSpan]="6">
-      <nz-card class="pointer" [routerLink]="['/consultations']">
+      <nz-card>
         <nz-statistic
           [nzValue]="((model?.activeUsers || 0) | number)!"
           [nzTitle]="'Active Users'"
           [nzPrefix]="prefixTplTwo"
           [nzValueStyle]="{ color: '#1890FF' }"
         ></nz-statistic>
-        <ng-template #prefixTplTwo><i nz-icon nzType="medicine-box"></i></ng-template>
+        <ng-template #prefixTplTwo><i nz-icon nzType="user-switch"></i></ng-template>
       </nz-card>
     </nz-col>
 
     <nz-col [nzSpan]="6">
-      <nz-card class="pointer" [routerLink]="['/payments', {status: 'success'}]">
+      <nz-card class="pointer" [routerLink]="['/search-history']">
+        <nz-statistic
+          [nzValue]="(model?.activeSearch || 0)"
+          [nzTitle]="'Search History'"
+          [nzPrefix]="prefixTplFour"
+        ></nz-statistic>
+        <ng-template #prefixTplFour><i nz-icon nzType="search"></i></ng-template>
+      </nz-card>
+    </nz-col>
+
+    <nz-col [nzSpan]="6">
+      <nz-card class="pointer" [routerLink]="['/loans']">
         <nz-statistic
           [nzValue]="((model?.totalLoans || 0) | currency: '&#8358;')!"
           [nzTitle]="'Total Loans'"
@@ -36,18 +47,6 @@
           [nzValueStyle]="{ color: '#3F8600' }"
         ></nz-statistic>
         <ng-template #prefixTplThree><i nz-icon nzType="arrow-up"></i></ng-template>
-      </nz-card>
-    </nz-col>
-
-    <nz-col [nzSpan]="6">
-      <nz-card class="pointer" [routerLink]="['/payments', {status: 'failed'}]">
-        <nz-statistic
-          [nzValue]="((model?.activeSearch || 0) | currency: '&#8358;')!"
-          [nzTitle]="'Failed Payments'"
-          [nzPrefix]="prefixTplFour"
-          [nzValueStyle]="{ color: '#CF1322' }"
-        ></nz-statistic>
-        <ng-template #prefixTplFour><i nz-icon nzType="arrow-down"></i></ng-template>
       </nz-card>
     </nz-col>
   </nz-row>

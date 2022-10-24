@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Observer, Subscription } from 'rxjs';
-import { AuthTokenModel, AuthUserData, CommonService, CountryModel, CountryService, LenderService, LenderModel, StateService, LoanFeatureModel, LoanTypeModel, LenderLoanType, LoanTypeService, LoanFeatureService, StateModel, FormHelper, LenderFeatureItemModel } from 'src/app/shared';
+import { AuthTokenModel, AuthUserData, CommonService, CountryModel, CountryService, LenderService, LenderModel, StateService, LoanFeatureModel, LoanTypeModel, LenderLoanType, LoanTypeService, LoanFeatureService, StateModel, FormHelper } from 'src/app/shared';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { LenderLoantypeFormComponent } from '../lender-loantype-form/lender-loantype-form.component';
@@ -45,14 +45,14 @@ export class LenderFormComponent implements OnInit, OnDestroy {
   }
 
   createForm() {
-    const reg = '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?';
+    const urlRegex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
     this.requestForm = new FormGroup({
       lenderName: new FormControl(null, Validators.required),
       description: new FormControl('', [Validators.maxLength(1000)]),
       emailAddress: new FormControl(null, [Validators.email]),
       phoneNumber: new FormControl(null),
-      website: new FormControl(null, [Validators.required, Validators.pattern(reg)]),
-      loanApplicationUrl: new FormControl(null, [Validators.pattern(reg)]),
+      website: new FormControl(null, [Validators.required, Validators.pattern(urlRegex)]),
+      loanApplicationUrl: new FormControl(null, [Validators.pattern(urlRegex)]),
       countryId: new FormControl(0, Validators.required),
       stateId: new FormControl(0),
       hasWebApp: new FormControl(false),
@@ -149,17 +149,7 @@ export class LenderFormComponent implements OnInit, OnDestroy {
       this.commonService.showLoading();
       let formValue = this.requestForm.value as LenderModel;
 
-      var featureValues = this.requestForm.get('lenderFeatures').value as string[]; // LenderFeatureItemModel
-      // if (featureValues && featureValues?.length) {
-      //   var selectedFeatures = this.loanFeatureList.filter(x => featureValues.includes(x.name))
-      //   .map(item => ({
-      //     featureId: item.id,
-      //     featureName: item.name,
-      //     isSelected: true
-      //   })) as LenderFeatureItemModel[] || [];
-
-      //   formValue.features = selectedFeatures;
-      // }
+      var featureValues = this.requestForm.get('lenderFeatures').value as string[];
 
       formValue.features = featureValues || [];
       formValue.loanTypes = this.lenderLoanTypes;

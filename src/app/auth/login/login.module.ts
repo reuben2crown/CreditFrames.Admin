@@ -20,9 +20,9 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   imports: [
     CommonModule,
     LoginRoutingModule,
-    NzFormModule,
     FormsModule,
     ReactiveFormsModule,
+    NzFormModule,
     NzButtonModule,
     NzPageHeaderModule,
     NzIconModule,

@@ -27,10 +27,7 @@ export class ResourceService {
     return this.httpClient.post<T>(`${this.baseUrl}/${this.endpoint}`, data);
   }
 
-  public upload<T>(
-    data: FormData,
-    type: 'POST' | 'PUT' = 'POST'
-  ): Observable<HttpEvent<T>> {
+  public upload<T>(data: FormData, type: 'POST' | 'PUT' = 'POST'): Observable<HttpEvent<T>> {
     const headers = new HttpHeaders({
       'X-Content-Type': 'multipart/form-data',
     });

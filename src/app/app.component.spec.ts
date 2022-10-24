@@ -23,7 +23,7 @@ describe('AppComponent', () => {
   it(`should have as title 'CreditFrames-Admin'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('CreditFrames-Admin');
+    expect(app.pageTitle).toEqual('CreditFrames-Admin');
   });
 
   it('should render title', () => {

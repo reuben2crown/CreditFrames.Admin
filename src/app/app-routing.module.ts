@@ -38,6 +38,7 @@ const routes: Routes = [
   { path: 'lenders', loadChildren: () => import('./pages/lenders/lenders.module').then(m => m.LendersModule), canActivate: [AuthGuard], data: { title: 'Lenders'} },
   { path: 'countries', loadChildren: () => import('./pages/countries/countries.module').then(m => m.CountriesModule), canActivate: [AuthGuard], data: { title: 'Manage Countries'} },
   { path: 'states', loadChildren: () => import('./pages/states/states.module').then(m => m.StatesModule), canActivate: [AuthGuard], data: { title: 'Manage States'} },
+  { path: 'search-history', loadChildren: () => import('./pages/search-history/search-history.module').then(m => m.SearchHistoryModule) },
   { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
 

@@ -26,10 +26,6 @@ export class TokenInterceptor implements HttpInterceptor {
   public retryFailedRequests(next: HttpHandler): void {
     this.accessToken = this._authData.getLoginToken();
     this.cachedRequests.forEach(request => {
-      // if (!request.headers.has('X-Content-Type')) {
-      //   if (!request.headers.has('Content-Type')) {
-      //   }
-      // }
       if (this.accessToken) {
         request = request.clone({
           headers: request.headers.set('Authorization', `Bearer ${this.accessToken}`)
