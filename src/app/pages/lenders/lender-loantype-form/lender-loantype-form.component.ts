@@ -21,6 +21,7 @@ export class LenderLoantypeFormComponent implements OnInit {
   loanTypeList: LoanTypeModel[] = [];
   loanSecurityEnum: typeof LoanSecurityEnum = LoanSecurityEnum;
   loanRequirementEnum: typeof LoanRequirementEnum = LoanRequirementEnum;
+  criteriaList: string[] = [];
 
   @ViewChild('drawerTemplate', { static: false }) drawerTemplate?: TemplateRef<{
     $implicit: { value: LenderLoanType };
@@ -54,7 +55,18 @@ export class LenderLoantypeFormComponent implements OnInit {
     this.commonService.showLoading();
     this.loading = true;
     this.lenderService.getLenderLoanType(this.id).subscribe(response => {
-      this.loanTypeForm.patchValue(response, { onlySelf: true });
+      let responseData = Object.assign({}, response);
+      delete responseData.requirements;
+      delete responseData.eligiblityCriteria;
+
+      this.loanTypeForm.patchValue(responseData, { onlySelf: true });
+
+      let requirements = response.requirements?.split(',') || [];
+      this.loanTypeForm.patchValue({ requirements: requirements }, { onlySelf: true });
+
+      this.criteriaList = response.eligiblityCriteria?.split(',') || [];
+      this.loanTypeForm.patchValue({ eligiblityCriteria: this.criteriaList }, { onlySelf: true });
+
       this.loading = false;
       this.commonService.hideLoading();
     }, error => {
@@ -64,6 +76,9 @@ export class LenderLoantypeFormComponent implements OnInit {
   }
 
   createForm(): void {
+    var requirements = this.data?.requirements?.split(',') || [];
+    this.criteriaList = this.data?.eligiblityCriteria?.split(',') || [];
+
     this.loanTypeForm = new FormGroup({
       id: new FormControl(this.data?.id || 0),
       lenderId: new FormControl(this.data?.lenderId || this.lenderId || 0), //, Validators.required
@@ -79,8 +94,8 @@ export class LenderLoantypeFormComponent implements OnInit {
       moratoriumPeriod: new FormControl(this.data?.moratoriumPeriod || 0),
       minTurnAroundTimeInMinute: new FormControl(this.data?.minTurnAroundTimeInMinute || 0, Validators.required),
       maxTurnAroundTimeInMinute: new FormControl(this.data?.maxTurnAroundTimeInMinute || 0, Validators.required),
-      requirements: new FormControl(this.data?.requirements),
-      eligiblityCriteria: new FormControl(this.data?.eligiblityCriteria),
+      requirements: new FormControl(requirements),
+      eligiblityCriteria: new FormControl(this.criteriaList),
       security: new FormControl(this.data?.security, Validators.required),
     });
   }
@@ -93,6 +108,11 @@ export class LenderLoantypeFormComponent implements OnInit {
     if (this.loanTypeForm.valid) {
       let formData = this.loanTypeForm.value as LenderLoanType;
       formData.loanTypeName = this.loanTypeList.find(x => x.id == formData.loanTypeId)?.name;
+      
+      var requirements = this.loanTypeForm.get('requirements').value as string[];
+      formData.requirements = requirements.join(',');
+      var eligiblityCriteria = this.loanTypeForm.get('eligiblityCriteria').value as string[];
+      formData.eligiblityCriteria = eligiblityCriteria.join(',');
 
       //create or edit plan
       if (this.id) {
